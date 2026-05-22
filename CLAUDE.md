@@ -3,7 +3,7 @@
 ## 專案結構
 
 ```
-project/
+mimicasa-website/
 ├── zh/
 │   ├── index.html
 │   ├── about.html
@@ -43,10 +43,16 @@ project/
 Logo / icon  SVG
 去背素材      PNG
 og-image     JPG，品質 90，1200x630px
-命名規則      kebab-case：hero-bg.jpg、philosophy-classroom.jpg
+命名規則      全部小寫 kebab-case：hero-bg.jpg、philosophy-classroom.jpg
 ```
 
-**開發階段圖片**：使用 Figma MCP URL，上線前替換為 assets/images/ 本地路徑。
+**圖片來源**
+```
+所有圖片已放在 assets/images/，直接引用本地路徑。
+路徑寫法：../assets/images/檔名.jpg（HTML 在 zh/ 或 en/ 子目錄）
+不使用 Figma MCP URL。
+檔案命名全部小寫，HTML 引用大小寫必須完全一致。
+```
 
 ---
 
@@ -87,6 +93,7 @@ Tone         calm, confident, editorial — like a premium lifestyle brand, not 
 
 ## 專案概覽
 
+- **專案名稱**：mimicasa-website
 - **品牌名稱**：咪咪 & 家田蒙特梭利幼兒園 / MImi & Casa Montessori Preschool
 - **技術棧**：Vanilla HTML / CSS / JavaScript，無任何框架
 - **部署**：GitHub Pages 或 Cloudflare Pages
@@ -295,7 +302,7 @@ hover      CSS opacity: 0.7
 active     白色底線 1px，標示當前頁面
 ```
 
-**≤768px**：Nav-right 隱藏，顯示漢堡按鈕，全螢幕 Drawer
+**≤1024px**：Nav-right 隱藏，顯示漢堡按鈕，全螢幕 Drawer
 
 ---
 
@@ -306,6 +313,10 @@ active     白色底線 1px，標示當前頁面
 左側大標題：「這裡是孩子白天的家」
 右對齊副標：「孩子成長的秘密花園」
 CTA 按鈕置底置中：「立即預約參觀」→ 點擊開啟報名參觀 Modal
+
+高度：
+  height: 100vh;   /* fallback */
+  height: 100svh;  /* 現代瀏覽器，避免手機網址列跳動 */
 ```
 
 ---
@@ -457,7 +468,7 @@ IntersectionObserver，threshold: 0.1
 
 ## 注意事項
 
-- 圖片開發階段用 Figma MCP URL，上線前替換為 assets/images/ 本地路徑
+- 圖片全部在 assets/images/，使用本地路徑，不使用 Figma MCP URL
 - Google Maps 左側目前為示意圖，上線前替換為真實 Embed URL
 - color/bg/overlay 為 #29292980，工程師使用 rgba(41,41,41,0.5)
 - 語言版本共用同一份 CSS 和 JS，只有文字內容和字體不同
