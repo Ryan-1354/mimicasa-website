@@ -1,0 +1,1831 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>咪咪 & 家田蒙特梭利幼兒園｜給孩子最好的起點</title>
+  <meta name="description" content="臺北市咪咪 & 家田蒙特梭利幼兒園，提供專業蒙特梭利教育與雙語環境，培養孩子獨立思考與國際視野。" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@600&family=Noto+Sans+TC:wght@400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ── RESET ── */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    html { scroll-behavior: smooth; }
+    img { display: block; max-width: 100%; }
+    a { text-decoration: none; color: inherit; }
+    button { cursor: pointer; font-family: inherit; }
+    ul { list-style: none; }
+
+    /* ── DESIGN TOKENS ── */
+    :root {
+      /* color / text */
+      --color-text-primary:          #292929;
+      --color-text-secondary:        #525252;
+      --color-text-muted:            #bdbdbd;
+      --color-text-accent:           #857765;
+      --color-text-inverse-primary:  #ffffff;
+      --color-text-inverse-secondary:#bdbdbd;
+      --color-text-inverse-tertiary: #989898;
+      --color-text-inverse-accent:   #e0cfb9;
+
+      /* color / bg */
+      --color-bg-default:  #ffffff;
+      --color-bg-section:  #fdfcf9;
+      --color-bg-dark:     #232d11;
+      --color-bg-overlay:  rgba(41, 41, 41, 0.5);
+
+      /* color / border */
+      --color-border-default:   #dcdcdc;
+      --color-border-brand:     #59702f;
+      --color-border-accent:    #857765;
+      --color-border-secondary: #989898;
+
+      /* color / action */
+      --color-action-primary-bg:              #59702f;
+      --color-action-primary-bg-hover:        #40521f;
+      --color-action-primary-label:           #ffffff;
+      --color-action-link-label-dark-default: #525252;
+      --color-action-link-label-dark-hover:   #292929;
+      --color-action-link-label-light-default:#ffffff;
+      --color-action-link-label-light-hover:  #59702f;
+      --color-action-nav-link-default:        #ffffff;
+
+      /* size / radius */
+      --size-radius-xs:   4px;
+      --size-radius-sm:   8px;
+      --size-radius-md:   12px;
+      --size-radius-lg:   16px;
+      --size-radius-pill: 1000px;
+
+      /* size / spacing / inset */
+      --size-spacing-inset-xs:  4px;
+      --size-spacing-inset-sm:  8px;
+      --size-spacing-inset-md:  12px;
+      --size-spacing-inset-lg:  16px;
+      --size-spacing-inset-xl:  24px;
+
+      /* size / spacing / stack */
+      --size-spacing-stack-xs:  4px;
+      --size-spacing-stack-sm:  8px;
+      --size-spacing-stack-md:  12px;
+      --size-spacing-stack-lg:  16px;
+      --size-spacing-stack-2xl: 24px;
+      --size-spacing-stack-3xl: 48px;
+      --size-spacing-stack-4xl: 64px;
+
+      /* size / spacing / layout */
+      --size-spacing-layout-md:  40px;
+      --size-spacing-layout-xl:  80px;
+      --size-spacing-layout-2xl: 120px;
+    }
+
+    /* ── BASE TYPOGRAPHY ── */
+    body {
+      font-family: 'Noto Sans TC', sans-serif;
+      font-size: 18px;
+      line-height: 150%;
+      color: var(--color-text-primary);
+      background: var(--color-bg-default);
+      overflow-x: hidden;
+    }
+
+    /* ════════════════════════════════
+       NAVBAR
+    ════════════════════════════════ */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 500;
+      padding: var(--size-spacing-inset-lg) var(--size-spacing-layout-2xl);
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 24px;
+      background: transparent;
+      transition: transform 0.3s ease, background 0.3s ease;
+    }
+
+    /* Hidden state (scrolling down) */
+    .navbar:not(.visible) {
+      transform: translateY(-100%);
+    }
+
+    /* Scrolled-up state: dark bg, 2-col */
+    .navbar.has-bg {
+      background: var(--color-bg-dark);
+      grid-template-columns: auto 1fr;
+    }
+    .navbar.has-bg .nav-brandmark {
+      display: none;
+    }
+
+    /* Left: wordmark */
+    .nav-wordmark {
+      grid-column: 1;
+      justify-self: start;
+    }
+    .nav-wordmark a {
+      display: block;
+    }
+    .nav-wordmark img {
+      height: 40px;
+      width: auto;
+    }
+    /* Wordmark text fallback (shown if no SVG loaded) */
+    .nav-wordmark-text {
+      font-family: 'Noto Serif TC', serif;
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--color-text-inverse-primary);
+      letter-spacing: 0.05em;
+      line-height: 1.2;
+      white-space: nowrap;
+    }
+    .nav-wordmark-sub {
+      font-family: 'Noto Sans TC', sans-serif;
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--color-text-inverse-secondary);
+      letter-spacing: 0.03em;
+      margin-top: 4px;
+    }
+
+    /* Center: brandmark */
+    .nav-brandmark {
+      grid-column: 2;
+      justify-self: center;
+    }
+    .nav-brandmark a {
+      display: block;
+    }
+    .nav-brandmark img {
+      height: 80px;
+      width: auto;
+      object-fit: contain;
+    }
+
+    /* Right: nav links + CTA */
+    .nav-right {
+      grid-column: 3;
+      justify-self: end;
+      display: flex;
+      align-items: center;
+      gap: var(--size-spacing-inset-xl);
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: var(--size-spacing-inset-xl);
+    }
+    .nav-links a {
+      font-family: 'Noto Sans TC', sans-serif;
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--color-action-nav-link-default);
+      letter-spacing: 0.04em;
+      transition: opacity 0.2s ease;
+    }
+    .nav-links a:hover {
+      opacity: 0.7;
+    }
+    .nav-links a.active {
+      border-bottom: 1px solid var(--color-action-nav-link-default);
+      padding-bottom: 2px;
+    }
+    .nav-lang {
+      font-family: 'Noto Sans TC', sans-serif;
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--color-action-nav-link-default);
+      letter-spacing: 0.04em;
+      transition: opacity 0.2s ease;
+    }
+    .nav-lang:hover {
+      opacity: 0.7;
+    }
+
+    /* CTA Button */
+    .btn-primary {
+      display: inline-block;
+      background: var(--color-action-primary-bg);
+      color: var(--color-action-primary-label);
+      border: none;
+      padding: var(--size-spacing-inset-md) var(--size-spacing-inset-xl);
+      border-radius: var(--size-radius-pill);
+      font-family: 'Noto Sans TC', sans-serif;
+      font-size: 15px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      white-space: nowrap;
+      transition: background 0.2s ease;
+    }
+    .btn-primary:hover {
+      background: var(--color-action-primary-bg-hover);
+    }
+
+    /* Hamburger (mobile) */
+    .nav-hamburger {
+      display: none;
+      grid-column: 2;
+      justify-self: end;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      width: 40px;
+      height: 40px;
+      background: none;
+      border: none;
+      padding: 4px;
+    }
+    .nav-hamburger span {
+      display: block;
+      height: 1.5px;
+      background: var(--color-text-inverse-primary);
+      border-radius: 2px;
+      transition: all 0.3s ease;
+    }
+    .nav-hamburger.open span:nth-child(1) {
+      transform: translateY(6.5px) rotate(45deg);
+    }
+    .nav-hamburger.open span:nth-child(2) {
+      opacity: 0;
+    }
+    .nav-hamburger.open span:nth-child(3) {
+      transform: translateY(-6.5px) rotate(-45deg);
+    }
+
+    /* Mobile Drawer */
+    .nav-drawer {
+      position: fixed;
+      inset: 0;
+      z-index: 490;
+      background: var(--color-bg-dark);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 40px;
+      transform: translateY(-100%);
+      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      pointer-events: none;
+    }
+    .nav-drawer.open {
+      transform: translateY(0);
+      pointer-events: all;
+    }
+    .nav-drawer a {
+      font-family: 'Noto Serif TC', serif;
+      font-size: 24px;
+      font-weight: 600;
+      color: var(--color-text-inverse-primary);
+      transition: opacity 0.2s;
+    }
+    .nav-drawer a:hover {
+      opacity: 0.7;
+    }
+
+    /* ════════════════════════════════
+       HERO
+    ════════════════════════════════ */
+    .hero {
+      position: relative;
+      height: 100vh;
+      min-height: 700px;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.35);
+    }
+    .hero-content {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 0 var(--size-spacing-layout-2xl);
+    }
+    .hero-headline {
+      font-family: 'Noto Serif TC', serif;
+      font-size: 60px;
+      font-weight: 600;
+      line-height: 120%;
+      letter-spacing: -0.02em;
+      color: var(--color-text-inverse-primary);
+      text-shadow: 0 2px 16px rgba(0,0,0,0.3);
+    }
+    .hero-sub {
+      font-family: 'Noto Serif TC', serif;
+      font-size: 60px;
+      font-weight: 600;
+      line-height: 120%;
+      letter-spacing: -0.02em;
+      color: var(--color-text-inverse-accent);
+      text-align: right;
+      text-shadow: 0 2px 16px rgba(0,0,0,0.3);
+      margin-top: 8px;
+    }
+    .hero-cta {
+      position: absolute;
+      bottom: var(--size-spacing-layout-xl);
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--color-action-primary-bg);
+      color: var(--color-action-primary-label);
+      border: none;
+      padding: 20px 40px;
+      border-radius: var(--size-radius-pill);
+      font-family: 'Noto Sans TC', sans-serif;
+      font-size: 16px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      white-space: nowrap;
+      transition: background 0.2s ease;
+    }
+    .hero-cta:hover {
+      background: var(--color-action-primary-bg-hover);
+    }
+
+    /* ════════════════════════════════
+       SECTION BASE
+    ════════════════════════════════ */
+    .section {
+      padding: var(--size-spacing-layout-xl) var(--size-spacing-layout-2xl);
+    }
+    .section-label {
+      font-family: 'Noto Sans TC', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      color: var(--color-text-accent);
+      text-transform: uppercase;
+      margin-bottom: var(--size-spacing-stack-md);
+    }
+    .section-h2 {
+      font-family: 'Noto Serif TC', serif;
+      font-size: 48px;
+      font-weight: 600;
+      line-height: 120%;
+      letter-spacing: -0.02em;
+      color: var(--color-text-primary);
+    }
+    .section-body {
+      font-family: 'Noto Sans TC', sans-serif;
+      font-size: 18px;
+      font-weight: 400;
+      line-height: 150%;
+      color: var(--color-text-secondary);
+    }
+
+    /* ════════════════════════════════
+       PHILOSOPHY
+    ════════════════════════════════ */
+    .philosophy {
+      background: var(--color-bg-default);
+    }
+    .philosophy-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+    .philosophy-left {}
+    .philosophy-img-wrap {
+      position: relative;
+      margin-top: var(--size-spacing-stack-4xl);
+    }
+    .philosophy-img-deco {
+      position: absolute;
+      top: -24px;
+      right: -24px;
+      width: 120px;
+      height: 120px;
+      background: var(--color-text-inverse-accent);
+      border-radius: var(--size-radius-lg);
+      z-index: 0;
+    }
+    .philosophy-img {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      aspect-ratio: 4/3;
+      object-fit: cover;
+      border-radius: var(--size-radius-lg);
+    }
+    .philosophy-right {
+      padding-top: var(--size-spacing-layout-xl);
+    }
+    .philosophy-desc {
+      margin-top: var(--size-spacing-stack-2xl);
+      font-family: 'Noto Sans TC', sans-serif;
+      font-size: 18px;
+      line-height: 150%;
+      color: var(--color-text-secondary);
+    }
+    .philosophy-values {
+      margin-top: var(--size-spacing-stack-4xl);
+      display: flex;
+      flex-direction: column;
+      gap: var(--size-spacing-stack-3xl);
+    }
+    .value-item {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 20px;
+      align-items: start;
+    }
+    .value-num {
+      font-family: 'Noto Serif TC', serif;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--color-text-accent);
+      letter-spacing: 0.08em;
+      padding-top: 4px;
+    }
+    .value-title {
+      font-family: 'Noto Serif TC', serif;
+      font-size: 20px;
+      font-weight: 600;
+      line-height: 120%;
+      color: var(--color-text-primary);
+      margin-bottom: 8px;
+    }
+    .value-desc {
+      font-family: 'Noto Sans TC', sans-serif;
+      font-size: 16px;
+      line-height: 150%;
+      color: var(--color-text-secondary);
+    }
+
+    /* ════════════════════════════════
+       FEATURES
+    ════════════════════════════════ */
+    .features {
+      background: var(--color-bg-section);
+    }
+    .features-head {
+      text-align: center;
+      max-width: 600px;
+      margin: 0 auto var(--size-spacing-stack-4xl);
+    }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    .feat-card {
+      background: var(--color-bg-default);
+      border: 1px solid var(--color-border-default);
+      border-radius: var(--size-radius-lg);
+      padding: 40px 32px;
+      cursor: pointer;
+      text-decoration: none;
+      display: block;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .feat-card:hover {
+      transform: scale(1.02);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    }
+    .feat-card:active {
+      transform: scale(0.97);
+      box-shadow: none;
+    }
+    .feat-card-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: var(--size-spacing-stack-2xl);
+    }
+    .feat-icon {
+      width: 48px;
+      height: 48px;
+      object-fit: contain;
+    }
+    .feat-arrow {
+      font-size: 18px;
+      color: var(--color-text-muted);
+      flex-shrink: 0;
+    }
+    .feat-title {
+      font-family: 'Noto Serif TC', serif;
+      font-size: 20px;
+      font-weight: 600;
+      line-height: 120%;
+      color: var(--color-text-primary);
+      margin-bottom: var(--size-spacing-stack-md);
+    }
+    .feat-desc {
+      font-family: 'Noto Sans TC', sans-serif;
+      font-size: 15px;
+      line-height: 150%;
+      color: var(--color-text-secondary);
+    }
+
+    /* ════════════════════════════════
+       MAP / LOCATION
+    ════════════════════════════════ */
+    .map-section {
+      background: var(--color-bg-default);
+    }
+    .map-head {
+      margin-bottom: var(--size-spacing-stack-4xl);
+    }
+    /* Tabs */
+    .map-tabs {
+      display: flex;
+      gap: 0;
+      border-bottom: 1px solid var(--color-border-default);
+      margin-bottom: var(--size-spacing-stack-4xl);
+    }
+    .map-tab {
+      background: none;
+      border: none;
+      padding: 14px 24px;
+      font-family: 'Noto Sans TC', sans-serif;
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--color-text-muted);
+      position: relative;
+      transition: color 0.2s ease;
+    }
+    .map-tab::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--color-action-primary-bg);
+      transform: scaleX(0);
+      transition: transform 0.2s ease;
+    }
+    .map-tab.active {
+      color: var(--color-text-primary);
+    }
+    .map-tab.active::after {
+      transform: scaleX(1);
+    }
+    /* Map layout */
+    .map-layout {
+      display: grid;
+      grid-template-columns: 600px 1fr;
+      gap: 64px;
+      align-items: start;
+    }
+    .map-iframe-wrap {
+      width: 600px;
+      height: 600px;
+      border-radius: var(--size-radius-lg);
+      overflow: hidden;
+      background: var(--color-bg-section);
+      flex-shrink: 0;
+    }
+    .map-iframe-wrap iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+    }
+    .map-info {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-height: 400px;
+    }
+    .map-school-label {
+      font-family: 'Noto Sans TC', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      color: var(--color-text-accent);
+      margin-bottom: var(--size-spacing-stack-md);
+    }
+    .map-school-name {
+      font-family: 'Noto Serif TC', serif;
+      font-size: 30px;
+      font-weight: 600;
+      line-height: 120%;
+      color: var(--color-text-primary);
+      margin-bottom: var(--size-spacing-stack-3xl);
+    }
+    .map-info-list {
+      display: flex;
+      flex-direction: column;
+      gap: var(--size-spacing-stack-2xl);
+      margin-bottom: var(--size-spacing-stack-4xl);
+    }
+    .map-info-row {
+      display: grid;
+      grid-template-columns: 80px 1fr;
+      gap: 12px;
+      align-items: baseline;
+    }
+    .map-info-key {
+      font-family: 'Noto Sans TC', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      color: var(--color-text-muted);
+    }
+    .map-info-val {
+      font-family: 'Noto Sans TC', sans-serif;
+      font-size: 16px;
+      line-height: 150%;
+      color: var(--color-text-secondary);
+    }
+    .map-info-val a {
+      color: var(--color-action-link-label-dark-default);
+      border-bottom: 1px solid currentColor;
+      transition: color 0.2s ease;
+    }
+    .map-info-val a:hover {
+      color: var(--color-action-link-label-dark-hover);
+    }
+    .map-info-val a:active {
+      transform: scale(0.98);
+      display: inline-block;
+    }
+    /* Panel switching */
+    .map-panel { display: none; }
+    .map-panel.active { display: block; }
+
+    /* ════════════════════════════════
+       CTA BANNER
+    ════════════════════════════════ */
+    .cta-banner {
+      background: var(--color-bg-dark);
+      padding: var(--size-spacing-layout-xl) var(--size-spacing-layout-2xl);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: var(--size-spacing-stack-3xl);
+    }
+    .cta-banner-label {
+      font-family: 'Noto Sans TC', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      color: var(--color-text-inverse-accent);
+    }
+    .cta-banner-h2 {
+      font-family: 'Noto Serif TC', serif;
+      font-size: 48px;
+      font-weight: 600;
+      line-height: 120%;
+      letter-spacing: -0.02em;
+      color: var(--color-text-inverse-primary);
+    }
+    .cta-banner-body {
+      font-family: 'Noto Sans TC', sans-serif;
+      font-size: 18px;
+      line-height: 150%;
+      color: var(--color-text-inverse-secondary);
+      max-width: 480px;
+    }
+
+    /* ════════════════════════════════
+       FOOTER
+    ════════════════════════════════ */
+    footer {
+      background: var(--color-bg-dark);
+      padding: var(--size-spacing-layout-xl) var(--size-spacing-layout-2xl) 0;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 48px;
+      padding-bottom: var(--size-spacing-stack-4xl);
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      margin-bottom: 32px;
+    }
+    .footer-brand {}
+    .footer-wordmark {
+      height: 32px;
+      width: auto;
+      margin-bottom: var(--size-spacing-stack-2xl);
+      filter: brightness(0) invert(1);
+      opacity: 0.9;
+    }
+    .footer-tagline {
+      font-family: 'Noto Sans TC', sans-serif;
+      font-size: 15px;
+      line-height: 150%;
+      color: var(--color-text-inverse-tertiary);
+      max-width: 260px;
+      margin-bottom: var(--size-spacing-stack-3xl);
+    }
+    .footer-col-label {
+      font-family: 'Noto Sans TC', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      color: var(--color-text-inverse-tertiary);
+      margin-bottom: var(--size-spacing-stack-2xl);
+    }
+    .footer-school-name {
+      font-family: 'Noto Serif TC', serif;
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--color-text-inverse-accent);
+      margin-bottom: var(--size-spacing-stack-2xl);
+    }
+    .footer-info-list {
+      display: flex;
+      flex-direction: column;
+      gap: var(--size-spacing-stack-lg);
+    }
+    .footer-info-item {
+      font-family: 'Noto Sans TC', sans-serif;
+      font-size: 14px;
+      line-height: 150%;
+      color: var(--color-text-inverse-tertiary);
+    }
+    .footer-info-item a {
+      color: var(--color-text-inverse-tertiary);
+      transition: opacity 0.2s ease;
+    }
+    .footer-info-item a:hover {
+      opacity: 0.7;
+    }
+    .footer-hours-col {}
+    .footer-hours-list {
+      display: flex;
+      flex-direction: column;
+      gap: var(--size-spacing-stack-lg);
+    }
+    .footer-hours-item {}
+    .footer-hours-day {
+      font-family: 'Noto Sans TC', sans-serif;
+      font-size: 13px;
+      color: var(--color-text-inverse-tertiary);
+      margin-bottom: 2px;
+    }
+    .footer-hours-time {
+      font-family: 'Noto Sans TC', sans-serif;
+      font-size: 15px;
+      color: var(--color-text-inverse-secondary);
+    }
+    .footer-hours-note {
+      font-family: 'Noto Sans TC', sans-serif;
+      font-size: 13px;
+      color: var(--color-text-inverse-tertiary);
+      opacity: 0.6;
+    }
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 32px;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .footer-copy {
+      font-family: 'Noto Sans TC', sans-serif;
+      font-size: 13px;
+      color: var(--color-text-inverse-tertiary);
+      opacity: 0.6;
+    }
+    .footer-links {
+      display: flex;
+      gap: var(--size-spacing-inset-xl);
+    }
+    .footer-links a {
+      font-family: 'Noto Sans TC', sans-serif;
+      font-size: 13px;
+      color: var(--color-text-inverse-tertiary);
+      opacity: 0.6;
+      transition: opacity 0.2s ease;
+    }
+    .footer-links a:hover {
+      opacity: 1;
+    }
+
+    /* ════════════════════════════════
+       MODAL
+    ════════════════════════════════ */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      background: var(--color-bg-overlay);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .modal-overlay.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+    .modal {
+      background: var(--color-bg-default);
+      border-radius: var(--size-radius-lg);
+      width: 100%;
+      max-width: 560px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 32px 80px rgba(0,0,0,0.2);
+      transform: translateY(24px) scale(0.97);
+      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .modal-overlay.open .modal {
+      transform: none;
+    }
+    .modal-header {
+      padding: 32px 40px 24px;
+      border-bottom: 1px solid var(--color-border-default);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+    .modal-title {
+      font-family: 'Noto Serif TC', serif;
+      font-size: 24px;
+      font-weight: 600;
+      color: var(--color-text-primary);
+      margin-bottom: 6px;
+    }
+    .modal-subtitle {
+      font-family: 'Noto Sans TC', sans-serif;
+      font-size: 14px;
+      color: var(--color-text-secondary);
+    }
+    .modal-close {
+      background: none;
+      border: 1px solid var(--color-border-default);
+      border-radius: var(--size-radius-pill);
+      width: 32px;
+      height: 32px;
+      font-size: 16px;
+      color: var(--color-text-secondary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+      flex-shrink: 0;
+    }
+    .modal-close:hover {
+      background: var(--color-bg-section);
+      transform: rotate(90deg);
+    }
+    .modal-body {
+      padding: 32px 40px;
+    }
+    .form-section-title {
+      font-family: 'Noto Serif TC', serif;
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--color-text-accent);
+      letter-spacing: 0.04em;
+      margin-bottom: 20px;
+      margin-top: 8px;
+    }
+    .form-section-title:not(:first-child) {
+      margin-top: 32px;
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .form-group {
+      margin-bottom: 16px;
+    }
+    .form-group label {
+      display: block;
+      font-family: 'Noto Sans TC', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--color-text-secondary);
+      margin-bottom: 8px;
+      letter-spacing: 0.03em;
+    }
+    .form-group label .req {
+      color: #e53935;
+      margin-left: 3px;
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1px solid var(--color-border-default);
+      border-radius: var(--size-radius-sm);
+      font-family: 'Noto Sans TC', sans-serif;
+      font-size: 15px;
+      color: var(--color-text-primary);
+      background: var(--color-bg-default);
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: var(--color-border-brand);
+      box-shadow: 0 0 0 3px rgba(89, 112, 47, 0.1);
+    }
+    .form-group textarea {
+      resize: vertical;
+      min-height: 88px;
+    }
+    .submit-btn {
+      width: 100%;
+      padding: 16px;
+      background: var(--color-action-primary-bg);
+      color: var(--color-action-primary-label);
+      border: none;
+      border-radius: var(--size-radius-sm);
+      font-family: 'Noto Sans TC', sans-serif;
+      font-size: 16px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      margin-top: 8px;
+      transition: background 0.2s ease;
+    }
+    .submit-btn:hover:not(:disabled) {
+      background: var(--color-action-primary-bg-hover);
+    }
+    .submit-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+    /* Success view */
+    .success-view {
+      display: none;
+      text-align: center;
+      padding: 60px 40px;
+    }
+    .success-icon {
+      font-size: 48px;
+      margin-bottom: 24px;
+    }
+    .success-title {
+      font-family: 'Noto Serif TC', serif;
+      font-size: 24px;
+      font-weight: 600;
+      color: var(--color-text-primary);
+      margin-bottom: 12px;
+    }
+    .success-body {
+      font-family: 'Noto Sans TC', sans-serif;
+      font-size: 15px;
+      line-height: 150%;
+      color: var(--color-text-secondary);
+      margin-bottom: 32px;
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      z-index: 9999;
+      background: var(--color-bg-dark);
+      color: var(--color-text-inverse-primary);
+      padding: 12px 20px;
+      border-radius: var(--size-radius-sm);
+      font-family: 'Noto Sans TC', sans-serif;
+      font-size: 14px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+      transform: translateY(80px);
+      opacity: 0;
+      transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    .toast.error {
+      background: #b71c1c;
+    }
+
+    /* ════════════════════════════════
+       SCROLL REVEAL
+    ════════════════════════════════ */
+    [data-reveal] {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.65s ease, transform 0.65s ease;
+    }
+    [data-reveal].on {
+      opacity: 1;
+      transform: none;
+    }
+    [data-d="1"] { transition-delay: 0.1s; }
+    [data-d="2"] { transition-delay: 0.2s; }
+    [data-d="3"] { transition-delay: 0.3s; }
+
+    /* ════════════════════════════════
+       RESPONSIVE — tablet (≤1200px)
+    ════════════════════════════════ */
+    @media (max-width: 1200px) {
+      .navbar {
+        padding-left: 60px;
+        padding-right: 60px;
+      }
+      .section {
+        padding-left: 60px;
+        padding-right: 60px;
+      }
+      .map-section { padding-left: 60px; padding-right: 60px; }
+      .cta-banner { padding-left: 60px; padding-right: 60px; }
+      footer { padding-left: 60px; padding-right: 60px; }
+      .map-layout {
+        grid-template-columns: 480px 1fr;
+      }
+      .map-iframe-wrap {
+        width: 480px;
+        height: 480px;
+      }
+    }
+
+    /* ════════════════════════════════
+       RESPONSIVE — tablet (≤ 1024px)
+    ════════════════════════════════ */
+    @media (max-width: 1024px) {
+      .navbar {
+        padding-left: 40px;
+        padding-right: 40px;
+      }
+      .section {
+        padding-left: 40px;
+        padding-right: 40px;
+      }
+      .map-section { padding-left: 40px; padding-right: 40px; }
+      .cta-banner { padding-left: 40px; padding-right: 40px; }
+      footer { padding-left: 40px; padding-right: 40px; }
+
+      .section-h2 { font-size: 36px; }
+      .hero-headline, .hero-sub { font-size: 48px; }
+      .hero-content { padding-left: 40px; padding-right: 40px; }
+
+      .philosophy-inner {
+        grid-template-columns: 1fr;
+        gap: 48px;
+      }
+      .philosophy-right {
+        padding-top: 0;
+      }
+
+      .features-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .map-layout {
+        grid-template-columns: 1fr;
+      }
+      .map-iframe-wrap {
+        width: 100%;
+        height: 400px;
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 32px;
+      }
+
+      .cta-banner-h2 { font-size: 36px; }
+    }
+
+    /* ════════════════════════════════
+       RESPONSIVE — mobile (≤ 768px)
+    ════════════════════════════════ */
+    @media (max-width: 768px) {
+      .navbar {
+        padding: 16px 20px;
+        grid-template-columns: 1fr auto;
+      }
+      .navbar.has-bg {
+        grid-template-columns: 1fr auto;
+      }
+      .nav-right { display: none; }
+      .nav-brandmark { display: none !important; }
+      .nav-hamburger { display: flex; }
+
+      .hero-content {
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+      .hero-headline, .hero-sub {
+        font-size: 36px;
+      }
+      .hero-sub {
+        text-align: left;
+      }
+
+      .section {
+        padding: 60px 20px;
+      }
+      .map-section { padding: 60px 20px; }
+      .cta-banner { padding: 60px 20px; }
+      footer { padding: 48px 20px 0; }
+
+      .section-h2 { font-size: 30px; }
+      .cta-banner-h2 { font-size: 30px; }
+
+      .features-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .map-iframe-wrap { height: 300px; }
+
+      .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+      .footer-bottom {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+      .modal-header,
+      .modal-body {
+        padding-left: 24px;
+        padding-right: 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ════════════════════════════════
+       NAVBAR
+  ════════════════════════════════ -->
+  <nav class="navbar visible" id="navbar">
+    <!-- Left: Wordmark -->
+    <div class="nav-wordmark">
+      <a href="/zh/index.html">
+        <img
+          src="https://www.figma.com/api/mcp/asset/509f0747-81c2-4886-80b7-730b5d2eed70"
+          alt="咪咪 & 家田蒙特梭利幼兒園"
+          onerror="this.style.display='none'; this.nextElementSibling.style.display='block'"
+        />
+        <div class="nav-wordmark-text" style="display:none">
+          咪咪 &amp; 家田
+          <div class="nav-wordmark-sub">MImi &amp; Casa Montessori Preschool</div>
+        </div>
+      </a>
+    </div>
+
+    <!-- Center: Brandmark (hidden when has-bg) -->
+    <div class="nav-brandmark">
+      <a href="/zh/index.html">
+        <img
+          src="https://www.figma.com/api/mcp/asset/509f0747-81c2-4886-80b7-730b5d2eed70"
+          alt="咪咪家田 Logo"
+        />
+      </a>
+    </div>
+
+    <!-- Right: Links + CTA + Lang -->
+    <div class="nav-right">
+      <nav class="nav-links">
+        <a href="/zh/about.html">關於我們</a>
+        <a href="/zh/features.html">教學特色</a>
+        <a href="/zh/campus.html">校園環境</a>
+      </nav>
+      <a href="/en/index.html" class="nav-lang">EN</a>
+      <button class="btn-primary" onclick="openModal()">預約參觀</button>
+    </div>
+
+    <!-- Mobile hamburger -->
+    <button class="nav-hamburger" id="hamburger" aria-label="開啟選單" onclick="toggleDrawer()">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- Mobile Drawer -->
+  <div class="nav-drawer" id="drawer">
+    <a href="/zh/about.html" onclick="closeDrawer()">關於我們</a>
+    <a href="/zh/features.html" onclick="closeDrawer()">教學特色</a>
+    <a href="/zh/campus.html" onclick="closeDrawer()">校園環境</a>
+    <a href="/en/index.html" onclick="closeDrawer()">EN</a>
+    <button class="btn-primary" onclick="closeDrawer(); openModal();">預約參觀</button>
+  </div>
+
+  <!-- ════════════════════════════════
+       HERO
+  ════════════════════════════════ -->
+  <section class="hero">
+    <img
+      class="hero-bg"
+      src="https://www.figma.com/api/mcp/asset/75a542b4-6948-45f2-9beb-85ac4b0d5010"
+      alt="校園環境"
+    />
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <h1 class="hero-headline">這裡是孩子白天的家</h1>
+      <p class="hero-sub">孩子成長的秘密花園</p>
+    </div>
+    <button class="hero-cta" onclick="openModal()">立即預約參觀</button>
+  </section>
+
+  <!-- ════════════════════════════════
+       PHILOSOPHY
+  ════════════════════════════════ -->
+  <section class="section philosophy" id="philosophy">
+    <div class="philosophy-inner">
+      <!-- Left: image -->
+      <div class="philosophy-left" data-reveal>
+        <div class="philosophy-img-wrap">
+          <div class="philosophy-img-deco"></div>
+          <img
+            class="philosophy-img"
+            src="https://www.figma.com/api/mcp/asset/a6b2fd3c-1278-4013-8796-99dcc2a687fb"
+            alt="蒙特梭利教室"
+          />
+        </div>
+      </div>
+      <!-- Right: text -->
+      <div class="philosophy-right">
+        <p class="section-label" data-reveal>教育理念</p>
+        <h2 class="section-h2" data-reveal>
+          以愛為土壤<br>讓孩子自然生長
+        </h2>
+        <p class="philosophy-desc" data-reveal>
+          我們相信，每個孩子都是獨一無二的個體。蒙特梭利教育尊重孩子天生的好奇心與學習節奏，讓孩子在充滿美感與秩序的環境中，自主探索、深度學習。
+        </p>
+        <div class="philosophy-values">
+          <div class="value-item" data-reveal data-d="1">
+            <span class="value-num">01</span>
+            <div>
+              <div class="value-title">尊重與自主</div>
+              <div class="value-desc">尊重每個孩子的發展步調，讓孩子成為自己學習的主人，培養獨立思考的能力。</div>
+            </div>
+          </div>
+          <div class="value-item" data-reveal data-d="2">
+            <span class="value-num">02</span>
+            <div>
+              <div class="value-title">美感與秩序</div>
+              <div class="value-desc">精心設計的學習環境，融入美學元素與蒙特梭利教具，讓孩子在秩序中找到安全感。</div>
+            </div>
+          </div>
+          <div class="value-item" data-reveal data-d="3">
+            <span class="value-num">03</span>
+            <div>
+              <div class="value-title">國際與視野</div>
+              <div class="value-desc">中英文雙語環境，由本地教師與外籍教師共同陪伴，在日常生活中自然融入國際視野。</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════
+       FEATURES
+  ════════════════════════════════ -->
+  <section class="section features" id="features">
+    <div class="features-head" data-reveal>
+      <p class="section-label">教學特色</p>
+      <h2 class="section-h2">六大核心<br>全人發展課程</h2>
+    </div>
+    <div class="features-grid">
+      <a class="feat-card" href="/zh/features.html#montessori" data-reveal data-d="1">
+        <div class="feat-card-top">
+          <img class="feat-icon"
+            src="https://www.figma.com/api/mcp/asset/dcf16755-4d19-4cf9-b712-ba3f8aca4bc6"
+            alt="" />
+          <span class="feat-arrow">→</span>
+        </div>
+        <div class="feat-title">蒙特梭利教學</div>
+        <p class="feat-desc">經過認證的蒙特梭利教具與環境，啟發孩子內在的學習動力與專注力。</p>
+      </a>
+      <a class="feat-card" href="/zh/features.html#bilingual" data-reveal data-d="1">
+        <div class="feat-card-top">
+          <img class="feat-icon"
+            src="https://www.figma.com/api/mcp/asset/42d3bbf8-7918-497c-b8bf-62cef59c18a8"
+            alt="" />
+          <span class="feat-arrow">→</span>
+        </div>
+        <div class="feat-title">中英雙語環境</div>
+        <p class="feat-desc">外籍教師駐校，全日英語沉浸式學習，讓語言能力自然發展。</p>
+      </a>
+      <a class="feat-card" href="/zh/features.html#arts" data-reveal data-d="2">
+        <div class="feat-card-top">
+          <img class="feat-icon"
+            src="https://www.figma.com/api/mcp/asset/a1066d86-67e3-481b-8444-529732435872"
+            alt="" />
+          <span class="feat-arrow">→</span>
+        </div>
+        <div class="feat-title">藝術美感培育</div>
+        <p class="feat-desc">透過繪畫、音樂、手作等多元藝術活動，培養孩子對美的感知與創造力。</p>
+      </a>
+      <a class="feat-card" href="/zh/features.html#nutrition" data-reveal data-d="2">
+        <div class="feat-card-top">
+          <img class="feat-icon"
+            src="https://www.figma.com/api/mcp/asset/866460bd-368a-4677-a366-a9199a78ac3f"
+            alt="" />
+          <span class="feat-arrow">→</span>
+        </div>
+        <div class="feat-title">專業營養餐食</div>
+        <p class="feat-desc">營養師設計菜單，在地有機食材，讓孩子吃得健康也學習飲食文化。</p>
+      </a>
+      <a class="feat-card" href="/zh/features.html#outdoor" data-reveal data-d="3">
+        <div class="feat-card-top">
+          <img class="feat-icon"
+            src="https://www.figma.com/api/mcp/asset/0297a763-bfd5-41b3-b5e2-6506dcfd78ca"
+            alt="" />
+          <span class="feat-arrow">→</span>
+        </div>
+        <div class="feat-title">戶外探索活動</div>
+        <p class="feat-desc">寬敞的戶外空間，引導孩子親近自然、體能活動，建立健康的體魄。</p>
+      </a>
+      <a class="feat-card" href="/zh/features.html#safety" data-reveal data-d="3">
+        <div class="feat-card-top">
+          <img class="feat-icon"
+            src="https://www.figma.com/api/mcp/asset/6cd950bf-b569-483d-b803-38b3d6a95c9d"
+            alt="" />
+          <span class="feat-arrow">→</span>
+        </div>
+        <div class="feat-title">安全守護環境</div>
+        <p class="feat-desc">全方位監控與嚴謹的入園程序，讓家長放心，孩子在安全的環境中成長。</p>
+      </a>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════
+       MAP / LOCATION
+  ════════════════════════════════ -->
+  <section class="section map-section" id="location">
+    <div class="map-head" data-reveal>
+      <p class="section-label">校區位置</p>
+      <h2 class="section-h2">我們的位置</h2>
+    </div>
+
+    <!-- Tabs -->
+    <div class="map-tabs" role="tablist">
+      <button
+        class="map-tab active"
+        role="tab"
+        aria-selected="true"
+        onclick="switchTab('mimi')"
+        id="tab-mimi"
+      >咪咪幼兒園</button>
+      <button
+        class="map-tab"
+        role="tab"
+        aria-selected="false"
+        onclick="switchTab('casa')"
+        id="tab-casa"
+      >家田幼兒園</button>
+    </div>
+
+    <!-- Mimi Panel -->
+    <div class="map-panel active" id="panel-mimi">
+      <div class="map-layout">
+        <div class="map-iframe-wrap">
+          <iframe
+            src="YOUR_GOOGLE_MAPS_EMBED_URL_MIMI"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            title="咪咪蒙特梭利幼兒園地圖"
+            allowfullscreen
+          ></iframe>
+        </div>
+        <div class="map-info">
+          <p class="map-school-label">臺北市私立咪咪蒙特梭利幼兒園</p>
+          <h3 class="map-school-name">咪咪幼兒園</h3>
+          <dl class="map-info-list">
+            <div class="map-info-row">
+              <dt class="map-info-key">地址</dt>
+              <dd class="map-info-val">
+                <a href="https://maps.google.com/?q=114臺北市內湖區瑞陽里文德路66巷69弄30號" target="_blank" rel="noopener">
+                  114 臺北市內湖區<br>文德路 66 巷 69 弄 30 號
+                </a>
+              </dd>
+            </div>
+            <div class="map-info-row">
+              <dt class="map-info-key">電話</dt>
+              <dd class="map-info-val">
+                <a href="tel:+886226576881">(02) 2657-6881</a>
+              </dd>
+            </div>
+            <div class="map-info-row">
+              <dt class="map-info-key">傳真</dt>
+              <dd class="map-info-val">(02) 2657-8368</dd>
+            </div>
+            <div class="map-info-row">
+              <dt class="map-info-key">信箱</dt>
+              <dd class="map-info-val">
+                <a href="mailto:m470502@ms47.hinet.net">m470502@ms47.hinet.net</a>
+              </dd>
+            </div>
+            <div class="map-info-row">
+              <dt class="map-info-key">服務時間</dt>
+              <dd class="map-info-val">週一至週五 07:30–18:00</dd>
+            </div>
+          </dl>
+          <button class="btn-primary" onclick="openModal()">預約參觀</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Casa Panel -->
+    <div class="map-panel" id="panel-casa">
+      <div class="map-layout">
+        <div class="map-iframe-wrap">
+          <iframe
+            src="YOUR_GOOGLE_MAPS_EMBED_URL_CASA"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            title="家田蒙特梭利幼兒園地圖"
+            allowfullscreen
+          ></iframe>
+        </div>
+        <div class="map-info">
+          <p class="map-school-label">臺北市私立家田蒙特梭利幼兒園</p>
+          <h3 class="map-school-name">家田幼兒園</h3>
+          <dl class="map-info-list">
+            <div class="map-info-row">
+              <dt class="map-info-key">地址</dt>
+              <dd class="map-info-val">
+                <a href="https://maps.google.com/?q=臺北市內湖區大湖街158巷2-3號" target="_blank" rel="noopener">
+                  臺北市內湖區<br>大湖街 158 巷 2-3 號
+                </a>
+              </dd>
+            </div>
+            <div class="map-info-row">
+              <dt class="map-info-key">電話</dt>
+              <dd class="map-info-val">
+                <a href="tel:+886287918581">(02) 8791-8581</a>
+              </dd>
+            </div>
+            <div class="map-info-row">
+              <dt class="map-info-key">傳真</dt>
+              <dd class="map-info-val">(02) 8791-2625</dd>
+            </div>
+            <div class="map-info-row">
+              <dt class="map-info-key">信箱</dt>
+              <dd class="map-info-val">
+                <a href="mailto:casa.m470502@msa.hinet.net">casa.m470502@msa.hinet.net</a>
+              </dd>
+            </div>
+            <div class="map-info-row">
+              <dt class="map-info-key">服務時間</dt>
+              <dd class="map-info-val">TBD（待確認）</dd>
+            </div>
+          </dl>
+          <button class="btn-primary" onclick="openModal()">預約參觀</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════
+       CTA BANNER
+  ════════════════════════════════ -->
+  <section class="cta-banner" id="contact">
+    <p class="cta-banner-label" data-reveal>預約參觀</p>
+    <h2 class="cta-banner-h2" data-reveal>親眼見證<br>孩子的理想園地</h2>
+    <p class="cta-banner-body" data-reveal>
+      歡迎預約到訪，讓我們帶您親身感受蒙特梭利教育的魅力。每月定期舉辦說明會，限額報名。
+    </p>
+    <button class="btn-primary" data-reveal onclick="openModal()">立即預約參觀</button>
+  </section>
+
+  <!-- ════════════════════════════════
+       FOOTER
+  ════════════════════════════════ -->
+  <footer>
+    <div class="footer-grid">
+      <!-- Brand -->
+      <div class="footer-brand">
+        <img
+          class="footer-wordmark"
+          src="https://www.figma.com/api/mcp/asset/be458974-1aa1-49eb-9b46-5b6f7e03c9a6"
+          alt="咪咪 & 家田蒙特梭利幼兒園"
+        />
+        <p class="footer-tagline">
+          給孩子一個充滿美感與探索的起點，在愛與尊重中成長，走向無限的未來。
+        </p>
+      </div>
+
+      <!-- 咪咪 -->
+      <div>
+        <p class="footer-col-label">校區</p>
+        <p class="footer-school-name">咪咪蒙特梭利幼兒園</p>
+        <ul class="footer-info-list">
+          <li class="footer-info-item">
+            <a href="https://maps.google.com/?q=114臺北市內湖區瑞陽里文德路66巷69弄30號" target="_blank" rel="noopener">
+              114 臺北市內湖區文德路 66 巷 69 弄 30 號
+            </a>
+          </li>
+          <li class="footer-info-item">
+            <a href="tel:+886226576881">(02) 2657-6881</a>
+          </li>
+          <li class="footer-info-item">
+            <a href="mailto:m470502@ms47.hinet.net">m470502@ms47.hinet.net</a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- 家田 -->
+      <div>
+        <p class="footer-col-label" style="opacity:0" aria-hidden="true">校區</p>
+        <p class="footer-school-name">家田蒙特梭利幼兒園</p>
+        <ul class="footer-info-list">
+          <li class="footer-info-item">
+            <a href="https://maps.google.com/?q=臺北市內湖區大湖街158巷2-3號" target="_blank" rel="noopener">
+              臺北市內湖區大湖街 158 巷 2-3 號
+            </a>
+          </li>
+          <li class="footer-info-item">
+            <a href="tel:+886287918581">(02) 8791-8581</a>
+          </li>
+          <li class="footer-info-item">
+            <a href="mailto:casa.m470502@msa.hinet.net">casa.m470502@msa.hinet.net</a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Hours -->
+      <div class="footer-hours-col">
+        <p class="footer-col-label">服務時間</p>
+        <ul class="footer-hours-list">
+          <li class="footer-hours-item">
+            <p class="footer-hours-day">咪咪 / 週一至週五</p>
+            <p class="footer-hours-time">07:30 – 18:00</p>
+          </li>
+          <li class="footer-hours-item">
+            <p class="footer-hours-day">家田</p>
+            <p class="footer-hours-time">TBD</p>
+          </li>
+          <li>
+            <p class="footer-hours-note">週六、日及國定假日休息</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p class="footer-copy">
+        © 2026 咪咪 &amp; 家田蒙特梭利幼兒園. All rights reserved.
+      </p>
+      <div class="footer-links">
+        <a href="#">隱私政策</a>
+        <a href="#">服務條款</a>
+        <a href="/en/index.html">English</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ════════════════════════════════
+       MODAL — 預約參觀
+  ════════════════════════════════ -->
+  <div class="modal-overlay" id="modalOverlay" onclick="handleOverlayClick(event)">
+    <div class="modal" id="modal">
+
+      <!-- Form view -->
+      <div id="formView">
+        <div class="modal-header">
+          <div>
+            <h2 class="modal-title">預約參觀</h2>
+            <p class="modal-subtitle">請填寫以下資料，我們將盡快與您聯繫</p>
+          </div>
+          <button class="modal-close" onclick="closeModal()" aria-label="關閉">✕</button>
+        </div>
+        <div class="modal-body">
+          <form id="regForm" onsubmit="handleSubmit(event)" novalidate>
+            <p class="form-section-title">孩子資料</p>
+            <div class="form-row">
+              <div class="form-group">
+                <label>孩子姓名<span class="req">*</span></label>
+                <input type="text" name="child_name" placeholder="請輸入姓名" required />
+              </div>
+              <div class="form-group">
+                <label>出生年月日<span class="req">*</span></label>
+                <input type="date" name="child_birthday" required />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>性別<span class="req">*</span></label>
+                <select name="child_gender" required>
+                  <option value="">請選擇</option>
+                  <option>男生</option>
+                  <option>女生</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>欲參觀校區<span class="req">*</span></label>
+                <select name="campus" required>
+                  <option value="">請選擇</option>
+                  <option>咪咪蒙特梭利幼兒園</option>
+                  <option>家田蒙特梭利幼兒園</option>
+                </select>
+              </div>
+            </div>
+
+            <p class="form-section-title">家長資料</p>
+            <div class="form-row">
+              <div class="form-group">
+                <label>家長姓名<span class="req">*</span></label>
+                <input type="text" name="parent_name" placeholder="請輸入姓名" required />
+              </div>
+              <div class="form-group">
+                <label>聯絡電話<span class="req">*</span></label>
+                <input type="tel" name="parent_phone" placeholder="09XX-XXXXXX" required />
+              </div>
+            </div>
+            <div class="form-group">
+              <label>電子郵件</label>
+              <input type="email" name="parent_email" placeholder="your@email.com" />
+            </div>
+            <div class="form-group">
+              <label>希望參觀時段 / 備註</label>
+              <textarea name="notes" placeholder="請說明希望的參觀時間或任何問題..."></textarea>
+            </div>
+
+            <button type="submit" class="submit-btn" id="submitBtn">送出預約申請</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Success view -->
+      <div class="success-view" id="successView">
+        <div class="success-icon">✓</div>
+        <h3 class="success-title">預約申請已送出！</h3>
+        <p class="success-body">
+          感謝您的預約，我們已收到您的資料。<br />
+          園方將在 <strong>24 小時內</strong>以電話聯繫您確認參觀時間。
+        </p>
+        <button class="btn-primary" onclick="closeModal()">關閉</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <!-- ════════════════════════════════
+       SCRIPTS
+  ════════════════════════════════ -->
+  <script>
+    const GAS_URL = "YOUR_APPS_SCRIPT_WEB_APP_URL";
+
+    // ── Smart Navbar ──
+    const navbar = document.getElementById('navbar');
+    let lastScrollY = 0;
+
+    function updateNavbar() {
+      const currentScrollY = window.scrollY;
+      if (currentScrollY === 0) {
+        navbar.classList.remove('has-bg');
+        navbar.classList.add('visible');
+      } else if (currentScrollY < lastScrollY) {
+        navbar.classList.add('visible', 'has-bg');
+      } else {
+        navbar.classList.remove('visible');
+      }
+      lastScrollY = currentScrollY;
+    }
+
+    window.addEventListener('scroll', updateNavbar, { passive: true });
+    // Init
+    navbar.classList.add('visible');
+
+    // ── Hamburger / Drawer ──
+    const hamburger = document.getElementById('hamburger');
+    const drawer = document.getElementById('drawer');
+
+    function toggleDrawer() {
+      const isOpen = drawer.classList.toggle('open');
+      hamburger.classList.toggle('open', isOpen);
+      document.body.style.overflow = isOpen ? 'hidden' : '';
+    }
+    function closeDrawer() {
+      drawer.classList.remove('open');
+      hamburger.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    // ── Map Tabs ──
+    function switchTab(school) {
+      document.querySelectorAll('.map-tab').forEach(t => {
+        t.classList.remove('active');
+        t.setAttribute('aria-selected', 'false');
+      });
+      document.querySelectorAll('.map-panel').forEach(p => p.classList.remove('active'));
+
+      document.getElementById('tab-' + school).classList.add('active');
+      document.getElementById('tab-' + school).setAttribute('aria-selected', 'true');
+      document.getElementById('panel-' + school).classList.add('active');
+    }
+
+    // ── Modal ──
+    function openModal() {
+      closeDrawer();
+      document.getElementById('modalOverlay').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeModal() {
+      document.getElementById('modalOverlay').classList.remove('open');
+      document.body.style.overflow = '';
+      setTimeout(() => {
+        document.getElementById('formView').style.display = '';
+        document.getElementById('successView').style.display = 'none';
+        document.getElementById('regForm').reset();
+        const btn = document.getElementById('submitBtn');
+        btn.disabled = false;
+        btn.textContent = '送出預約申請';
+      }, 350);
+    }
+    function handleOverlayClick(e) {
+      if (e.target === document.getElementById('modalOverlay')) closeModal();
+    }
+
+    // ── Toast ──
+    function showToast(msg, isError) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.className = 'toast' + (isError ? ' error' : '');
+      setTimeout(() => t.classList.add('show'), 10);
+      setTimeout(() => t.classList.remove('show'), 4000);
+    }
+
+    // ── Form Submit → Google Apps Script ──
+    async function handleSubmit(e) {
+      e.preventDefault();
+      const f = e.target;
+      const btn = document.getElementById('submitBtn');
+      btn.disabled = true;
+      btn.textContent = '傳送中…';
+
+      const data = {
+        timestamp: new Date().toLocaleString('zh-TW', { hour12: false }),
+        child_name:     f.child_name.value.trim(),
+        child_birthday: f.child_birthday.value,
+        child_gender:   f.child_gender.value,
+        campus:         f.campus.value,
+        parent_name:    f.parent_name.value.trim(),
+        parent_phone:   f.parent_phone.value.trim(),
+        parent_email:   f.parent_email.value.trim() || '未填',
+        notes:          f.notes.value.trim() || '無',
+      };
+
+      try {
+        if (GAS_URL === 'YOUR_APPS_SCRIPT_WEB_APP_URL') {
+          // Demo mode
+          await new Promise(r => setTimeout(r, 800));
+          console.log('[Demo] Form data:', data);
+        } else {
+          const res = await fetch(GAS_URL, {
+            method: 'POST',
+            body: JSON.stringify(data),
+          });
+          if (!res.ok) throw new Error('Network error');
+        }
+        document.getElementById('formView').style.display = 'none';
+        document.getElementById('successView').style.display = 'block';
+      } catch (err) {
+        console.error(err);
+        showToast('送出失敗，請稍後再試', true);
+        btn.disabled = false;
+        btn.textContent = '送出預約申請';
+      }
+    }
+
+    // ── Keyboard ──
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') { closeDrawer(); closeModal(); }
+    });
+
+    // ── Scroll Reveal ──
+    const ro = new IntersectionObserver(
+      entries => entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('on'); ro.unobserve(e.target); }
+      }),
+      { threshold: 0.1 }
+    );
+    document.querySelectorAll('[data-reveal]').forEach(el => ro.observe(el));
+  </script>
+</body>
+</html>
