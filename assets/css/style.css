@@ -309,12 +309,11 @@ button {
   transition: transform 0.3s ease, background-color 0.3s ease;
 }
 .navbar__inner {
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
+  display: flex;
   align-items: center;
+  justify-content: space-between;
 }
 .navbar__wordmark {
-  justify-self: start;
   display: flex;
   flex-direction: column;
   gap: var(--sp-stack-sm);
@@ -355,7 +354,6 @@ button {
   filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.6));
 }
 .navbar__nav {
-  justify-self: end;
   display: flex;
   align-items: center;
   gap: 20px;
@@ -402,9 +400,6 @@ button {
 .navbar--hidden      { transform: translateY(-100%); }
 .navbar--visible     { transform: translateY(0); }
 
-/* In dark/scrolled state: hide brandmark, collapse to 2 columns */
-.navbar--dark .navbar__brandmark { display: none; }
-.navbar--dark .navbar__inner     { grid-template-columns: 1fr 1fr; }
 
 /* ══════════════════════════════════════════════
    MOBILE DRAWER
@@ -909,8 +904,6 @@ a.footer__info-item:hover { opacity: 0.7; }
   :root { --sp-layout-2xl: 40px; }
 
   /* Navbar → 漢堡 */
-  .navbar__inner          { grid-template-columns: 1fr auto !important; }
-  .navbar__brandmark      { display: none !important; }
   .navbar__nav            { display: none; }
   .navbar__hamburger      { display: flex; }
 
@@ -939,7 +932,7 @@ a.footer__info-item:hover { opacity: 0.7; }
   .navbar__wordmark-row1       { gap: 6px; }
 
   /* Hero */
-  .hero__text { left: 24px; right: 24px; width: auto; }
+  .hero__text { left: 24px; }
   .hero__cta  { bottom: 48px; }
 
   /* Features */
