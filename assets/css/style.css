@@ -431,8 +431,8 @@ button {
 .hero__bg {
   position: absolute;
   width: 100%;
-  height: 145.75%;
-  top: -17.41%;
+  height: 150%;
+  top: -25%;
   left: 0;
   max-width: none;
   object-fit: cover;
@@ -447,7 +447,7 @@ button {
 .hero__text {
   position: absolute;
   left: max(var(--sp-layout-2xl), calc((100% - 1200px) / 2));
-  top: calc(50% + 52.5px);
+  top: 57%;
   transform: translateY(-50%);
   z-index: 2;
   display: flex;
@@ -909,15 +909,13 @@ a.footer__info-item:hover { opacity: 0.7; }
     --sp-layout-xl:  60px;
   }
 
+  /* Navbar wordmark */
+  .navbar__wordmark img        { height: 18px; }
+  .navbar__wordmark-title      { font-size: 18px; }
+  .navbar__wordmark-sub        { font-size: 10px; letter-spacing: 0.08em; }
+  .navbar__wordmark-row1       { gap: 6px; }
+
   /* Hero */
-  .hero__text {
-    left: 20px;
-    right: 20px;
-    width: auto;
-    top: calc(50% + 32px);
-  }
-  .hero__h1               { font-size: clamp(28px, 7vw, 36px); }
-  .hero__subtitle         { font-size: clamp(28px, 7vw, 36px); }
   .hero__cta              { bottom: 48px; }
 
   /* Features */

@@ -6,7 +6,8 @@
       "Bash(npm install *)",
       "mcp__claude_ai_Figma__get_design_context",
       "mcp__claude_ai_Figma__get_screenshot",
-      "Bash(curl *)"
+      "Bash(curl *)",
+      "Bash(sips *)"
     ]
   }
 }
