@@ -162,30 +162,44 @@ color/action/nav-link/default         #ffffff   hover 用 CSS opacity:0.7
 
 ### 字體系統（直接從 Figma Variables 同步）
 
-**中文版**
-```
-logo-nav    GenYoMin2 TW EL，24px，line-height 100%，letter-spacing 5%
-logo-page   GenYoMin2 TW EL，32px，line-height 100%，letter-spacing 5%
-h1          Noto Serif TC 600，60px，line-height 120%，letter-spacing -2%
-h2          Noto Serif TC 600，48px，line-height 120%，letter-spacing -2%
-h3          Noto Serif TC 600，30px，line-height 120%，letter-spacing 0%
-h4          Noto Serif TC 600，24px，line-height 120%，letter-spacing 0%
-body        Noto Sans TC 400，18px，line-height 150%，letter-spacing 0%
-body-small  Noto Sans TC 400，15px，line-height 150%，letter-spacing 0%
-label       Noto Sans TC 500，16px，line-height 150%，letter-spacing 4%
-```
+**中文版（ZH）**
 
-**英文版**
-```
-logo-nav    Cormorant Garamond Light，13px，line-height 100%，letter-spacing 12%
-logo-page   Cormorant Garamond Light，16px，line-height 100%，letter-spacing 12%
-h1          Cormorant Garamond 400，72px，line-height 120%，letter-spacing -2%
-h2          Cormorant Garamond 400，60px，line-height 120%，letter-spacing -2%
-h3          Cormorant Garamond 600，36px，line-height 120%，letter-spacing 0%
-h4          Cormorant Garamond 600，28px，line-height 120%，letter-spacing 0%
-body        DM Sans 400，16px，line-height 150%，letter-spacing 0%
-body-small  DM Sans 300，14px，line-height 150%，letter-spacing 0%
-label       DM Sans 500，16px，line-height 150%，letter-spacing 4%
+| Style | 桌機 | 平板 | 手機 |
+|-------|------|------|------|
+| logo-nav | GenYoMin2 TW 250，24px | 20px | 18px |
+| logo-page | GenYoMin2 TW 250，32px | 28px | 24px |
+| h1 | Noto Serif TC 600，60px | 44px | 32px |
+| h2 | Noto Serif TC 600，48px | 36px | 28px |
+| h3 | Noto Serif TC 600，30px | 24px | 22px |
+| h4 | Noto Serif TC 600，24px | 20px | 18px |
+| body | Noto Sans TC 400，18px | 17px | 16px |
+| body-small | Noto Sans TC 400，15px | 14px | 13px |
+| label | Noto Sans TC 500，16px | 15px | 14px |
+
+line-height：logo 100%，h1–h4 120%，body 以下 150%
+
+**英文版（EN）**
+
+| Style | 桌機 | 平板 | 手機 |
+|-------|------|------|------|
+| logo-nav | Cormorant Garamond 300，13px | 11px | 10px |
+| logo-page | Cormorant Garamond 300，16px | 14px | 13px |
+| h1 | Cormorant Garamond 400，72px | 52px | 36px |
+| h2 | Cormorant Garamond 400，60px | 44px | 32px |
+| h3 | Cormorant Garamond 600，36px | 28px | 24px |
+| h4 | Cormorant Garamond 600，28px | 22px | 20px |
+| body | DM Sans 400，16px | 16px | 15px |
+| body-small | DM Sans 300，14px | 13px | 13px |
+| label | DM Sans 500，16px | 15px | 14px |
+
+**CSS 實作用 clamp()**
+```css
+.text-zh-h1 { font-size: clamp(32px, 4.2vw, 60px); }
+.text-zh-h2 { font-size: clamp(28px, 3.3vw, 48px); }
+.text-zh-h3 { font-size: clamp(22px, 2.1vw, 30px); }
+.text-zh-h4 { font-size: clamp(18px, 1.7vw, 24px); }
+.text-en-h1 { font-size: clamp(36px, 5vw, 72px); }
+.text-en-h2 { font-size: clamp(32px, 4.2vw, 60px); }
 ```
 
 ### 斷點
