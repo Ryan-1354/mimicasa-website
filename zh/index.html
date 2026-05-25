@@ -13,7 +13,7 @@
   <link rel="icon" href="/favicon.ico">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=Noto+Serif+TC:wght@600&family=Noto+Sans+TC:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300&family=DM+Sans:wght@300;400;500&family=Noto+Serif+TC:wght@600&family=Noto+Sans+TC:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 <body>
@@ -26,12 +26,16 @@
 
     <!-- 左：Wordmark -->
     <a href="/zh/index.html" class="navbar__wordmark">
-      <img src="../assets/images/wordmark.svg" alt="咪咪 &amp; 家田蒙特梭利幼兒園">
+      <div class="navbar__wordmark-row1">
+        <img src="../assets/images/wordmark.svg" alt="咪咪 &amp; 家田">
+        <span class="navbar__wordmark-title">蒙特梭利幼兒園</span>
+      </div>
+      <span class="navbar__wordmark-sub">MImi Casa Montessori Preschool</span>
     </a>
 
     <!-- 中：Brandmark -->
     <a href="/zh/index.html" class="navbar__brandmark">
-      <img src="../assets/images/brandmark.svg" alt="brandmark">
+      <img src="../assets/images/brandmark.png" alt="brandmark">
     </a>
 
     <!-- 右：Nav links（桌機） -->
@@ -78,7 +82,10 @@
     <h1 class="hero__h1">這裡是孩子白天的家</h1>
     <p class="hero__subtitle">孩子成長的秘密花園</p>
   </div>
-  <button class="btn btn--primary hero__cta" type="button">立即預約參觀</button>
+  <button class="btn btn--primary hero__cta" type="button">
+    立即預約參觀
+    <img src="../assets/images/icon-arrow-right-light.svg" alt="" aria-hidden="true" class="hero__cta-icon">
+  </button>
 </section>
 
 
