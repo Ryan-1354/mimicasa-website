@@ -446,34 +446,36 @@ button {
 }
 .hero__text {
   position: absolute;
-  left: max(var(--sp-layout-2xl), calc((100% - 1200px) / 2));
+  left: min(8.33vw, 120px);
   top: 57%;
   transform: translateY(-50%);
   z-index: 2;
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  width: min(699px, calc(100% - 2 * max(var(--sp-layout-2xl), calc((100% - 1200px) / 2))));
+  gap: min(1.11vw, 16px);
+  width: min(48.5vw, 699px);
 }
 .hero__h1 {
   font-family: 'Noto Serif TC', serif;
   font-weight: 600;
-  font-size: clamp(36px, 4.2vw, 60px);
+  font-size: min(4.17vw, 60px);
   line-height: 1.2;
   letter-spacing: -0.02em;
   color: #ffffff;
   text-align: left;
   text-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+  white-space: nowrap;
 }
 .hero__subtitle {
   font-family: 'Noto Serif TC', serif;
   font-weight: 600;
-  font-size: clamp(36px, 4.2vw, 60px);
+  font-size: min(4.17vw, 60px);
   line-height: 1.2;
   letter-spacing: -0.02em;
   color: #ffffff;
-  text-align: right;
   text-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+  text-align: right;
+  white-space: nowrap;
 }
 .hero__cta {
   position: absolute;
