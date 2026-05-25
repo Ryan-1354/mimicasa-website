@@ -568,8 +568,8 @@ button {
   font-size: 18px;
   line-height: 1.5;
   color: var(--color-text-secondary);
-  border-left: 3px solid var(--color-border-accent);
-  padding-left: 20px;
+  border-left: 1px solid var(--color-border-accent);
+  padding-left: 16px;
   margin: 0;
 }
 .philosophy__list {
@@ -580,39 +580,24 @@ button {
 }
 .philosophy__list-item {
   display: flex;
-  align-items: flex-start;
-  gap: 20px;
-  padding: 20px 0;
-  border-bottom: 1px solid var(--color-border-default);
-}
-.philosophy__list-item:first-child {
-  border-top: 1px solid var(--color-border-default);
+  align-items: center;
+  gap: 24px;
+  padding: 16px;
+  border-bottom: 1px solid var(--color-border-accent);
 }
 .philosophy__num {
   font-family: 'DM Sans', sans-serif;
-  font-weight: 300;
+  font-weight: 400;
   font-size: 14px;
   color: var(--color-text-muted);
   flex-shrink: 0;
-  padding-top: 2px;
 }
-.philosophy__list-content {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-.philosophy__list-content strong {
-  font-family: 'Noto Sans TC', sans-serif;
-  font-weight: 500;
-  font-size: 16px;
-  color: var(--color-text-primary);
-}
-.philosophy__list-content span {
+.philosophy__list-text {
   font-family: 'Noto Sans TC', sans-serif;
   font-weight: 400;
-  font-size: 15px;
+  font-size: 18px;
   line-height: 1.5;
-  color: var(--color-text-secondary);
+  color: var(--color-text-primary);
 }
 
 /* ══════════════════════════════════════════════
