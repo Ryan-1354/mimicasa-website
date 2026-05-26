@@ -99,3 +99,210 @@ const revealObserver = new IntersectionObserver(
 document.querySelectorAll('[data-reveal]').forEach(el => {
   revealObserver.observe(el);
 });
+
+/* ══════════════════════════════════════════════
+   TOAST
+══════════════════════════════════════════════ */
+function showToast(message) {
+  const el = document.createElement('div');
+  el.className = 'toast';
+  el.textContent = message;
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 3000);
+}
+
+/* ══════════════════════════════════════════════
+   BOOKING DIALOG
+   通知信箱：1354ark@gmail.com（由 GAS 負責寄送）
+══════════════════════════════════════════════ */
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbzoBC9phdPJjxs4HJealTci1_k_aNohZDhT-QvlVvCAl4jJ_ljAMRV-KZSJAjR6GWb3Ag/exec';
+
+const bookingDialog  = document.getElementById('booking-dialog');
+const dialogCloseBtn = document.getElementById('dialogClose');
+const bookingForm    = document.getElementById('booking-form');
+
+function openBookingDialog() {
+  bookingDialog.showModal();
+  document.body.style.overflow = 'hidden';
+}
+
+function closeBookingDialog() {
+  bookingDialog.close();
+  document.body.style.overflow = '';
+  bookingForm.querySelectorAll('.field--error').forEach(el => el.classList.remove('field--error'));
+  bookingForm.querySelectorAll('.form-error').forEach(el => { el.hidden = true; });
+}
+
+dialogCloseBtn.addEventListener('click', closeBookingDialog);
+
+bookingDialog.addEventListener('click', (e) => {
+  if (e.target === bookingDialog) closeBookingDialog();
+});
+
+document.querySelectorAll('[data-open-booking]').forEach(btn => {
+  btn.addEventListener('click', openBookingDialog);
+});
+
+// Birthday date range
+(function () {
+  const today   = new Date();
+  const minDate = new Date();
+  minDate.setFullYear(today.getFullYear() - 6);
+  const input = document.getElementById('field-birthday');
+  if (!input) return;
+  input.max = today.toISOString().split('T')[0];
+  input.min = minDate.toISOString().split('T')[0];
+  input.addEventListener('change', () => {
+    input.classList.toggle('date--empty', !input.value);
+  });
+  input.classList.add('date--empty');
+})();
+
+// Enroll year options
+(function () {
+  const yearSelect = document.getElementById('field-enroll-year');
+  if (!yearSelect) return;
+  const current = new Date().getFullYear();
+  for (let y = current; y <= current + 5; y++) {
+    const opt = document.createElement('option');
+    opt.value = y;
+    opt.textContent = y;
+    yearSelect.appendChild(opt);
+  }
+})();
+
+// Select placeholder colour
+document.querySelectorAll('.field--select select').forEach(sel => {
+  const sync = () => sel.classList.toggle('select--empty', sel.value === '');
+  sync();
+  sel.addEventListener('change', sync);
+});
+
+// Date field — click anywhere to open picker
+(function () {
+  const dateField = document.querySelector('.field--date');
+  const dateInput = document.getElementById('field-birthday');
+  if (!dateField || !dateInput) return;
+  dateField.addEventListener('click', () => {
+    try { dateInput.showPicker(); } catch (_) {}
+  });
+})();
+
+// Phone auto-format + character limit
+const phoneInput = document.getElementById('field-phone');
+if (phoneInput) {
+  phoneInput.addEventListener('beforeinput', (e) => {
+    if (e.inputType === 'insertText' && e.data && !/^\d+$/.test(e.data)) {
+      e.preventDefault();
+    }
+  });
+
+  phoneInput.addEventListener('paste', (e) => {
+    e.preventDefault();
+    const pasted = (e.clipboardData || window.clipboardData).getData('text');
+    const digits = pasted.replace(/\D/g, '');
+    const s = phoneInput.selectionStart, end = phoneInput.selectionEnd;
+    phoneInput.value = phoneInput.value.slice(0, s) + digits + phoneInput.value.slice(end);
+    phoneInput.dispatchEvent(new Event('input'));
+  });
+
+  phoneInput.addEventListener('input', (e) => {
+    const digits = e.target.value.replace(/\D/g, '');
+
+    if (digits.startsWith('09')) {
+      // Mobile: 09XX-XXX-XXX (10 digits)
+      const d = digits.slice(0, 10);
+      let fmt = d;
+      if (d.length > 7)      fmt = d.slice(0, 4) + '-' + d.slice(4, 7) + '-' + d.slice(7);
+      else if (d.length > 4) fmt = d.slice(0, 4) + '-' + d.slice(4);
+      e.target.value       = fmt;
+      e.target.placeholder = '09XX-XXX-XXX';
+    } else if (digits.startsWith('0')) {
+      // Landline: (0X) XXXX-XXXX (10 digits)
+      const d = digits.slice(0, 10);
+      let fmt = d;
+      if (d.length > 6)      fmt = '(' + d.slice(0, 2) + ') ' + d.slice(2, 6) + '-' + d.slice(6);
+      else if (d.length > 2) fmt = '(' + d.slice(0, 2) + ') ' + d.slice(2);
+      e.target.value       = fmt;
+      e.target.placeholder = '(0X) XXXX-XXXX';
+    } else {
+      e.target.value       = digits.slice(0, 10);
+      e.target.placeholder = '請輸入手機或市話';
+    }
+  });
+}
+
+// Clear error on input/change
+function clearFieldError(target) {
+  const wrap = target.closest('.form-field-wrap');
+  if (wrap) {
+    wrap.querySelector('.field')?.classList.remove('field--error');
+    const err = wrap.querySelector('.form-error');
+    if (err) err.hidden = true;
+  }
+}
+bookingForm.addEventListener('input',  (e) => clearFieldError(e.target));
+bookingForm.addEventListener('change', (e) => clearFieldError(e.target));
+
+// Submit
+bookingForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  let valid = true;
+  bookingForm.querySelectorAll('[required]').forEach(field => {
+    const wrap    = field.closest('.form-field-wrap');
+    const fieldEl = field.closest('.field');
+    const err     = wrap?.querySelector('.form-error');
+    const empty   = field.value.trim() === '';
+
+    if (empty) {
+      fieldEl?.classList.add('field--error');
+      if (err) { err.hidden = false; err.textContent = '此欄位為必填'; }
+      valid = false;
+    } else if (field === phoneInput) {
+      const digits = field.value.replace(/\D/g, '');
+      if (digits.length < 10) {
+        fieldEl?.classList.add('field--error');
+        if (err) { err.hidden = false; err.textContent = '請輸入有效的電話號碼'; }
+        valid = false;
+      } else {
+        fieldEl?.classList.remove('field--error');
+        if (err) err.hidden = true;
+      }
+    } else {
+      fieldEl?.classList.remove('field--error');
+      if (err) err.hidden = true;
+    }
+  });
+  if (!valid) return;
+
+  const submitBtn = bookingForm.querySelector('.booking-form__submit');
+  submitBtn.disabled    = true;
+  submitBtn.textContent = '送出中…';
+
+  const payload = {
+    school:      bookingForm.school.value,
+    childName:   bookingForm.childName.value,
+    birthday:    bookingForm.birthday.value,
+    gender:      bookingForm.gender.value,
+    enrollYear:  bookingForm.enrollYear.value,
+    enrollMonth: bookingForm.enrollMonth.value,
+    parentName:  bookingForm.parentName.value,
+    phone:       bookingForm.phone.value,
+  };
+
+  try {
+    await fetch(GAS_URL, { method: 'POST', body: JSON.stringify(payload), mode: 'no-cors' });
+    closeBookingDialog();
+    bookingForm.reset();
+    document.querySelectorAll('.field--select select').forEach(sel => sel.classList.add('select--empty'));
+    showToast('預約參觀表單送出成功');
+  } catch {
+    submitBtn.disabled    = false;
+    submitBtn.textContent = '確定送出';
+    alert('送出失敗，請稍後再試。');
+  } finally {
+    submitBtn.disabled    = false;
+    submitBtn.textContent = '確定送出';
+  }
+});

@@ -280,8 +280,8 @@ EN        →  /en/index.html
 ```
 scrollY = 0（頁面頂端）
   背景：透明
-  版型：三欄 Grid — Wordmark | Brandmark | 導覽連結 + CTA
-  Wordmark 與 Brandmark 同時顯示
+  版型：兩欄 Grid — Wordmark | 導覽連結 + CTA
+  Wordmark 顯示
 
 往下捲動
   Navbar 收起 — transform: translateY(-100%)，transition: 0.3s ease
@@ -290,7 +290,6 @@ scrollY = 0（頁面頂端）
   Navbar 展開
   背景：color/bg/dark（#232d11）
   版型：兩欄 Grid — Wordmark | 導覽連結 + CTA
-  Brandmark 隱藏
 ```
 
 ```js
@@ -427,13 +426,122 @@ Hero CTA「立即預約參觀」按鈕
 Location Section「預約參觀」按鈕
 ```
 
-**表單欄位**
+**實作**
 ```
-孩子姓名、出生年月日、性別、欲參觀校區
-家長姓名、聯絡電話、電子郵件、希望參觀時段 / 備註
+使用原生 <dialog> 元素（內建無障礙支援）
+背景遮罩：color/bg/overlay（rgba(41,41,41,0.5)）
 ```
 
-**送出後**
+**關閉方式**
+```
+點擊右上角 × 按鈕
+點擊背景遮罩
+按 ESC 鍵
+```
+
+**表單欄位**
+```
+參觀學校      select（咪咪幼兒園 / 家田幼兒園）
+幼生姓名      text input
+出生日期      date picker（見下方規格）
+幼生性別      select（男 / 女）
+預計入學年月  select × 2（YYYY / MM）
+家長姓名      text input
+聯絡電話      單一 input，動態判斷格式（見下方規格）
+```
+
+**聯絡電話動態格式規格**
+```
+單一輸入欄位，根據輸入值自動切換格式
+
+輸入 09 開頭   手機格式   placeholder: 09XX-XXX-XXX
+輸入 0 開頭    市話格式   placeholder: (0X) XXXX-XXXX
+```
+
+```javascript
+const phoneInput = document.querySelector('input[name="phone"]');
+
+phoneInput.addEventListener('input', (e) => {
+  const value = e.target.value.replace(/\D/g, '');
+
+  if (value.startsWith('09')) {
+    e.target.placeholder = '09XX-XXX-XXX';
+  } else if (value.startsWith('0')) {
+    e.target.placeholder = '(0X) XXXX-XXXX';
+  }
+});
+```
+```
+樣式參考   shadcn Date Picker
+           https://ui.shadcn.com/docs/components/date-picker
+
+預設值     空白（不預設日期）
+可選範圍   動態計算，每次頁面載入時執行
+  最早     今天往前 6 年（min）
+  最晚     今天（max，不能選未來）
+
+範例：
+  2026年開啟   min = 2020/01/01，max = 2026/05/26
+  2032年開啟   min = 2026/01/01，max = 2032/xx/xx
+```
+
+```javascript
+const today = new Date();
+const minDate = new Date();
+minDate.setFullYear(today.getFullYear() - 6);
+
+const input = document.querySelector('input[name="birthday"]');
+input.max = today.toISOString().split('T')[0];
+input.min = minDate.toISOString().split('T')[0];
+// 不設 value，預設空白
+```
+
+**Modal 尺寸規格**
+
+```
+桌機（≥1024px）
+  寬度        560px
+  最大寬度    90vw
+  最大高度    90vh
+  位置        margin: 5vh auto auto（偏上置中）
+  圓角        size/radius/2xl（24px）四邊
+  overflow    auto
+
+平板（768–1023px）
+  寬度        90vw
+  最大高度    90vh
+  位置        margin: 5vh auto auto
+  圓角        size/radius/2xl（24px）四邊
+
+手機（<768px）
+  寬度        100vw
+  最大高度    95vh
+  位置        margin: auto auto 0（貼底，bottom sheet）
+  圓角        上方 size/radius/2xl，下方 0
+```
+
+```css
+dialog {
+  width: 560px;
+  max-width: 90vw;
+  max-height: 90vh;
+  margin: 5vh auto auto;
+  border-radius: var(--size-radius-2xl);
+  border: none;
+  padding: 0;
+  overflow-y: auto;
+}
+
+@media (max-width: 767px) {
+  dialog {
+    width: 100vw;
+    max-width: 100vw;
+    max-height: 95vh;
+    margin: auto auto 0;
+    border-radius: var(--size-radius-2xl) var(--size-radius-2xl) 0 0;
+  }
+}
+```
 ```
 1. 資料寫入 Google Sheet（Google Apps Script Web App）
 2. Google Apps Script 同時寄送通知信至業主信箱

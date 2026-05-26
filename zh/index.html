@@ -38,7 +38,7 @@
       <a href="/zh/about.html" class="nav-link">關於我們</a>
       <a href="/zh/features.html" class="nav-link">教學特色</a>
       <a href="/zh/campus.html" class="nav-link">校園環境</a>
-      <button class="btn btn--primary" type="button">預約參觀</button>
+      <button class="btn btn--primary" type="button" data-open-booking>預約參觀</button>
       <a href="/en/index.html" class="nav-link">EN</a>
     </nav>
 
@@ -56,7 +56,7 @@
   <a href="/zh/about.html" class="drawer__link">關於我們</a>
   <a href="/zh/features.html" class="drawer__link">教學特色</a>
   <a href="/zh/campus.html" class="drawer__link">校園環境</a>
-  <button class="btn btn--primary" type="button" style="font-size:18px;padding:16px 40px;">預約參觀</button>
+  <button class="btn btn--primary" type="button" style="font-size:18px;padding:16px 40px;" data-open-booking>預約參觀</button>
   <a href="/en/index.html" class="drawer__link" style="font-size:18px;">EN</a>
 </div>
 
@@ -76,7 +76,7 @@
     <h1 class="hero__h1">這裡是孩子白天的家</h1>
     <p class="hero__subtitle">成長的秘密花園</p>
   </div>
-  <button class="btn btn--primary hero__cta" type="button">
+  <button class="btn btn--primary hero__cta" type="button" data-open-booking>
     立即預約參觀
     <img src="../assets/images/icon-arrow-right-light.svg" alt="" aria-hidden="true" class="hero__cta-icon">
   </button>
@@ -247,7 +247,7 @@
           </li>
         </ul>
         <div class="campus-info__cta">
-          <button class="btn btn--primary" type="button">
+          <button class="btn btn--primary" type="button" data-open-booking>
             預約參觀
             <img src="../assets/images/icon-arrow-right-light.svg" alt="" aria-hidden="true" class="btn__icon">
           </button>
@@ -282,7 +282,7 @@
           </li>
         </ul>
         <div class="campus-info__cta">
-          <button class="btn btn--primary" type="button">
+          <button class="btn btn--primary" type="button" data-open-booking>
             預約參觀
             <img src="../assets/images/icon-arrow-right-light.svg" alt="" aria-hidden="true" class="btn__icon">
           </button>
@@ -395,6 +395,160 @@
   </div>
 </footer>
 
+
+<dialog id="booking-dialog" class="booking-dialog">
+  <div class="booking-dialog__inner">
+
+    <!-- Header -->
+    <div class="booking-dialog__header">
+      <h3 class="booking-dialog__title">預約參觀</h3>
+      <button class="booking-dialog__close" id="dialogClose" type="button" aria-label="關閉">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M18 6L6 18M6 6l12 12" stroke="#292929" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Subtitle -->
+    <p class="booking-dialog__subtitle">填寫完成後，校方將以電話與您確認參觀時間，感謝您的預約！</p>
+
+    <!-- Form -->
+    <form class="booking-form" id="booking-form" novalidate>
+      <div class="booking-form__fields">
+
+        <!-- 參觀學校 -->
+        <div class="form-row">
+          <label class="form-label" for="field-school">
+            <span class="form-label__text">參觀學校</span>
+            <span class="form-asterisk">*</span>
+          </label>
+          <div class="form-field-wrap">
+            <div class="field field--select">
+              <select id="field-school" name="school" required>
+                <option value="" disabled selected>選擇學校</option>
+                <option value="咪咪幼兒園">臺北市私立咪咪蒙特梭利幼兒園</option>
+                <option value="家田幼兒園">臺北市私立家田蒙特梭利幼兒園</option>
+                <option value="兩間皆報">兩間學校皆報名參觀</option>
+              </select>
+            </div>
+            <p class="form-error" hidden>此欄位為必填</p>
+          </div>
+        </div>
+
+        <!-- 幼生姓名 -->
+        <div class="form-row">
+          <label class="form-label" for="field-child-name">
+            <span class="form-label__text">幼生姓名</span>
+            <span class="form-asterisk">*</span>
+          </label>
+          <div class="form-field-wrap">
+            <div class="field">
+              <input type="text" id="field-child-name" name="childName" placeholder="請輸入幼生姓名" required autocomplete="off">
+            </div>
+            <p class="form-error" hidden>此欄位為必填</p>
+          </div>
+        </div>
+
+        <!-- 出生日期 -->
+        <div class="form-row">
+          <label class="form-label" for="field-birthday">
+            <span class="form-label__text">出生日期</span>
+            <span class="form-asterisk">*</span>
+          </label>
+          <div class="form-field-wrap">
+            <div class="field field--date">
+              <input type="date" id="field-birthday" name="birthday" required>
+            </div>
+            <p class="form-error" hidden>此欄位為必填</p>
+          </div>
+        </div>
+
+        <!-- 幼生性別 -->
+        <div class="form-row">
+          <label class="form-label" for="field-gender">
+            <span class="form-label__text">幼生性別</span>
+            <span class="form-asterisk">*</span>
+          </label>
+          <div class="form-field-wrap">
+            <div class="field field--select">
+              <select id="field-gender" name="gender" required>
+                <option value="" disabled selected>選擇性別</option>
+                <option value="男">男</option>
+                <option value="女">女</option>
+              </select>
+            </div>
+            <p class="form-error" hidden>此欄位為必填</p>
+          </div>
+        </div>
+
+        <!-- 預計入學年月 -->
+        <div class="form-row">
+          <span class="form-label form-label--plain">預計入學年月</span>
+          <div class="field field--select">
+            <select id="field-enroll-year" name="enrollYear">
+              <option value="" disabled selected>YYYY</option>
+            </select>
+          </div>
+          <div class="field field--select">
+            <select id="field-enroll-month" name="enrollMonth">
+              <option value="" disabled selected>MM</option>
+              <option value="01">01</option>
+              <option value="02">02</option>
+              <option value="03">03</option>
+              <option value="04">04</option>
+              <option value="05">05</option>
+              <option value="06">06</option>
+              <option value="07">07</option>
+              <option value="08">08</option>
+              <option value="09">09</option>
+              <option value="10">10</option>
+              <option value="11">11</option>
+              <option value="12">12</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- 家長姓名 -->
+        <div class="form-row">
+          <label class="form-label" for="field-parent-name">
+            <span class="form-label__text">家長姓名</span>
+            <span class="form-asterisk">*</span>
+          </label>
+          <div class="form-field-wrap">
+            <div class="field">
+              <input type="text" id="field-parent-name" name="parentName" placeholder="請輸入家長姓名" required autocomplete="off">
+            </div>
+            <p class="form-error" hidden>此欄位為必填</p>
+          </div>
+        </div>
+
+        <!-- 聯絡電話 -->
+        <div class="form-row">
+          <label class="form-label" for="field-phone">
+            <span class="form-label__text">聯絡電話</span>
+            <span class="form-asterisk">*</span>
+          </label>
+          <div class="form-field-wrap">
+            <div class="field">
+              <input type="tel" id="field-phone" name="phone" placeholder="請輸入手機或市話" required autocomplete="off">
+            </div>
+            <p class="form-error" hidden>此欄位為必填</p>
+          </div>
+        </div>
+
+      </div>
+
+      <button class="booking-form__submit" type="submit">確定送出</button>
+
+      <ul class="booking-form__disclaimer">
+        <li>本表單資料僅供安排參觀使用，我們承諾妥善保護您的隱私。</li>
+        <li>參觀預約不代表入學保證，我們將在確認名額後與您聯繫。</li>
+        <li>如需更改或取消預約，歡迎直接與我們聯繫。</li>
+      </ul>
+    </form>
+
+  </div>
+</dialog>
 
 <script src="../assets/js/main.js"></script>
 </body>
