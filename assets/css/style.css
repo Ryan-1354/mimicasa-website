@@ -203,6 +203,11 @@ button {
   letter-spacing: 0.04em;
 }
 
+@keyframes btn-shimmer {
+  from { transform: translateX(-100%); }
+  to   { transform: translateX(100%); }
+}
+
 /* ══════════════════════════════════════════════
    BUTTON
 ══════════════════════════════════════════════ */
@@ -218,7 +223,9 @@ button {
   border: none;
   cursor: pointer;
   white-space: nowrap;
-  transition: background-color 0.2s ease, transform 0.2s ease;
+  position: relative;
+  overflow: hidden;
+  transition: opacity 0.2s ease, transform 0.2s ease;
 }
 .btn--primary {
   background: var(--color-action-primary-bg);
@@ -226,8 +233,17 @@ button {
   padding: var(--sp-inset-md) var(--sp-inset-xl);
   border-radius: var(--r-xs);
 }
-.btn--primary:hover  { background: var(--color-action-primary-bg-hover); }
+.btn--primary::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg, transparent 25%, rgba(255,255,255,0.20) 50%, transparent 75%);
+  animation: btn-shimmer 3s linear infinite;
+}
+.btn--primary:hover  { opacity: 0.8; }
+.btn--primary:hover::after { opacity: 0; }
 .btn--primary:active { transform: scale(0.97); }
+.hero__cta:active   { transform: translateX(-50%) scale(0.97); }
 .btn__icon { width: 16px; height: 16px; flex-shrink: 0; }
 
 /* ══════════════════════════════════════════════
@@ -306,7 +322,7 @@ button {
   left: 0;
   right: 0;
   z-index: 500;
-  padding: var(--sp-inset-lg) max(var(--sp-layout-2xl), calc((100% - 1200px) / 2));
+  padding: 24px max(var(--sp-layout-2xl), calc((100% - 1200px) / 2));
   transition: transform 0.3s ease, background-color 0.3s ease;
 }
 .navbar__inner {
