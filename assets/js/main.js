@@ -127,10 +127,22 @@ function openBookingDialog() {
 }
 
 function closeBookingDialog() {
-  bookingDialog.close();
-  document.body.style.overflow = '';
-  bookingForm.querySelectorAll('.field--error').forEach(el => el.classList.remove('field--error'));
-  bookingForm.querySelectorAll('.form-error').forEach(el => { el.hidden = true; });
+  function finish() {
+    bookingDialog.close();
+    document.body.style.overflow = '';
+    bookingForm.querySelectorAll('.field--error').forEach(el => el.classList.remove('field--error'));
+    bookingForm.querySelectorAll('.form-error').forEach(el => { el.hidden = true; });
+  }
+
+  if (window.matchMedia('(max-width: 767px)').matches) {
+    bookingDialog.classList.add('is-closing');
+    bookingDialog.addEventListener('animationend', () => {
+      bookingDialog.classList.remove('is-closing');
+      finish();
+    }, { once: true });
+  } else {
+    finish();
+  }
 }
 
 dialogCloseBtn.addEventListener('click', closeBookingDialog);
@@ -295,7 +307,6 @@ bookingForm.addEventListener('submit', async (e) => {
     await fetch(GAS_URL, { method: 'POST', body: JSON.stringify(payload), mode: 'no-cors' });
     closeBookingDialog();
     bookingForm.reset();
-    document.querySelectorAll('.field--select select').forEach(sel => sel.classList.add('select--empty'));
     showToast('預約參觀表單送出成功');
   } catch {
     submitBtn.disabled    = false;
@@ -306,3 +317,84 @@ bookingForm.addEventListener('submit', async (e) => {
     submitBtn.textContent = '確定送出';
   }
 });
+
+/* ══════════════════════════════════════════════
+   CUSTOM SELECT
+══════════════════════════════════════════════ */
+(function () {
+  let panel = null;
+  let activeField = null;
+
+  function closePanel() {
+    if (panel) { panel.remove(); panel = null; }
+    activeField = null;
+  }
+
+  document.addEventListener('click', (e) => {
+    if (panel && !panel.contains(e.target) && !activeField?.contains(e.target)) {
+      closePanel();
+    }
+  });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closePanel(); });
+  bookingDialog.addEventListener('scroll', closePanel);
+
+  function openPanel(fieldEl) {
+    closePanel();
+    activeField = fieldEl;
+    const sel = fieldEl.querySelector('select');
+
+    panel = document.createElement('ul');
+    panel.className = 'csp';
+    panel.style.visibility = 'hidden';
+
+    Array.from(sel.options).forEach(opt => {
+      if (opt.disabled) return;
+      const li = document.createElement('li');
+      li.className = 'csp__option';
+      if (opt.value && opt.value === sel.value) li.classList.add('csp__option--active');
+      li.textContent = opt.text;
+      li.addEventListener('click', (e) => {
+        e.stopPropagation();
+        sel.value = opt.value;
+        sel.dispatchEvent(new Event('change', { bubbles: true }));
+        const label = fieldEl.querySelector('.custom-select__label');
+        if (label) {
+          label.textContent = opt.text;
+          label.classList.toggle('select--empty', !opt.value);
+        }
+        clearFieldError(fieldEl);
+        closePanel();
+      });
+      panel.appendChild(li);
+    });
+
+    bookingDialog.appendChild(panel);
+
+    const rect   = fieldEl.getBoundingClientRect();
+    const panelH = panel.offsetHeight;
+    panel.style.width = rect.width + 'px';
+    panel.style.left  = rect.left + 'px';
+    panel.style.top   = (window.innerHeight - rect.bottom >= panelH + 8)
+      ? (rect.bottom + 4) + 'px'
+      : Math.max(4, rect.top - panelH - 4) + 'px';
+    panel.style.visibility = '';
+  }
+
+  bookingForm.querySelectorAll('.field--custom-select').forEach(fieldEl => {
+    fieldEl.addEventListener('click', (e) => {
+      if (panel && activeField === fieldEl) { closePanel(); } else { openPanel(fieldEl); }
+    });
+  });
+
+  // Reset labels when form resets after successful submit
+  bookingForm.addEventListener('reset', () => {
+    bookingForm.querySelectorAll('.field--custom-select').forEach(fieldEl => {
+      const label = fieldEl.querySelector('.custom-select__label');
+      const sel   = fieldEl.querySelector('select');
+      if (label && sel) {
+        label.textContent = sel.options[0]?.text || '';
+        label.classList.add('select--empty');
+      }
+    });
+  });
+})();

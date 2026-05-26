@@ -423,7 +423,8 @@
             <span class="form-asterisk">*</span>
           </label>
           <div class="form-field-wrap">
-            <div class="field field--select">
+            <div class="field field--select field--custom-select">
+              <span class="custom-select__label select--empty">選擇學校</span>
               <select id="field-school" name="school" required>
                 <option value="" disabled selected>選擇學校</option>
                 <option value="咪咪幼兒園">臺北市私立咪咪蒙特梭利幼兒園</option>
@@ -470,7 +471,8 @@
             <span class="form-asterisk">*</span>
           </label>
           <div class="form-field-wrap">
-            <div class="field field--select">
+            <div class="field field--select field--custom-select">
+              <span class="custom-select__label select--empty">選擇性別</span>
               <select id="field-gender" name="gender" required>
                 <option value="" disabled selected>選擇性別</option>
                 <option value="男">男</option>
@@ -484,12 +486,14 @@
         <!-- 預計入學年月 -->
         <div class="form-row">
           <span class="form-label form-label--plain">預計入學年月</span>
-          <div class="field field--select">
+          <div class="field field--select field--custom-select">
+            <span class="custom-select__label select--empty">YYYY</span>
             <select id="field-enroll-year" name="enrollYear">
               <option value="" disabled selected>YYYY</option>
             </select>
           </div>
-          <div class="field field--select">
+          <div class="field field--select field--custom-select">
+            <span class="custom-select__label select--empty">MM</span>
             <select id="field-enroll-month" name="enrollMonth">
               <option value="" disabled selected>MM</option>
               <option value="01">01</option>

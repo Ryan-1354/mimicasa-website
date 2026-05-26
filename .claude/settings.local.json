@@ -8,7 +8,9 @@
       "mcp__claude_ai_Figma__get_screenshot",
       "Bash(curl *)",
       "Bash(sips *)",
-      "mcp__claude_ai_Figma__get_metadata"
+      "mcp__claude_ai_Figma__get_metadata",
+      "mcp__claude_ai_Figma__search_design_system",
+      "Bash(node *)"
     ]
   }
 }

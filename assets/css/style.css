@@ -1046,6 +1046,14 @@ a.footer__info-item--link:hover { opacity: 0.7; }
   from { opacity: 0; }
   to   { opacity: 1; }
 }
+@keyframes sheetSlideUp {
+  from { transform: translateY(100%); }
+  to   { transform: translateY(0); }
+}
+@keyframes sheetSlideDown {
+  from { transform: translateY(0); }
+  to   { transform: translateY(100%); }
+}
 
 .booking-dialog {
   width: 560px;
@@ -1081,7 +1089,7 @@ a.footer__info-item--link:hover { opacity: 0.7; }
 .booking-dialog__title {
   font-family: 'Noto Serif TC', serif;
   font-weight: 600;
-  font-size: 30px;
+  font-size: clamp(22px, 2.1vw, 30px);
   line-height: 1.2;
   color: var(--color-text-primary);
 }
@@ -1092,10 +1100,14 @@ a.footer__info-item--link:hover { opacity: 0.7; }
   width: 44px;
   height: 44px;
   background: var(--color-bg-default);
+  border: none;
   border-radius: var(--r-sm);
   flex-shrink: 0;
   cursor: pointer;
+  transition: background 0.15s ease;
 }
+.booking-dialog__close:hover  { background: var(--color-border-default); }
+.booking-dialog__close:active { transform: scale(0.94); }
 
 .booking-dialog__subtitle {
   font-size: var(--fs-body-sm);
@@ -1117,7 +1129,7 @@ a.footer__info-item--link:hover { opacity: 0.7; }
 
 .form-row {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: var(--sp-inset-md);
 }
 .form-label {
@@ -1127,6 +1139,7 @@ a.footer__info-item--link:hover { opacity: 0.7; }
   font-size: var(--fs-body-sm);
   color: var(--color-text-secondary);
   line-height: 1.5;
+  padding-top: var(--sp-inset-md);
 }
 .form-label__text {
   width: 60px;
@@ -1140,7 +1153,7 @@ a.footer__info-item--link:hover { opacity: 0.7; }
   width: 8px;
   font-family: 'Noto Sans TC', sans-serif;
   font-weight: 500;
-  font-size: 16px;
+  font-size: var(--fs-label);
   color: var(--color-status-warning);
   letter-spacing: 0.04em;
   line-height: 1;
@@ -1183,7 +1196,7 @@ a.footer__info-item--link:hover { opacity: 0.7; }
   border: none;
   background: transparent;
   font-family: 'Noto Sans TC', sans-serif;
-  font-size: 18px;
+  font-size: var(--fs-body);
   font-weight: 400;
   line-height: 1.5;
   color: var(--color-text-primary);
@@ -1192,6 +1205,11 @@ a.footer__info-item--link:hover { opacity: 0.7; }
   appearance: none;
 }
 .field input::placeholder { color: var(--color-text-muted); }
+
+.field option {
+  font-family: 'Noto Sans TC', sans-serif;
+  font-size: var(--fs-body);
+}
 
 /* Select: custom arrow via background */
 .field--select {
@@ -1216,6 +1234,46 @@ a.footer__info-item--link:hover { opacity: 0.7; }
   pointer-events: none;
 }
 .field--select select.select--empty { color: var(--color-text-tertiary); }
+
+/* Custom select */
+.field--custom-select { cursor: pointer; user-select: none; }
+.field--custom-select select { display: none; }
+.custom-select__label {
+  flex: 1;
+  min-width: 0;
+  padding-right: 28px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: var(--fs-body);
+  color: var(--color-text-primary);
+  line-height: 1.5;
+}
+.custom-select__label.select--empty { color: var(--color-text-tertiary); }
+
+/* Dropdown panel */
+.csp {
+  position: fixed;
+  z-index: 9999;
+  list-style: none;
+  padding: 4px 0;
+  background: var(--color-bg-default);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--r-sm);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+  overflow: hidden;
+}
+.csp__option {
+  padding: 10px 16px;
+  font-family: 'Noto Sans TC', sans-serif;
+  font-size: var(--fs-body);
+  color: var(--color-text-primary);
+  cursor: pointer;
+  line-height: 1.5;
+  white-space: nowrap;
+}
+.csp__option:hover { background: var(--color-bg-section); }
+.csp__option--active { color: var(--color-action-primary-bg); font-weight: 500; }
 
 /* Date field — input fills the whole wrapper so the full area is clickable */
 .field--date {
@@ -1298,6 +1356,12 @@ a.footer__info-item--link:hover { opacity: 0.7; }
     max-height: 95vh;
     margin: auto auto 0;
     border-radius: var(--r-2xl) var(--r-2xl) 0 0;
+  }
+  .booking-dialog[open] {
+    animation: sheetSlideUp 0.35s cubic-bezier(0.32, 0.72, 0, 1);
+  }
+  .booking-dialog.is-closing {
+    animation: sheetSlideDown 0.3s ease forwards;
   }
 }
 
