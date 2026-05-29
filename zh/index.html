@@ -65,12 +65,16 @@
      HERO
 ══════════════════════════════════════════════ -->
 <section class="hero">
-  <img
-    class="hero__bg"
-    src="../assets/images/hero-bg.jpg"
-    alt="校園環境"
-    fetchpriority="high"
-  >
+  <picture>
+    <source media="(max-width: 767px)"  srcset="../assets/images/hero-mobile.jpg">
+    <source media="(max-width: 1023px)" srcset="../assets/images/hero-tablet.jpg">
+    <img
+      class="hero__bg"
+      src="../assets/images/hero-desktop.jpg"
+      alt="校園環境"
+      fetchpriority="high"
+    >
+  </picture>
   <div class="hero__overlay"></div>
   <div class="hero__text">
     <h1 class="hero__h1">這裡是孩子白天的家</h1>
@@ -133,7 +137,7 @@
 
   <div class="features__head" data-reveal>
     <p class="features__eyebrow">特色與優勢</p>
-    <h2 class="features__h2">在純淨中成長，在美中學習</h2>
+    <h2 class="features__h2">在純淨中成長，在美學中學習</h2>
   </div>
 
   <div class="features__grid">
@@ -251,6 +255,11 @@
             預約參觀
             <img src="../assets/images/icon-arrow-right-light.svg" alt="" aria-hidden="true" class="btn__icon">
           </button>
+          <a href="https://www.facebook.com/mimi6881" target="_blank" rel="noopener" class="icon-btn" aria-label="Facebook 粉絲專頁">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M15 1.66675H12.5C11.395 1.66675 10.3352 2.10573 9.55376 2.88714C8.77236 3.66854 8.33337 4.72835 8.33337 5.83341V8.33341H5.83337V11.6667H8.33337V18.3334H11.6667V11.6667H14.1667L15 8.33341H11.6667V5.83341C11.6667 5.6124 11.7545 5.40044 11.9108 5.24416C12.0671 5.08788 12.279 5.00008 12.5 5.00008H15V1.66675Z" stroke="currentColor" stroke-width="1.66667" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
         </div>
       </div>
 
@@ -286,6 +295,11 @@
             預約參觀
             <img src="../assets/images/icon-arrow-right-light.svg" alt="" aria-hidden="true" class="btn__icon">
           </button>
+          <a href="https://www.facebook.com/casamontessoripreschool" target="_blank" rel="noopener" class="icon-btn" aria-label="Facebook 粉絲專頁">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M15 1.66675H12.5C11.395 1.66675 10.3352 2.10573 9.55376 2.88714C8.77236 3.66854 8.33337 4.72835 8.33337 5.83341V8.33341H5.83337V11.6667H8.33337V18.3334H11.6667V11.6667H14.1667L15 8.33341H11.6667V5.83341C11.6667 5.6124 11.7545 5.40044 11.9108 5.24416C12.0671 5.08788 12.279 5.00008 12.5 5.00008H15V1.66675Z" stroke="currentColor" stroke-width="1.66667" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
         </div>
       </div>
 
@@ -429,7 +443,6 @@
                 <option value="" disabled selected>選擇學校</option>
                 <option value="咪咪幼兒園">臺北市私立咪咪蒙特梭利幼兒園</option>
                 <option value="家田幼兒園">臺北市私立家田蒙特梭利幼兒園</option>
-                <option value="兩間皆報">兩間學校皆報名參觀</option>
               </select>
             </div>
             <p class="form-error" hidden>此欄位為必填</p>

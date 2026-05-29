@@ -24,6 +24,13 @@
   font-style: normal;
   font-display: swap;
 }
+@font-face {
+  font-family: 'DFPLiShuW5-B5';
+  src: url('../fonts/華康隸書體W5&W5(P).TTC') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
 
 /* ══════════════════════════════════════════════
    RESET
@@ -37,6 +44,7 @@
 }
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 body {
   overflow-x: hidden;
@@ -350,8 +358,8 @@ button {
   width: auto;
 }
 .navbar__wordmark-title {
-  font-family: 'GenYoMin2 TW', 'Noto Serif TC', serif;
-  font-weight: 250;
+  font-family: 'DFPLiShuW5-B5', 'Noto Serif TC', serif;
+  font-weight: 400;
   font-size: var(--fs-logo-nav-zh);
   line-height: 1;
   letter-spacing: 0.05em;
@@ -482,6 +490,7 @@ button {
   left: 0;
   max-width: none;
   object-fit: cover;
+  object-position: center top;
   z-index: 0;
 }
 .hero__overlay {
@@ -578,15 +587,32 @@ button {
 }
 .philosophy__inner {
   display: grid;
-  grid-template-columns: 349px 1fr;
-  gap: 64px;
+  grid-template-columns: 1fr;
+  gap: 32px;
   align-items: start;
 }
 .philosophy__img {
-  width: 349px;
-  height: 465px;
-  object-fit: cover;
+  width: 100%;
+  height: auto;
   border-radius: var(--r-sm);
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .hero__bg { object-position: 80% center; }
+}
+@media (min-width: 1024px) {
+  .hero__bg {
+    object-position: center;
+  }
+  .philosophy__inner {
+    grid-template-columns: 349px 1fr;
+    gap: 64px;
+  }
+  .philosophy__img {
+    width: 349px;
+    height: 465px;
+    object-fit: cover;
+  }
 }
 .philosophy__content {
   display: flex;
@@ -799,7 +825,38 @@ button {
   height: 24px;
   flex-shrink: 0;
 }
-.campus-info__cta { }
+.campus-info__cta {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-inset-xl);
+}
+
+.icon-btn,
+.icon-btn:visited {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--color-border-brand);
+  border-radius: var(--r-sm);
+  background: transparent;
+  color: var(--color-border-brand);
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+  flex-shrink: 0;
+  text-decoration: none;
+}
+.icon-btn svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+.icon-btn:hover {
+  background: rgba(89, 112, 47, 0.08);
+}
+.icon-btn:active {
+  transform: scale(0.94);
+}
 
 /* ══════════════════════════════════════════════
    FOOTER
@@ -841,8 +898,8 @@ button {
   width: auto;
 }
 .footer__wordmark-zh {
-  font-family: 'GenYoMin2 TW', serif;
-  font-weight: 250;
+  font-family: 'DFPLiShuW5-B5', serif;
+  font-weight: 400;
   font-size: 24px;
   line-height: 1;
   letter-spacing: 0.05em;
@@ -993,8 +1050,6 @@ a.footer__info-item--link:hover { opacity: 0.7; }
   .navbar__nav            { display: none; }
   .navbar__hamburger      { display: flex; }
 
-  .philosophy__inner     { grid-template-columns: 1fr; }
-  .philosophy__img       { width: 100%; height: auto; aspect-ratio: 16 / 9; }
 
   .features__grid        { grid-template-columns: repeat(2, 1fr); }
 

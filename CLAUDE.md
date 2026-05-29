@@ -166,8 +166,8 @@ color/action/nav-link/default         #ffffff   hover 用 CSS opacity:0.7
 
 | Style | 桌機 | 平板 | 手機 |
 |-------|------|------|------|
-| logo-nav | GenYoMin2 TW 250，24px | 20px | 18px |
-| logo-page | GenYoMin2 TW 250，32px | 28px | 24px |
+| logo-nav | DFPLiShuW5-B5 400，24px | 20px | 18px |
+| logo-page | DFPLiShuW5-B5 400，32px | 28px | 24px |
 | h1 | Noto Serif TC 600，60px | 44px | 32px |
 | h2 | Noto Serif TC 600，48px | 36px | 28px |
 | h3 | Noto Serif TC 600，30px | 24px | 22px |
@@ -240,7 +240,48 @@ size/radius/pill  1000px
 
 ---
 
-## 頁面結構（首頁）
+## 開發方式
+
+**Mobile First**
+```
+網站主場景為手機，採用 mobile first 開發方式。
+先完成手機版，再用 media query 擴展到桌機。
+
+手機版    390px    主要開發目標
+平板版    768px    media query 擴展
+桌機版    1024px+  media query 擴展
+```
+
+**桌機版排版規則（≥1024px）**
+```
+單欄 → 雙欄或三欄
+字級  使用 tokens.json 的 desktop 數值
+padding-x  使用 size/spacing/layout/2xl（120px）
+
+具體 Section：
+  理念區塊    手機上下排列 → 桌機左右排列
+  Features   手機 1 欄 → 桌機 3 欄
+  Location   手機上下排列 → 桌機左右排列
+  Footer     手機 1 欄 → 桌機 3 欄
+```
+
+**圖片顯示規則**
+```
+Hero 背景圖
+  手機    object-fit: cover，object-position: center top
+          確保孩子的臉不被裁切，主要人物完整顯示
+  桌機    object-fit: cover，object-position: center
+
+理念區塊圖片
+  手機    上下排列，圖片在上
+          width: 100%，height: auto，完整顯示不裁切
+  桌機    左右排列，圖片在左
+          固定高度，object-fit: cover
+```
+
+---
+
+
 
 ```
 1. Navbar          固定置頂，Smart Navbar 捲動行為
@@ -454,8 +495,10 @@ Location Section「預約參觀」按鈕
 ```
 單一輸入欄位，根據輸入值自動切換格式
 
+空白狀態       placeholder: 請輸入手機或市話
 輸入 09 開頭   手機格式   placeholder: 09XX-XXX-XXX
 輸入 0 開頭    市話格式   placeholder: (0X) XXXX-XXXX
+錯誤訊息       請輸入有效的電話號碼（手機與市話通用）
 ```
 
 ```javascript

@@ -10,7 +10,8 @@
       "Bash(sips *)",
       "mcp__claude_ai_Figma__get_metadata",
       "mcp__claude_ai_Figma__search_design_system",
-      "Bash(node *)"
+      "Bash(node *)",
+      "Bash(grep -n \"\\\\.btn {$\\\\|\\\\.btn--primary\\\\|border-radius\" /Users/ryanwu/Projects/mimicasa-website/assets/css/style.css)"
     ]
   }
 }

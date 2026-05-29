@@ -130,6 +130,9 @@ function closeBookingDialog() {
   function finish() {
     bookingDialog.close();
     document.body.style.overflow = '';
+    bookingForm.reset();
+    document.getElementById('field-birthday')?.classList.add('date--empty');
+    if (phoneInput) phoneInput.placeholder = '請輸入手機或市話';
     bookingForm.querySelectorAll('.field--error').forEach(el => el.classList.remove('field--error'));
     bookingForm.querySelectorAll('.form-error').forEach(el => { el.hidden = true; });
   }
@@ -175,7 +178,7 @@ document.querySelectorAll('[data-open-booking]').forEach(btn => {
   const yearSelect = document.getElementById('field-enroll-year');
   if (!yearSelect) return;
   const current = new Date().getFullYear();
-  for (let y = current; y <= current + 5; y++) {
+  for (let y = current; y <= current + 4; y++) {
     const opt = document.createElement('option');
     opt.value = y;
     opt.textContent = y;
@@ -275,7 +278,7 @@ bookingForm.addEventListener('submit', async (e) => {
       const digits = field.value.replace(/\D/g, '');
       if (digits.length < 10) {
         fieldEl?.classList.add('field--error');
-        if (err) { err.hidden = false; err.textContent = '請輸入有效的電話號碼'; }
+        if (err) { err.hidden = false; err.textContent = '請輸入有效的電話號碼，市話需加區碼'; }
         valid = false;
       } else {
         fieldEl?.classList.remove('field--error');
@@ -306,7 +309,6 @@ bookingForm.addEventListener('submit', async (e) => {
   try {
     await fetch(GAS_URL, { method: 'POST', body: JSON.stringify(payload), mode: 'no-cors' });
     closeBookingDialog();
-    bookingForm.reset();
     showToast('預約參觀表單送出成功');
   } catch {
     submitBtn.disabled    = false;
