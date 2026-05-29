@@ -1339,6 +1339,14 @@ a.footer__info-item--link:hover { opacity: 0.7; }
   padding: var(--sp-inset-md) var(--sp-inset-lg);
   color: var(--color-text-primary);
   cursor: pointer;
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+}
+.field--date input[type="date"]::-webkit-date-and-time-value {
+  text-align: left;
+  width: 100%;
+  min-width: 0;
 }
 .field--date input[type="date"].date--empty { color: var(--color-text-tertiary); }
 .field--date input[type="date"]::-webkit-datetime-edit { color: inherit; }
@@ -1346,6 +1354,7 @@ a.footer__info-item--link:hover { opacity: 0.7; }
   cursor: pointer;
   opacity: 0.5;
   margin-right: 4px;
+  flex-shrink: 0;
 }
 
 /* Submit */
