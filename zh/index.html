@@ -498,16 +498,20 @@
 
         <!-- 預計入學年月 -->
         <div class="form-row">
-          <span class="form-label form-label--plain">預計入學年月</span>
-          <div class="field field--select field--custom-select">
-            <span class="custom-select__label select--empty">YYYY</span>
-            <select id="field-enroll-year" name="enrollYear">
-              <option value="" disabled selected>YYYY</option>
-            </select>
+          <span class="form-label form-label--plain">預計入學年月<span class="form-asterisk">*</span></span>
+          <div class="form-field-wrap">
+            <div class="field field--select field--custom-select">
+              <span class="custom-select__label select--empty">YYYY</span>
+              <select id="field-enroll-year" name="enrollYear" required>
+                <option value="" disabled selected>YYYY</option>
+              </select>
+            </div>
+            <p class="form-error" hidden>此欄位為必填</p>
           </div>
-          <div class="field field--select field--custom-select">
-            <span class="custom-select__label select--empty">MM</span>
-            <select id="field-enroll-month" name="enrollMonth">
+          <div class="form-field-wrap">
+            <div class="field field--select field--custom-select">
+              <span class="custom-select__label select--empty">MM</span>
+              <select id="field-enroll-month" name="enrollMonth" required>
               <option value="" disabled selected>MM</option>
               <option value="01">01</option>
               <option value="02">02</option>
@@ -522,6 +526,8 @@
               <option value="11">11</option>
               <option value="12">12</option>
             </select>
+            </div>
+            <p class="form-error" hidden>此欄位為必填</p>
           </div>
         </div>
 

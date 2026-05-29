@@ -115,7 +115,10 @@ function showToast(message) {
    BOOKING DIALOG
    通知信箱：1354ark@gmail.com（由 GAS 負責寄送）
 ══════════════════════════════════════════════ */
-const GAS_URL = 'https://script.google.com/macros/s/AKfycbzoBC9phdPJjxs4HJealTci1_k_aNohZDhT-QvlVvCAl4jJ_ljAMRV-KZSJAjR6GWb3Ag/exec';
+const GAS_URLS = {
+  '咪咪幼兒園': 'https://script.google.com/macros/s/AKfycbxXYqsZmUg-i9e-fa3nFHEhWFyeBlqFxDnW3J-DDaXXbbs4kvQ9TncqIWWDE5itMYxB/exec',
+  '家田幼兒園': 'https://script.google.com/macros/s/AKfycbw3hlDkz6-NzQiWu7121nrgnl5Sqv31LFOIf33_1K8RGiY2mlUTpQHRPEOxKvsLKNqIMA/exec',
+};
 
 const bookingDialog  = document.getElementById('booking-dialog');
 const dialogCloseBtn = document.getElementById('dialogClose');
@@ -295,19 +298,22 @@ bookingForm.addEventListener('submit', async (e) => {
   submitBtn.disabled    = true;
   submitBtn.textContent = '送出中…';
 
+  const campus = bookingForm.school.value;
   const payload = {
-    school:      bookingForm.school.value,
+    timestamp:   new Date().toLocaleString('zh-TW'),
     childName:   bookingForm.childName.value,
     birthday:    bookingForm.birthday.value,
     gender:      bookingForm.gender.value,
+    campus,
     enrollYear:  bookingForm.enrollYear.value,
     enrollMonth: bookingForm.enrollMonth.value,
     parentName:  bookingForm.parentName.value,
     phone:       bookingForm.phone.value,
   };
 
+  const gasUrl = GAS_URLS[campus] ?? GAS_URLS['咪咪幼兒園'];
   try {
-    await fetch(GAS_URL, { method: 'POST', body: JSON.stringify(payload), mode: 'no-cors' });
+    await fetch(gasUrl, { method: 'POST', body: JSON.stringify(payload), mode: 'no-cors' });
     closeBookingDialog();
     showToast('預約參觀表單送出成功');
   } catch {

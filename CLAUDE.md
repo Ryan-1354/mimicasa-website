@@ -268,9 +268,18 @@ padding-x  使用 size/spacing/layout/2xl（120px）
 **圖片顯示規則**
 ```
 Hero 背景圖
-  手機    object-fit: cover，object-position: center top
-          確保孩子的臉不被裁切，主要人物完整顯示
-  桌機    object-fit: cover，object-position: center
+  三個裝置使用不同圖片，用 <picture> 元素實作
+
+  <picture>
+    <source media="(max-width: 767px)"  srcset="../assets/images/hero-mobile.jpg">
+    <source media="(max-width: 1023px)" srcset="../assets/images/hero-tablet.jpg">
+    <img src="../assets/images/hero-desktop.jpg" alt="校園環境">
+  </picture>
+
+  object-position 設定：
+    桌機    object-position: center
+    平板    object-position: 80% center（保留右側人物臉部）
+    手機    object-position: center top（保留上方人物）
 
 理念區塊圖片
   手機    上下排列，圖片在上
@@ -604,10 +613,55 @@ dialog {
 ---
 
 ### Google Apps Script 設定
-```js
-const GAS_URL = "YOUR_APPS_SCRIPT_WEB_APP_URL";
-// 負責：寫入 Google Sheet + 發送通知信
-// 收件信箱：TBD（待業主確認）
+
+**Web App URL**
+```
+咪咪幼兒園   https://script.google.com/macros/s/AKfycbxXYqsZmUg-i9e-fa3nFHEhWFyeBlqFxDnW3J-DDaXXbbs4kvQ9TncqIWWDE5itMYxB/exec
+家田幼兒園   https://script.google.com/macros/s/AKfycbw3hlDkz6-NzQiWu7121nrgnl5Sqv31LFOIf33_1K8RGiY2mlUTpQHRPEOxKvsLKNqIMA/exec
+```
+
+**網站端實作**
+```javascript
+const GAS_URLS = {
+  '咪咪幼兒園': 'https://script.google.com/macros/s/AKfycbxXYqsZmUg-i9e-fa3nFHEhWFyeBlqFxDnW3J-DDaXXbbs4kvQ9TncqIWWDE5itMYxB/exec',
+  '家田幼兒園': 'https://script.google.com/macros/s/AKfycbw3hlDkz6-NzQiWu7121nrgnl5Sqv31LFOIf33_1K8RGiY2mlUTpQHRPEOxKvsLKNqIMA/exec'
+};
+
+const url = GAS_URLS[selectedCampus];
+fetch(url, {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify(formData)
+});
+```
+
+**表單資料欄位對應**
+```javascript
+{
+  timestamp:   new Date().toLocaleString('zh-TW'),
+  childName:   // 幼生姓名
+  birthday:    // 出生日期
+  gender:      // 幼生性別
+  campus:      // 參觀學校（咪咪幼兒園 / 家田幼兒園）
+  enrollYear:  // 預計入學年
+  enrollMonth: // 預計入學月
+  parentName:  // 家長姓名
+  phone:       // 聯絡電話
+}
+```
+
+**Google Sheet 欄位順序**
+```
+A  時間戳記
+B  幼生姓名
+C  出生日期
+D  幼生性別
+E  參觀學校
+F  預計入學年月
+G  家長姓名
+H  聯絡電話
+I  狀態          ← 預設「未處理」，老師手動改
+J  備註          ← 空白，老師聯絡後手動填
 ```
 
 ---
