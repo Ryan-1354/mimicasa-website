@@ -27,17 +27,24 @@ updateNavbar();
 const hamburger = document.getElementById('hamburger');
 const drawer    = document.getElementById('drawer');
 const drawerCloseBtn = document.getElementById('drawerClose');
+let drawerScrollY = 0;
 
 function openDrawer() {
+  drawerScrollY = window.scrollY;
+  document.body.style.position = 'fixed';
+  document.body.style.top = `-${drawerScrollY}px`;
+  document.body.style.width = '100%';
   drawer.classList.add('open');
   hamburger.classList.add('open');
-  document.body.style.overflow = 'hidden';
 }
 
 function closeDrawer() {
+  document.body.style.position = '';
+  document.body.style.top = '';
+  document.body.style.width = '';
+  window.scrollTo(0, drawerScrollY);
   drawer.classList.remove('open');
   hamburger.classList.remove('open');
-  document.body.style.overflow = '';
 }
 
 if (hamburger) {
