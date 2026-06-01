@@ -465,31 +465,13 @@
 
         <!-- 出生日期 -->
         <div class="form-row">
-          <span class="form-label form-label--plain">出生日期<span class="form-asterisk">*</span></span>
+          <label class="form-label" for="field-birthday">
+            <span class="form-label__text">出生日期</span>
+            <span class="form-asterisk">*</span>
+          </label>
           <div class="form-field-wrap">
-            <div class="field field--select field--custom-select">
-              <span class="custom-select__label select--empty">YYYY</span>
-              <select id="field-birthday-year" name="birthdayYear" required>
-                <option value="" disabled selected>YYYY</option>
-              </select>
-            </div>
-            <p class="form-error" hidden>此欄位為必填</p>
-          </div>
-          <div class="form-field-wrap">
-            <div class="field field--select field--custom-select">
-              <span class="custom-select__label select--empty">MM</span>
-              <select id="field-birthday-month" name="birthdayMonth" required>
-                <option value="" disabled selected>MM</option>
-              </select>
-            </div>
-            <p class="form-error" hidden>此欄位為必填</p>
-          </div>
-          <div class="form-field-wrap">
-            <div class="field field--select field--custom-select">
-              <span class="custom-select__label select--empty">DD</span>
-              <select id="field-birthday-day" name="birthdayDay" required>
-                <option value="" disabled selected>DD</option>
-              </select>
+            <div class="field field--date">
+              <input type="date" id="field-birthday" name="birthday" required>
             </div>
             <p class="form-error" hidden>此欄位為必填</p>
           </div>

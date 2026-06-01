@@ -147,6 +147,7 @@ function closeBookingDialog() {
     bookingDialog.close();
     document.body.style.overflow = '';
     bookingForm.reset();
+    document.getElementById('field-birthday')?.classList.add('date--empty');
     if (phoneInput) phoneInput.placeholder = '請輸入手機或市話';
     bookingForm.querySelectorAll('.field--error').forEach(el => el.classList.remove('field--error'));
     bookingForm.querySelectorAll('.form-error').forEach(el => { el.hidden = true; });
@@ -173,46 +174,29 @@ document.querySelectorAll('[data-open-booking]').forEach(btn => {
   btn.addEventListener('click', openBookingDialog);
 });
 
-// Birthday selects — populate year/month/day options
+// Birthday date range
 (function () {
-  const yearSel  = document.getElementById('field-birthday-year');
-  const monthSel = document.getElementById('field-birthday-month');
-  const daySel   = document.getElementById('field-birthday-day');
-  if (!yearSel) return;
+  const today   = new Date();
+  const minDate = new Date();
+  minDate.setFullYear(today.getFullYear() - 6);
+  const input = document.getElementById('field-birthday');
+  if (!input) return;
+  input.max = today.toISOString().split('T')[0];
+  input.min = minDate.toISOString().split('T')[0];
+  input.addEventListener('change', () => {
+    input.classList.toggle('date--empty', !input.value);
+  });
+  input.classList.add('date--empty');
+})();
 
-  const currentYear = new Date().getFullYear();
-
-  for (let y = currentYear; y >= currentYear - 6; y--) {
-    const opt = document.createElement('option');
-    opt.value = y; opt.textContent = y;
-    yearSel.appendChild(opt);
-  }
-
-  for (let m = 1; m <= 12; m++) {
-    const opt = document.createElement('option');
-    const v = String(m).padStart(2, '0');
-    opt.value = v; opt.textContent = v;
-    monthSel.appendChild(opt);
-  }
-
-  function updateDays() {
-    const y = parseInt(yearSel.value) || currentYear;
-    const m = parseInt(monthSel.value) || 1;
-    const maxDay = new Date(y, m, 0).getDate();
-    const prev = daySel.value;
-    while (daySel.options.length > 1) daySel.remove(1);
-    for (let d = 1; d <= maxDay; d++) {
-      const opt = document.createElement('option');
-      const v = String(d).padStart(2, '0');
-      opt.value = v; opt.textContent = v;
-      daySel.appendChild(opt);
-    }
-    if (prev && parseInt(prev) <= maxDay) daySel.value = prev;
-  }
-
-  updateDays();
-  yearSel.addEventListener('change', updateDays);
-  monthSel.addEventListener('change', updateDays);
+// Date field — click anywhere to open picker
+(function () {
+  const dateField = document.querySelector('.field--date');
+  const dateInput = document.getElementById('field-birthday');
+  if (!dateField || !dateInput) return;
+  dateField.addEventListener('click', () => {
+    try { dateInput.showPicker(); } catch (_) {}
+  });
 })();
 
 // Enroll year options
@@ -328,13 +312,10 @@ bookingForm.addEventListener('submit', async (e) => {
   submitBtn.textContent = '送出中…';
 
   const campus = bookingForm.school.value;
-  const bYear = bookingForm.birthdayYear.value;
-  const bMonth = bookingForm.birthdayMonth.value;
-  const bDay = bookingForm.birthdayDay.value;
   const payload = {
     timestamp:   new Date().toLocaleString('zh-TW'),
     childName:   bookingForm.childName.value,
-    birthday:    bYear && bMonth && bDay ? `${bYear}/${bMonth}/${bDay}` : '',
+    birthday:    bookingForm.birthday.value,
     gender:      bookingForm.gender.value,
     campus,
     enrollYear:  bookingForm.enrollYear.value,

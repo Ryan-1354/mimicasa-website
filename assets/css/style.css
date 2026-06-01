@@ -1187,6 +1187,7 @@ a.footer__info-item--link:hover { opacity: 0.7; }
   align-items: flex-start;
   gap: var(--sp-inset-md);
 }
+
 .form-label {
   display: flex;
   align-items: center;
