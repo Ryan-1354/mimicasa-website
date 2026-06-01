@@ -247,9 +247,47 @@ size/radius/pill  1000px
 網站主場景為手機，採用 mobile first 開發方式。
 先完成手機版，再用 media query 擴展到桌機。
 
-手機版    390px    主要開發目標
+手機版    375px    主要開發目標，精確還原 mobile mockup
 平板版    768px    media query 擴展
-桌機版    1024px+  media query 擴展
+桌機版    1024px+  media query 擴展，依照 desktop wireframe 排版
+```
+
+**Grid System**
+```
+桌機（1440px）
+  Columns   6
+  Margin    size/spacing/layout/2xl   120px
+  Gutter    size/spacing/inline/2xl   24px
+
+平板（768px）
+  Columns   4
+  Margin    size/spacing/layout/sm    24px
+  Gutter    size/spacing/inline/lg    16px
+
+手機（375px）
+  Columns   4
+  Margin    size/spacing/layout/xs    20px
+  Gutter    size/spacing/inline/md    12px
+```
+
+
+```
+請依照以下方式開發，採用 mobile first：
+
+設計稿參考：
+- Mobile：[Figma 連結或截圖]（主要開發目標，請精確還原）
+- Desktop：[Wireframe 截圖]（只需要符合排版結構，樣式沿用 mobile）
+
+開發順序：
+1. 先完成手機版（375px）
+2. 再用 media query 擴展到桌機（≥1024px）
+
+桌機版規則：
+- padding-x 改為 size/spacing/layout/2xl（120px）
+- 字級改用 tokens.json 的 desktop 數值
+- 單欄改多欄依照 wireframe
+
+其他規格請參考 CLAUDE.md 和 tokens.json。
 ```
 
 **桌機版排版規則（≥1024px）**

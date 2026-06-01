@@ -5,6 +5,8 @@ const navbar = document.getElementById('navbar');
 let lastScrollY = window.scrollY;
 
 function updateNavbar() {
+  if (document.body.style.position === 'fixed') return;
+
   const currentScrollY = window.scrollY;
 
   if (currentScrollY === 0) {
@@ -48,7 +50,7 @@ function closeDrawer() {
   document.body.style.position = '';
   document.body.style.top = '';
   document.body.style.width = '';
-  window.scrollTo(0, drawerScrollY);
+  window.scrollTo({ top: drawerScrollY, behavior: 'instant' });
   drawer.classList.remove('open');
   hamburger.classList.remove('open');
 }
@@ -157,7 +159,7 @@ function closeBookingDialog() {
     document.body.style.position = '';
     document.body.style.top = '';
     document.body.style.width = '';
-    window.scrollTo(0, bookingScrollY);
+    window.scrollTo({ top: bookingScrollY, behavior: 'instant' });
     bookingDialog.close();
     bookingForm.reset();
     document.getElementById('field-birthday')?.classList.add('date--empty');
