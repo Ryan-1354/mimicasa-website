@@ -1335,7 +1335,7 @@ a.footer__info-item--link:hover { opacity: 0.7; }
 .field--date {
   padding: 0;
   cursor: pointer;
-  display: block;
+  position: relative;
 }
 .field--date input[type="date"] {
   padding: var(--sp-inset-md) var(--sp-inset-lg);
@@ -1346,12 +1346,25 @@ a.footer__info-item--link:hover { opacity: 0.7; }
   box-sizing: border-box;
   min-height: 48px;
 }
+.date-placeholder {
+  position: absolute;
+  left: var(--sp-inset-lg);
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: var(--color-text-muted);
+  font-family: 'Noto Sans TC', sans-serif;
+  font-size: var(--fs-body);
+}
+.field--date input[type="date"].date--empty { color: transparent; }
+.field--date input[type="date"].date--empty:focus { color: var(--color-text-primary); }
+.field--date input[type="date"]:not(.date--empty) ~ .date-placeholder,
+.field--date input[type="date"]:focus ~ .date-placeholder { display: none; }
 .field--date input[type="date"]::-webkit-date-and-time-value {
   text-align: left;
   width: 100%;
   min-width: 0;
 }
-.field--date input[type="date"].date--empty { color: var(--color-text-tertiary); }
 .field--date input[type="date"]::-webkit-datetime-edit {
   color: inherit;
   padding: 0;
