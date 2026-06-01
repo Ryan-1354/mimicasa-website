@@ -136,16 +136,29 @@ const GAS_URLS = {
 const bookingDialog  = document.getElementById('booking-dialog');
 const dialogCloseBtn = document.getElementById('dialogClose');
 const bookingForm    = document.getElementById('booking-form');
+let bookingScrollY = 0;
+
+function preventDialogScroll(e) {
+  if (!bookingDialog.contains(e.target)) e.preventDefault();
+}
 
 function openBookingDialog() {
+  bookingScrollY = window.scrollY;
+  document.body.style.position = 'fixed';
+  document.body.style.top = `-${bookingScrollY}px`;
+  document.body.style.width = '100%';
+  document.addEventListener('touchmove', preventDialogScroll, { passive: false });
   bookingDialog.showModal();
-  document.body.style.overflow = 'hidden';
 }
 
 function closeBookingDialog() {
   function finish() {
+    document.removeEventListener('touchmove', preventDialogScroll);
+    document.body.style.position = '';
+    document.body.style.top = '';
+    document.body.style.width = '';
+    window.scrollTo(0, bookingScrollY);
     bookingDialog.close();
-    document.body.style.overflow = '';
     bookingForm.reset();
     document.getElementById('field-birthday')?.classList.add('date--empty');
     if (phoneInput) phoneInput.placeholder = '請輸入手機或市話';
@@ -171,7 +184,10 @@ bookingDialog.addEventListener('click', (e) => {
 });
 
 document.querySelectorAll('[data-open-booking]').forEach(btn => {
-  btn.addEventListener('click', openBookingDialog);
+  btn.addEventListener('click', () => {
+    if (drawer.contains(btn)) closeDrawer();
+    openBookingDialog();
+  });
 });
 
 // Birthday date range
