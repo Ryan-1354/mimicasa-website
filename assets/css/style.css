@@ -335,7 +335,7 @@ button {
   left: 0;
   right: 0;
   z-index: 500;
-  padding: 24px max(var(--sp-layout-2xl), calc((100% - 1200px) / 2));
+  padding: 24px max(var(--sp-layout-2xl), calc((100% - 1200px) / 2), env(safe-area-inset-right)) 24px max(var(--sp-layout-2xl), calc((100% - 1200px) / 2), env(safe-area-inset-left));
   transition: transform 0.3s ease, background-color 0.3s ease;
 }
 .navbar__inner {
@@ -501,7 +501,7 @@ button {
 }
 .hero__text {
   position: absolute;
-  left: min(8.33vw, 120px);
+  left: max(min(8.33vw, 120px), env(safe-area-inset-left));
   top: 57%;
   transform: translateY(-50%);
   z-index: 2;
