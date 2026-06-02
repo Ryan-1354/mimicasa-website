@@ -79,7 +79,7 @@ project/
   --color-text-inverse-accent:    #e0cfb9;
 
   --color-bg-default:  #ffffff;
-  --color-bg-section:  #fdfcf9;
+  --color-bg-section:  #fefbf8;
   --color-bg-dark:     #232d11;
   --color-bg-overlay:  rgba(41, 41, 41, 0.5);
 

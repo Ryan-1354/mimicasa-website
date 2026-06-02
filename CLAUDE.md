@@ -141,7 +141,7 @@ color/text/inverse-tertiary  #989898
 color/text/inverse-accent    #e0cfb9   footer 校區名稱
 
 color/bg/default             #ffffff
-color/bg/section             #fdfcf9
+color/bg/section             #fefbf8
 color/bg/dark                #232d11   footer / navbar scroll
 color/bg/overlay             #29292980 modal 遮罩
 
