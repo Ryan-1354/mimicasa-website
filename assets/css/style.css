@@ -135,7 +135,7 @@ button {
   --sp-layout-md:  40px;
   --sp-layout-lg:  44px;
   --sp-layout-xl:  80px;
-  --sp-layout-2xl: 120px;
+  --sp-layout-2xl: clamp(80px, 8.33vw, 120px);
 
   /* Radius */
   --r-xs:   4px;
@@ -165,8 +165,8 @@ button {
   }
 }
 
-/* Desktop ≥ 1440px */
-@media (min-width: 1440px) {
+/* Desktop ≥ 1280px */
+@media (min-width: 1280px) {
   :root {
     --fs-body:        18px;
     --fs-body-sm:     15px;
@@ -606,24 +606,26 @@ button {
   border-radius: var(--r-sm);
 }
 
-@media (min-width: 768px) and (max-width: 1023px) {
+@media (min-width: 768px) and (max-width: 1279px) {
   .hero__bg { object-position: 80% center; }
 }
-@media (min-width: 1024px) {
-  .hero__bg {
-    object-position: center;
-  }
+/* Philosophy 從平板起左右排列；平板 gutter 32px */
+@media (min-width: 768px) {
   .philosophy__inner {
     grid-template-columns: 349px 1fr;
-    gap: 64px;
+    gap: 32px;
   }
   .philosophy__content { gap: var(--sp-stack-3xl); }
-  .features__head       { margin-bottom: 64px; }
   .philosophy__img {
     width: 349px;
     height: 465px;
     object-fit: cover;
   }
+}
+@media (min-width: 1280px) {
+  .hero__bg { object-position: center; }
+  .features__head { margin-bottom: 64px; }
+  .philosophy__inner { gap: 64px; }
 }
 .philosophy__content {
   display: flex;
@@ -1035,7 +1037,7 @@ a.footer__info-item--link:hover { opacity: 0.7; }
    No hero — reserve space under the fixed navbar.
 ══════════════════════════════════════════════ */
 body.page--inner { padding-top: 88px; }
-@media (min-width: 1024px) {
+@media (min-width: 768px) {
   body.page--inner { padding-top: 96px; }
 }
 
@@ -1046,7 +1048,7 @@ body.page--inner { padding-top: 88px; }
 @media (min-width: 768px) {
   .about-section { padding: 64px var(--sp-layout-sm); }
 }
-@media (min-width: 1024px) {
+@media (min-width: 1280px) {
   .about-section {
     padding: var(--sp-layout-xl) max(var(--sp-layout-2xl), calc((100% - 1200px) / 2));
   }
@@ -1095,7 +1097,7 @@ body.page--inner { padding-top: 88px; }
   line-height: 1.5;
   color: var(--color-text-tertiary);
 }
-@media (min-width: 1024px) {
+@media (min-width: 1280px) {
   .page-header__desc { max-width: 720px; }
 }
 
@@ -1107,7 +1109,7 @@ body.page--inner { padding-top: 88px; }
   line-height: 1.5;
   color: var(--color-text-tertiary);
 }
-@media (min-width: 1024px) {
+@media (min-width: 1280px) {
   .about-lead { max-width: 720px; }
 }
 
@@ -1134,7 +1136,7 @@ body.page--inner { padding-top: 88px; }
 @media (min-width: 768px) {
   .commitment__grid { grid-template-columns: repeat(2, 1fr); }
 }
-@media (min-width: 1024px) {
+@media (min-width: 1280px) {
   .commitment__grid { grid-template-columns: repeat(3, 1fr); gap: var(--sp-stack-lg); }
 }
 
@@ -1185,7 +1187,7 @@ body.page--inner { padding-top: 88px; }
   display: flex;
   gap: var(--sp-inset-md);
 }
-@media (min-width: 1024px) {
+@media (min-width: 1280px) {
   .team__roster { max-width: 760px; }
 }
 
@@ -1432,19 +1434,9 @@ body.page--inner { padding-top: 88px; }
    RESPONSIVE
 ══════════════════════════════════════════════ */
 
-/* Tablet ≤ 1439px */
-@media (max-width: 1439px) {
-  :root { --sp-layout-2xl: 60px; }
-}
-
-/* Tablet narrow ≤ 1200px */
-@media (max-width: 1200px) {
-  .location__map   { flex: 0 0 420px; height: 420px; }
-}
-
-/* Tablet ≤ 1023px：漢堡選單啟動 */
-@media (max-width: 1023px) {
-  :root { --sp-layout-2xl: 40px; }
+/* Tablet 768–1279px：漢堡選單啟動 */
+@media (max-width: 1279px) {
+  :root { --sp-layout-2xl: 24px; }
 
   /* Navbar → 漢堡 */
   .navbar__nav            { display: none; }
@@ -1453,8 +1445,8 @@ body.page--inner { padding-top: 88px; }
 
   .features__grid        { grid-template-columns: repeat(2, 1fr); }
 
-  .location__body        { flex-direction: column; }
-  .location__map         { flex: none; width: 100%; height: 400px; }
+  /* Location 平板維持左右排列，地圖改為彈性寬度（gutter 沿用 32px） */
+  .location__map         { flex: 1 1 0; min-width: 0; height: 420px; }
 
   .footer__inner         { grid-template-columns: 1fr 1fr; }
   .footer__brand         { grid-column: 1 / -1; }
@@ -1478,8 +1470,9 @@ body.page--inner { padding-top: 88px; }
   /* Features */
   .features__grid         { grid-template-columns: 1fr; }
 
-  /* Location */
-  .location__map          { height: 280px; }
+  /* Location 手機才上下堆疊 */
+  .location__body         { flex-direction: column; }
+  .location__map          { flex: none; width: 100%; height: 280px; }
 
   /* Footer */
   .footer__inner          { grid-template-columns: 1fr; }

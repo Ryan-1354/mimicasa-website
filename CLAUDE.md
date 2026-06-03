@@ -204,9 +204,31 @@ line-height：logo 100%，h1–h4 120%，body 以下 150%
 
 ### 斷點
 ```
-phone    0px
-tablet   768px
-desktop  1440px
+phone    0px      預設（mobile first）
+tablet   768px    @media (min-width: 768px)
+desktop  1280px   @media (min-width: 1280px)
+```
+
+**Content max-width**
+```
+max-width: 1200px
+margin: 0 auto
+```
+
+**桌機 padding-x（clamp 動態調整）**
+```css
+@media (min-width: 1280px) {
+  .container {
+    padding-left:  clamp(80px, 8.33vw, 120px);
+    padding-right: clamp(80px, 8.33vw, 120px);
+  }
+}
+```
+
+```
+1280px 螢幕   padding ≈ 80px    內容寬度 1120px
+1440px 螢幕   padding = 120px   內容寬度 1200px（設計稿理想值）
+1920px 螢幕   padding = 120px   上限，不超過
 ```
 
 ### Spacing（從 Figma Variables 同步）
@@ -249,14 +271,14 @@ size/radius/pill  1000px
 
 手機版    375px    主要開發目標，精確還原 mobile mockup
 平板版    768px    media query 擴展
-桌機版    1024px+  media query 擴展，依照 desktop wireframe 排版
+桌機版    1280px+  media query 擴展，依照 desktop wireframe 排版
 ```
 
 **Grid System**
 ```
-桌機（1440px）
+桌機（1280px+）
   Columns   6
-  Margin    size/spacing/layout/2xl   120px
+  Margin    clamp(80px, 8.33vw, 120px)
   Gutter    size/spacing/inline/2xl   24px
 
 平板（768px）
@@ -287,21 +309,21 @@ size/radius/pill  1000px
 
 開發順序：
 1. 先完成手機版（375px）
-2. 再用 media query 擴展到桌機（≥1024px）
+2. 再用 media query 擴展到桌機（≥1280px）
 
 桌機版規則：
-- padding-x 改為 size/spacing/layout/2xl（120px）
+- padding-x 改為 clamp(80px, 8.33vw, 120px)
 - 字級改用 tokens.json 的 desktop 數值
 - 單欄改多欄依照 wireframe
 
 其他規格請參考 CLAUDE.md 和 tokens.json。
 ```
 
-**桌機版排版規則（≥1024px）**
+**桌機版排版規則（≥1280px）**
 ```
 單欄 → 雙欄或三欄
 字級  使用 tokens.json 的 desktop 數值
-padding-x  使用 size/spacing/layout/2xl（120px）
+padding-x  clamp(80px, 8.33vw, 120px)
 
 具體 Section：
   理念區塊    手機上下排列 → 桌機左右排列
@@ -317,7 +339,7 @@ Hero 背景圖
 
   <picture>
     <source media="(max-width: 767px)"  srcset="../assets/images/hero-mobile.jpg">
-    <source media="(max-width: 1023px)" srcset="../assets/images/hero-tablet.jpg">
+    <source media="(max-width: 1279px)" srcset="../assets/images/hero-tablet.jpg">
     <img src="../assets/images/hero-desktop.jpg" alt="校園環境">
   </picture>
 
@@ -410,7 +432,7 @@ hover      CSS opacity: 0.7
 active     白色底線 1px，標示當前頁面
 ```
 
-**≤1024px**：Nav-right 隱藏，顯示漢堡按鈕，全螢幕 Drawer
+**≤1279px**：Nav-right 隱藏，顯示漢堡按鈕，全螢幕 Drawer
 
 ---
 
@@ -781,7 +803,7 @@ input.min = minDate.toISOString().split('T')[0];
 **Modal 尺寸規格**
 
 ```
-桌機（≥1024px）
+桌機（≥1280px）
   寬度        560px
   最大寬度    90vw
   最大高度    90vh
@@ -789,7 +811,7 @@ input.min = minDate.toISOString().split('T')[0];
   圓角        size/radius/2xl（24px）四邊
   overflow    auto
 
-平板（768–1023px）
+平板（768–1279px）
   寬度        90vw
   最大高度    90vh
   位置        margin: 5vh auto auto
