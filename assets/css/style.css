@@ -1154,7 +1154,7 @@ a.footer__info-item--link:hover { opacity: 0.7; }
   gap: var(--sp-stack-2xl);
   padding: var(--sp-inset-xl);
   min-height: 0;
-  flex: 1;
+  flex: 1 1 auto;
 }
 
 .booking-dialog__header {
@@ -1170,7 +1170,7 @@ a.footer__info-item--link:hover { opacity: 0.7; }
   flex-direction: column;
   gap: var(--sp-stack-2xl);
   min-height: 0;
-  flex: 1;
+  flex: 1 1 auto;
   overflow-y: auto;
 }
 .booking-dialog__title {
