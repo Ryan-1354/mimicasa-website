@@ -135,6 +135,7 @@ color/text/primary           #292929
 color/text/secondary         #525252
 color/text/muted             #bdbdbd
 color/text/accent            #857765   卡片標題
+color/text/brand             #59702f
 color/text/inverse-primary   #ffffff
 color/text/inverse-secondary #bdbdbd
 color/text/inverse-tertiary  #989898

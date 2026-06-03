@@ -73,6 +73,7 @@ project/
   --color-text-secondary:         #525252;
   --color-text-muted:             #bdbdbd;
   --color-text-accent:            #857765;
+  --color-text-brand:             #59702f;
   --color-text-inverse-primary:   #ffffff;
   --color-text-inverse-secondary: #bdbdbd;
   --color-text-inverse-tertiary:  #989898;
