@@ -1068,7 +1068,7 @@ body.page--inner { padding-top: 88px; }
 .about-eyebrow__text {
   font-family: 'Noto Sans TC', sans-serif;
   font-weight: 400;
-  font-size: 13px;
+  font-size: var(--fs-body);
   line-height: 1.5;
   color: var(--color-text-brand);
 }
