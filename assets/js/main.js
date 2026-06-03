@@ -3,6 +3,8 @@
 ══════════════════════════════════════════════ */
 const navbar = document.getElementById('navbar');
 let lastScrollY = window.scrollY;
+// Inner pages have no hero — navbar must stay solid (dark) even at the top.
+const solidNav = document.body.classList.contains('page--inner');
 
 function updateNavbar() {
   if (document.body.style.position === 'fixed') return;
@@ -10,7 +12,9 @@ function updateNavbar() {
   const currentScrollY = window.scrollY;
 
   if (currentScrollY === 0) {
-    navbar.className = 'navbar navbar--transparent navbar--visible';
+    navbar.className = solidNav
+      ? 'navbar navbar--dark navbar--visible'
+      : 'navbar navbar--transparent navbar--visible';
   } else if (currentScrollY < lastScrollY) {
     navbar.className = 'navbar navbar--dark navbar--visible';
   } else {
@@ -435,5 +439,77 @@ bookingForm.addEventListener('submit', async (e) => {
         label.classList.add('select--empty');
       }
     });
+  });
+})();
+
+/* ══════════════════════════════════════════════
+   TEAM ROSTER + DRAWER (about page)
+══════════════════════════════════════════════ */
+(function () {
+  const teamSection = document.getElementById('team');
+  const teamDrawer  = document.getElementById('teamDrawer');
+  if (!teamSection || !teamDrawer) return;
+
+  // Tab switching (咪咪 / 家田)
+  function switchTeam(campus) {
+    teamSection.querySelectorAll('.team__list').forEach(list => {
+      list.classList.toggle('is-active', list.dataset.campus === campus);
+    });
+    teamSection.querySelectorAll('.team__tabs .tab').forEach(tab => {
+      tab.classList.toggle('tab--active', tab.dataset.campus === campus);
+    });
+  }
+  teamSection.querySelectorAll('.team__tabs .tab').forEach(tab => {
+    tab.addEventListener('click', () => switchTeam(tab.dataset.campus));
+  });
+
+  // Drawer
+  const bodyEl   = teamDrawer.querySelector('.team-drawer__body');
+  const campusEl = teamDrawer.querySelector('.team-drawer__campus');
+  const nameEl   = teamDrawer.querySelector('.team-drawer__name');
+  const titleEl  = teamDrawer.querySelector('.team-drawer__title');
+  const roleEl   = teamDrawer.querySelector('.team-drawer__role');
+  const bioEl    = teamDrawer.querySelector('.team-drawer__bio');
+  const CAMPUS_NAMES = { mimi: '咪咪幼兒園', casa: '家田幼兒園' };
+  let teamScrollY = 0;
+
+  function openTeamDrawer(trigger) {
+    const member = trigger.closest('.member');
+    const campus = trigger.closest('.team__list')?.dataset.campus;
+    campusEl.textContent = CAMPUS_NAMES[campus] || '';
+    nameEl.textContent  = trigger.querySelector('.member__name')?.textContent.trim() || '';
+    titleEl.textContent = trigger.querySelector('.member__title')?.textContent.trim() || '';
+    roleEl.textContent  = trigger.querySelector('.member__role')?.textContent.trim() || '';
+    bioEl.innerHTML = '';
+    const tpl = member?.querySelector('.member__bio');
+    if (tpl) bioEl.appendChild(tpl.content.cloneNode(true));
+
+    teamScrollY = window.scrollY;
+    document.body.style.position = 'fixed';
+    document.body.style.top = `-${teamScrollY}px`;
+    document.body.style.width = '100%';
+    teamDrawer.classList.add('is-open');
+    teamDrawer.setAttribute('aria-hidden', 'false');
+    bodyEl.scrollTop = 0;
+  }
+
+  function closeTeamDrawer() {
+    if (!teamDrawer.classList.contains('is-open')) return;
+    teamDrawer.classList.remove('is-open');
+    teamDrawer.setAttribute('aria-hidden', 'true');
+    document.body.style.position = '';
+    document.body.style.top = '';
+    document.body.style.width = '';
+    window.scrollTo({ top: teamScrollY, behavior: 'instant' });
+  }
+
+  teamSection.querySelectorAll('.member__trigger').forEach(btn => {
+    btn.addEventListener('click', () => openTeamDrawer(btn));
+  });
+  teamDrawer.querySelectorAll('[data-drawer-close]').forEach(el => {
+    el.addEventListener('click', closeTeamDrawer);
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeTeamDrawer();
   });
 })();
