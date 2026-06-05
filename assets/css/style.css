@@ -2334,6 +2334,9 @@ body.page--inner { padding-top: 88px; }
 .toc-sheet__close:active { transform: scale(0.94); }
 .toc-sheet__list {
   list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-stack-2xl);
   padding: 0 var(--sp-layout-xs);
 }
 .toc-sheet__list a {
