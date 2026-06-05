@@ -607,10 +607,21 @@ bookingForm.addEventListener('submit', async (e) => {
     else if (e.key === 'ArrowRight') next();
   });
 
-  // Swipe (touch)
+  // Swipe (touch) — ignore multi-touch gestures (pinch-zoom) so they don't
+  // get mistaken for a swipe and jump to another image.
   let startX = 0;
-  lb.addEventListener('touchstart', (e) => { startX = e.changedTouches[0].clientX; }, { passive: true });
+  let pinching = false;
+  lb.addEventListener('touchstart', (e) => {
+    if (e.touches.length > 1) { pinching = true; return; }
+    pinching = false;
+    startX = e.changedTouches[0].clientX;
+  }, { passive: true });
+  lb.addEventListener('touchmove', (e) => {
+    if (e.touches.length > 1) pinching = true;
+  }, { passive: true });
   lb.addEventListener('touchend', (e) => {
+    // Skip if this was a pinch, or if fingers are still on screen (mid-pinch).
+    if (pinching || e.touches.length > 0) return;
     const dx = e.changedTouches[0].clientX - startX;
     if (Math.abs(dx) > 40 && gallery.length > 1) { dx > 0 ? prev() : next(); }
   }, { passive: true });
