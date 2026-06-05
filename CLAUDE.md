@@ -271,7 +271,7 @@ size/radius/pill  1000px
 
 手機版    375px    主要開發目標，精確還原 mobile mockup
 平板版    768px    media query 擴展
-桌機版    1280px+  media query 擴展，依照 desktop wireframe 排版
+桌機版    1024px+  media query 擴展，依照 desktop wireframe 排版
 ```
 
 **Grid System**
@@ -309,21 +309,21 @@ size/radius/pill  1000px
 
 開發順序：
 1. 先完成手機版（375px）
-2. 再用 media query 擴展到桌機（≥1280px）
+2. 再用 media query 擴展到桌機（≥1024px）
 
 桌機版規則：
-- padding-x 改為 clamp(80px, 8.33vw, 120px)
+- padding-x 改為 size/spacing/layout/2xl（120px）
 - 字級改用 tokens.json 的 desktop 數值
 - 單欄改多欄依照 wireframe
 
 其他規格請參考 CLAUDE.md 和 tokens.json。
 ```
 
-**桌機版排版規則（≥1280px）**
+**桌機版排版規則（≥1024px）**
 ```
 單欄 → 雙欄或三欄
 字級  使用 tokens.json 的 desktop 數值
-padding-x  clamp(80px, 8.33vw, 120px)
+padding-x  使用 size/spacing/layout/2xl（120px）
 
 具體 Section：
   理念區塊    手機上下排列 → 桌機左右排列
@@ -339,7 +339,7 @@ Hero 背景圖
 
   <picture>
     <source media="(max-width: 767px)"  srcset="../assets/images/hero-mobile.jpg">
-    <source media="(max-width: 1279px)" srcset="../assets/images/hero-tablet.jpg">
+    <source media="(max-width: 1023px)" srcset="../assets/images/hero-tablet.jpg">
     <img src="../assets/images/hero-desktop.jpg" alt="校園環境">
   </picture>
 
@@ -432,7 +432,7 @@ hover      CSS opacity: 0.7
 active     白色底線 1px，標示當前頁面
 ```
 
-**≤1279px**：Nav-right 隱藏，顯示漢堡按鈕，全螢幕 Drawer
+**≤1024px**：Nav-right 隱藏，顯示漢堡按鈕，全螢幕 Drawer
 
 ---
 
@@ -474,6 +474,60 @@ CTA 按鈕置底置中：「立即預約參觀」→ 點擊開啟報名參觀 Mo
   transform: scale(0.97);
   box-shadow: none;
 }
+```
+
+---
+
+### 教學特色圖片 Lightbox 規格
+
+**Fullscreen 按鈕**
+```
+手機 / 平板   顯示於圖片組右上角
+桌機          隱藏，圖片 hover 時 cursor: pointer，點擊開啟 lightbox
+
+尺寸          44×44px
+icon          20×20px
+背景          rgba(255,255,255,0.75)
+border-radius size/radius/sm（8px）
+位置          右上角，margin 8px
+```
+
+**Lightbox 樣式**
+```
+背景          rgba(0,0,0,0.92)
+圖片          置中，object-fit: contain，完整顯示不裁切
+
+左上角        1/N 計數器（白色，body-small）
+右上角        × 關閉按鈕，白色，44×44px
+
+左右控制箭頭
+  位置        圖片兩側垂直置中
+  尺寸        44×44px
+  樣式        白色箭頭
+
+底部 dots
+  可點擊      點擊跳到對應圖片
+  active      白色實心
+  inactive    白色半透明
+
+關閉方式
+  × 按鈕
+  點擊圖片外黑色區域
+  ESC 鍵
+  左右滑動（觸控裝置）
+```
+
+**Icon Btn Token（從 Figma Variables 同步）**
+```
+transparent
+  hover       color/grey/50    #ffffff
+  icon        color/grey/950   #292929
+
+filled
+  default     color/grey/50    #ffffff
+  hover       color/grey/200   #dcdcdc
+  icon-light  color/grey/50    #ffffff
+  icon-brand  color/green/900  #59702f
 ```
 
 ---
@@ -803,7 +857,7 @@ input.min = minDate.toISOString().split('T')[0];
 **Modal 尺寸規格**
 
 ```
-桌機（≥1280px）
+桌機（≥1024px）
   寬度        560px
   最大寬度    90vw
   最大高度    90vh
@@ -811,7 +865,7 @@ input.min = minDate.toISOString().split('T')[0];
   圓角        size/radius/2xl（24px）四邊
   overflow    auto
 
-平板（768–1279px）
+平板（768–1023px）
   寬度        90vw
   最大高度    90vh
   位置        margin: 5vh auto auto
