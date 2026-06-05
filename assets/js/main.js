@@ -754,10 +754,11 @@ bookingForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       const id = a.getAttribute('href').slice(1);
       const fromY = tocScrollY;   // where we were before the sheet opened
-      closeSheet();               // unlocks + restores scroll to fromY (instant)
-      // Run synchronously so the smooth scroll starts from the restored
-      // position → correct direction (not from the top).
-      scrollToFeature(id, fromY);
+      closeSheet();
+      // Instant jump: the position:fixed scroll-lock resets the page to the top
+      // on unlock, so a smooth scroll would animate downward from there. Jumping
+      // instantly avoids any wrong-direction feel.
+      scrollToFeature(id, fromY, 'instant');
     });
   });
   document.addEventListener('keydown', (e) => {
