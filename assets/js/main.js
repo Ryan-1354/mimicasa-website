@@ -668,15 +668,18 @@ bookingForm.addEventListener('submit', async (e) => {
   // Direction-aware anchor scroll:
   //   scroll down → navbar hides, only the anchor bar occludes the top
   //   scroll up   → navbar reappears, so navbar + anchor bar both occlude
-  function scrollToFeature(id) {
+  function scrollToFeature(id, fromY) {
     const el = document.getElementById(id);
     if (!el) return;
-    const rectTop  = el.getBoundingClientRect().top;
-    const goingUp  = rectTop < 0;
+    // Absolute document position — independent of current (maybe not-yet-
+    // restored) scroll. Direction is judged against fromY when provided.
+    const absTop   = el.getBoundingClientRect().top + window.scrollY;
+    const ref      = (fromY == null) ? window.scrollY : fromY;
+    const goingUp  = absTop < ref;
     const navH     = navbarEl ? navbarEl.offsetHeight : 0;
     const anchorH  = (mq.matches && featureNav) ? featureNav.offsetHeight : 0;
     const offset   = goingUp ? (navH + anchorH) : anchorH;
-    const top = Math.max(0, window.scrollY + rectTop - offset);
+    const top = Math.max(0, absTop - offset);
     window.scrollTo({ top, behavior: 'smooth' });
 
     // Drive navbar / anchor-bar explicitly — mobile smooth-scroll fires scroll
@@ -732,8 +735,9 @@ bookingForm.addEventListener('submit', async (e) => {
     a.addEventListener('click', (e) => {
       e.preventDefault();
       const id = a.getAttribute('href').slice(1);
+      const fromY = tocScrollY;   // where we were before the sheet opened
       closeSheet();
-      requestAnimationFrame(() => scrollToFeature(id));
+      requestAnimationFrame(() => scrollToFeature(id, fromY));
     });
   });
   document.addEventListener('keydown', (e) => {
