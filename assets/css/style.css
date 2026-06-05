@@ -2219,14 +2219,13 @@ body.page--inner { padding-top: 88px; }
     font-weight: 500;
     font-size: var(--fs-label);
     letter-spacing: 0.04em;
-    color: var(--color-text-muted);
+    color: var(--color-text-primary);
     padding-bottom: 4px;
     border-bottom: 2px solid transparent;
-    transition: color 0.2s ease, border-color 0.2s ease;
+    transition: border-color 0.2s ease;
   }
-  .feature-nav__link:hover { color: var(--color-text-secondary); }
+  /* 同色字，只用底線標示 active */
   .feature-nav__link.is-active {
-    color: var(--color-text-primary);
     border-bottom-color: var(--color-action-primary-bg);
   }
   .feature-nav__num { margin-right: 6px; }
