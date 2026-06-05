@@ -1917,7 +1917,7 @@ body.page--inner { padding-top: 88px; }
 }
 
 /* ── Media (image groups) ── */
-.feature__media { width: 100%; }
+.feature__media { width: 100%; order: 2; }   /* 手機/平板：文字在上、圖在下 */
 .feature__row { display: grid; gap: 16px; }
 .feature__pic {
   position: relative;
@@ -2075,6 +2075,7 @@ body.page--inner { padding-top: 88px; }
     gap: 64px;
     align-items: center;
   }
+  .feature__media { order: 0; }   /* 桌機回到左右兩欄交錯 */
   .feature--image-right .feature__media { order: 2; }
 }
 

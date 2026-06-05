@@ -683,14 +683,8 @@ bookingForm.addEventListener('submit', async (e) => {
     const goingUp  = absTop < ref;
     const navH     = navbarEl ? navbarEl.offsetHeight : 0;
     const anchorH  = (desktop && featureNav) ? featureNav.offsetHeight : 0;
-    // Tablet/mobile: leave ~30% of the section image peeking above the title so
-    // users link the photos to this feature (not mistake the next one's).
-    let peek = 0;
-    if (!desktop) {
-      const media = el.querySelector('.feature__media');
-      peek = media ? Math.round(media.offsetHeight * 0.3) : 24;
-    }
-    const offset = (goingUp ? (navH + anchorH) : anchorH) + peek;
+    const gap      = desktop ? 0 : 24;   // breathing room above the title
+    const offset   = (goingUp ? (navH + anchorH) : anchorH) + gap;
     const top = Math.max(0, absTop - offset);
     window.scrollTo({ top, behavior: behavior || 'smooth' });
 
