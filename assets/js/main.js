@@ -754,8 +754,10 @@ bookingForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       const id = a.getAttribute('href').slice(1);
       const fromY = tocScrollY;   // where we were before the sheet opened
-      closeSheet();
-      requestAnimationFrame(() => scrollToFeature(id, fromY));
+      closeSheet();               // unlocks + restores scroll to fromY (instant)
+      // Run synchronously so the smooth scroll starts from the restored
+      // position → correct direction (not from the top).
+      scrollToFeature(id, fromY);
     });
   });
   document.addEventListener('keydown', (e) => {
