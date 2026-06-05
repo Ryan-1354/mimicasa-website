@@ -513,3 +513,215 @@ bookingForm.addEventListener('submit', async (e) => {
     if (e.key === 'Escape') closeTeamDrawer();
   });
 })();
+
+/* ══════════════════════════════════════════════
+   LIGHTBOX (features page)
+══════════════════════════════════════════════ */
+(function () {
+  const lb = document.getElementById('lightbox');
+  if (!lb) return;
+
+  const imgEl   = document.getElementById('lightboxImg');
+  const curEl   = document.getElementById('lbCurrent');
+  const totalEl = document.getElementById('lbTotal');
+  const dotsEl  = document.getElementById('lightboxDots');
+  const prevBtn = lb.querySelector('[data-lb-prev]');
+  const nextBtn = lb.querySelector('[data-lb-next]');
+  let gallery = [];
+  let idx = 0;
+  let lbScrollY = 0;
+
+  function render() {
+    const item = gallery[idx];
+    if (!item) return;
+    imgEl.src = item.src;
+    imgEl.alt = item.alt;
+    curEl.textContent = idx + 1;
+    totalEl.textContent = gallery.length;
+    dotsEl.querySelectorAll('.lightbox__dot').forEach((d, i) => {
+      d.classList.toggle('is-active', i === idx);
+    });
+    if (prevBtn) prevBtn.disabled = idx === 0;
+    if (nextBtn) nextBtn.disabled = idx === gallery.length - 1;
+  }
+
+  function openLightbox(items, start) {
+    gallery = items;
+    idx = start;
+    dotsEl.innerHTML = '';
+    items.forEach((_, i) => {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'lightbox__dot';
+      b.setAttribute('aria-label', `第 ${i + 1} 張`);
+      b.addEventListener('click', () => { idx = i; render(); });
+      dotsEl.appendChild(b);
+    });
+    lb.classList.toggle('lightbox--single', items.length <= 1);
+
+    lbScrollY = window.scrollY;
+    document.body.style.position = 'fixed';
+    document.body.style.top = `-${lbScrollY}px`;
+    document.body.style.width = '100%';
+    lb.classList.add('is-open');
+    lb.setAttribute('aria-hidden', 'false');
+    render();
+  }
+
+  function closeLightbox() {
+    if (!lb.classList.contains('is-open')) return;
+    lb.classList.remove('is-open');
+    lb.setAttribute('aria-hidden', 'true');
+    document.body.style.position = '';
+    document.body.style.top = '';
+    document.body.style.width = '';
+    window.scrollTo({ top: lbScrollY, behavior: 'instant' });
+  }
+
+  function prev() { if (idx > 0) { idx--; render(); } }
+  function next() { if (idx < gallery.length - 1) { idx++; render(); } }
+
+  // Each feature media is its own gallery
+  document.querySelectorAll('.feature__media').forEach(media => {
+    const pics  = [...media.querySelectorAll('.feature__pic')];
+    const items = pics.map(p => ({
+      src: p.dataset.lbSrc,
+      alt: p.querySelector('img')?.alt || '',
+    }));
+    pics.forEach((p, i) => p.addEventListener('click', () => openLightbox(items, i)));
+  });
+
+  lb.querySelectorAll('[data-lb-close]').forEach(el => el.addEventListener('click', closeLightbox));
+  lb.querySelector('[data-lb-prev]')?.addEventListener('click', prev);
+  lb.querySelector('[data-lb-next]')?.addEventListener('click', next);
+  // Click anywhere that isn't the image or a control closes the lightbox
+  lb.addEventListener('click', (e) => {
+    if (e.target.closest('.lightbox__img, .lightbox__nav, .lightbox__dot')) return;
+    closeLightbox();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (!lb.classList.contains('is-open')) return;
+    if (e.key === 'Escape') closeLightbox();
+    else if (e.key === 'ArrowLeft') prev();
+    else if (e.key === 'ArrowRight') next();
+  });
+
+  // Swipe (touch)
+  let startX = 0;
+  lb.addEventListener('touchstart', (e) => { startX = e.changedTouches[0].clientX; }, { passive: true });
+  lb.addEventListener('touchend', (e) => {
+    const dx = e.changedTouches[0].clientX - startX;
+    if (Math.abs(dx) > 40 && gallery.length > 1) { dx > 0 ? prev() : next(); }
+  }, { passive: true });
+})();
+
+/* ══════════════════════════════════════════════
+   FEATURE NAV / TOC — 目錄 + scroll-spy
+══════════════════════════════════════════════ */
+(function () {
+  const sections = [...document.querySelectorAll('.feature[id]')];
+  if (!sections.length) return;
+  const links = [...document.querySelectorAll('[data-toc]')];
+
+  // Scroll-spy: highlight the section near the upper-middle of the viewport
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id;
+        links.forEach(l => l.classList.toggle('is-active', l.dataset.toc === id));
+      }
+    });
+  }, { rootMargin: '-40% 0px -55% 0px', threshold: 0 });
+  sections.forEach(s => observer.observe(s));
+
+  const navbarEl   = document.getElementById('navbar');
+  const featureNav = document.querySelector('.feature-nav');
+  const mq = window.matchMedia('(min-width: 1280px)');
+
+  // Desktop anchor bar: stays visible; slides to top when navbar hides,
+  // back under the navbar when it reappears.
+  if (navbarEl && featureNav) {
+    const syncFeatureNav = () => {
+      if (mq.matches) {
+        const navH = navbarEl.offsetHeight;
+        featureNav.style.setProperty('--nav-h', navH + 'px');
+        document.body.style.paddingTop = (navH + featureNav.offsetHeight) + 'px';
+        document.documentElement.style.setProperty('--anchor-h', featureNav.offsetHeight + 'px');
+        featureNav.classList.toggle('is-top', navbarEl.classList.contains('navbar--hidden'));
+      } else {
+        document.body.style.paddingTop = '';
+        featureNav.classList.remove('is-top');
+        featureNav.style.removeProperty('--nav-h');
+        document.documentElement.style.removeProperty('--anchor-h');
+      }
+    };
+    window.addEventListener('scroll', syncFeatureNav, { passive: true });
+    window.addEventListener('resize', syncFeatureNav);
+    syncFeatureNav();
+  }
+
+  // Direction-aware anchor scroll:
+  //   scroll down → navbar hides, only the anchor bar occludes the top
+  //   scroll up   → navbar reappears, so navbar + anchor bar both occlude
+  function scrollToFeature(id) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const rectTop  = el.getBoundingClientRect().top;
+    const goingUp  = rectTop < 0;
+    const navH     = navbarEl ? navbarEl.offsetHeight : 0;
+    const anchorH  = (mq.matches && featureNav) ? featureNav.offsetHeight : 0;
+    const offset   = goingUp ? (navH + anchorH) : anchorH;
+    const top = Math.max(0, window.scrollY + rectTop - offset);
+    window.scrollTo({ top, behavior: 'smooth' });
+  }
+
+  // Desktop anchor bar links
+  document.querySelectorAll('.feature-nav__link').forEach(a => {
+    a.addEventListener('click', (e) => {
+      e.preventDefault();
+      scrollToFeature(a.getAttribute('href').slice(1));
+    });
+  });
+
+  // Mobile/tablet floating 目錄 button → bottom-sheet
+  const toggle = document.getElementById('featureTocToggle');
+  const sheet  = document.getElementById('tocSheet');
+  if (!toggle || !sheet) return;
+  let tocScrollY = 0;
+
+  function openSheet() {
+    tocScrollY = window.scrollY;
+    document.body.style.position = 'fixed';
+    document.body.style.top = `-${tocScrollY}px`;
+    document.body.style.width = '100%';
+    sheet.classList.add('is-open');
+    sheet.setAttribute('aria-hidden', 'false');
+    toggle.setAttribute('aria-expanded', 'true');
+  }
+  function closeSheet() {
+    if (!sheet.classList.contains('is-open')) return;
+    sheet.classList.remove('is-open');
+    sheet.setAttribute('aria-hidden', 'true');
+    toggle.setAttribute('aria-expanded', 'false');
+    document.body.style.position = '';
+    document.body.style.top = '';
+    document.body.style.width = '';
+    window.scrollTo({ top: tocScrollY, behavior: 'instant' });
+  }
+
+  toggle.addEventListener('click', openSheet);
+  sheet.querySelectorAll('[data-toc-close]').forEach(el => el.addEventListener('click', closeSheet));
+  // Anchor links: unlock scroll first, then scroll with the right offset
+  sheet.querySelectorAll('.toc-sheet__list a').forEach(a => {
+    a.addEventListener('click', (e) => {
+      e.preventDefault();
+      const id = a.getAttribute('href').slice(1);
+      closeSheet();
+      requestAnimationFrame(() => scrollToFeature(id));
+    });
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeSheet();
+  });
+})();
