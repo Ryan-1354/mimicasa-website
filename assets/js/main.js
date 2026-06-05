@@ -668,7 +668,7 @@ bookingForm.addEventListener('submit', async (e) => {
   // Direction-aware anchor scroll:
   //   scroll down → navbar hides, only the anchor bar occludes the top
   //   scroll up   → navbar reappears, so navbar + anchor bar both occlude
-  function scrollToFeature(id, fromY) {
+  function scrollToFeature(id, fromY, behavior) {
     const el = document.getElementById(id);
     if (!el) return;
     // Absolute document position — independent of current (maybe not-yet-
@@ -680,7 +680,7 @@ bookingForm.addEventListener('submit', async (e) => {
     const anchorH  = (mq.matches && featureNav) ? featureNav.offsetHeight : 0;
     const offset   = goingUp ? (navH + anchorH) : anchorH;
     const top = Math.max(0, absTop - offset);
-    window.scrollTo({ top, behavior: 'smooth' });
+    window.scrollTo({ top, behavior: behavior || 'smooth' });
 
     // Drive navbar / anchor-bar explicitly — mobile smooth-scroll fires scroll
     // events unreliably, so don't depend on the scroll handler here.
@@ -701,6 +701,18 @@ bookingForm.addEventListener('submit', async (e) => {
       scrollToFeature(a.getAttribute('href').slice(1));
     });
   });
+
+  // Cross-page landing (e.g. homepage feature cards → features.html#feature-N):
+  // re-position under the navbar/anchor bar once layout has settled.
+  if (location.hash) {
+    const hashId = location.hash.slice(1);
+    const hashTarget = document.getElementById(hashId);
+    if (hashTarget && hashTarget.classList.contains('feature')) {
+      window.addEventListener('load', () => {
+        requestAnimationFrame(() => scrollToFeature(hashId, 0, 'auto'));
+      });
+    }
+  }
 
   // Mobile/tablet floating 目錄 button → bottom-sheet
   const toggle = document.getElementById('featureTocToggle');
