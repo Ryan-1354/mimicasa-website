@@ -678,6 +678,17 @@ bookingForm.addEventListener('submit', async (e) => {
     const offset   = goingUp ? (navH + anchorH) : anchorH;
     const top = Math.max(0, window.scrollY + rectTop - offset);
     window.scrollTo({ top, behavior: 'smooth' });
+
+    // Drive navbar / anchor-bar explicitly — mobile smooth-scroll fires scroll
+    // events unreliably, so don't depend on the scroll handler here.
+    if (navbarEl) {
+      navbarEl.className = goingUp
+        ? 'navbar navbar--dark navbar--visible'
+        : 'navbar navbar--dark navbar--hidden';
+    }
+    if (mq.matches && featureNav) {
+      featureNav.classList.toggle('is-top', !goingUp);
+    }
   }
 
   // Desktop anchor bar links
