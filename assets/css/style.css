@@ -2224,7 +2224,7 @@ body.page--inner { padding-top: 88px; }
     border-bottom: 2px solid transparent;
     transition: color 0.2s ease, border-color 0.2s ease;
   }
-  .feature-nav__link:hover { color: var(--color-text-primary); }
+  .feature-nav__link:hover { color: var(--color-text-secondary); }
   .feature-nav__link.is-active {
     color: var(--color-text-primary);
     border-bottom-color: var(--color-action-primary-bg);
@@ -2244,13 +2244,13 @@ body.page--inner { padding-top: 88px; }
   display: inline-flex;
   align-items: center;
   gap: 7px;
-  padding: var(--sp-inset-sm) var(--sp-inset-lg);
+  padding: var(--sp-inset-md) var(--sp-inset-lg);
   background: var(--color-bg-dark);
   color: var(--color-text-inverse-primary);
   border-radius: var(--r-pill);
   font-family: 'Noto Sans TC', sans-serif;
   font-weight: 500;
-  font-size: 14px;
+  font-size: var(--fs-label);   /* 手機 14 / 平板 15，跟隨 label token */
   letter-spacing: 0.04em;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
 }

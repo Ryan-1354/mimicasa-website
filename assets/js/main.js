@@ -671,14 +671,26 @@ bookingForm.addEventListener('submit', async (e) => {
   function scrollToFeature(id, fromY, behavior) {
     const el = document.getElementById(id);
     if (!el) return;
+    const desktop = mq.matches;
+    // Desktop (2-col) lands at the section top — title is already beside the
+    // image. Tablet/mobile (stacked, image on top) land on the title so the
+    // user sees the heading and feels they arrived at the right place.
+    const target = desktop ? el : (el.querySelector('.feature__head') || el);
     // Absolute document position — independent of current (maybe not-yet-
     // restored) scroll. Direction is judged against fromY when provided.
-    const absTop   = el.getBoundingClientRect().top + window.scrollY;
+    const absTop   = target.getBoundingClientRect().top + window.scrollY;
     const ref      = (fromY == null) ? window.scrollY : fromY;
     const goingUp  = absTop < ref;
     const navH     = navbarEl ? navbarEl.offsetHeight : 0;
-    const anchorH  = (mq.matches && featureNav) ? featureNav.offsetHeight : 0;
-    const offset   = goingUp ? (navH + anchorH) : anchorH;
+    const anchorH  = (desktop && featureNav) ? featureNav.offsetHeight : 0;
+    // Tablet/mobile: leave ~30% of the section image peeking above the title so
+    // users link the photos to this feature (not mistake the next one's).
+    let peek = 0;
+    if (!desktop) {
+      const media = el.querySelector('.feature__media');
+      peek = media ? Math.round(media.offsetHeight * 0.3) : 24;
+    }
+    const offset = (goingUp ? (navH + anchorH) : anchorH) + peek;
     const top = Math.max(0, absTop - offset);
     window.scrollTo({ top, behavior: behavior || 'smooth' });
 
