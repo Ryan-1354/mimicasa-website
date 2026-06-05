@@ -1097,6 +1097,11 @@ body.page--inner { padding-top: 88px; }
   line-height: 1.5;
   color: var(--color-text-tertiary);
 }
+.page-header__desc-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-stack-sm);
+}
 @media (min-width: 1280px) {
   .page-header__desc { max-width: 720px; }
 }
