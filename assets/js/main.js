@@ -624,16 +624,20 @@ bookingForm.addEventListener('submit', async (e) => {
   if (!sections.length) return;
   const links = [...document.querySelectorAll('[data-toc]')];
 
-  // Scroll-spy: highlight the section near the upper-middle of the viewport
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const id = entry.target.id;
-        links.forEach(l => l.classList.toggle('is-active', l.dataset.toc === id));
-      }
-    });
-  }, { rootMargin: '-40% 0px -55% 0px', threshold: 0 });
-  sections.forEach(s => observer.observe(s));
+  // Scroll-spy: the active section is the last one whose top has passed the
+  // 40%-viewport line. Deterministic (one active at a time) and robust against
+  // lazy-loaded images shifting layout.
+  function updateActiveLink() {
+    const line = window.innerHeight * 0.4;
+    let activeId = sections[0].id;
+    for (const s of sections) {
+      if (s.getBoundingClientRect().top <= line) activeId = s.id;
+    }
+    links.forEach(l => l.classList.toggle('is-active', l.dataset.toc === activeId));
+  }
+  window.addEventListener('scroll', updateActiveLink, { passive: true });
+  window.addEventListener('resize', updateActiveLink);
+  updateActiveLink();
 
   const navbarEl   = document.getElementById('navbar');
   const featureNav = document.querySelector('.feature-nav');
