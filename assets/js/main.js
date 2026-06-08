@@ -17,6 +17,72 @@
 })();
 
 /* ══════════════════════════════════════════════
+   SLIDING UNDERLINE — active indicator glides (left/width) between items
+   Used by: navbar links, philosophy anchor nav, and the 兩校 tab bars.
+══════════════════════════════════════════════ */
+const slidingUnderlines = [];
+
+function createUnderline(container, opts, getActive) {
+  if (!container) return null;
+  const o = opts || {};
+  const h = o.height || 2;
+  const bar = document.createElement('span');
+  bar.className = 'slide-bar';
+  bar.style.height = h + 'px';
+  bar.style.background = o.color || '#ffffff';
+  if (o.radius) bar.style.borderRadius = o.radius;
+  container.appendChild(bar);
+
+  function move(el, animate) {
+    if (!el) { bar.style.opacity = '0'; return; }
+    if (animate === false) bar.style.transition = 'none';
+    bar.style.left = el.offsetLeft + 'px';
+    bar.style.width = el.offsetWidth + 'px';
+    bar.style.top = (el.offsetTop + el.offsetHeight - h + (o.offsetY || 0)) + 'px';
+    bar.style.opacity = '1';
+    if (animate === false) { void bar.offsetWidth; bar.style.transition = ''; }
+  }
+
+  const ctrl = { bar, move, settle: o.settle !== false, reposition: () => move(getActive && getActive(), false) };
+  slidingUnderlines.push(ctrl);
+  return ctrl;
+}
+
+const TAB_UNDERLINE = {
+  height: 3,
+  color: 'var(--color-action-primary-bg)',
+  radius: 'var(--r-pill)',
+  offsetY: 1,
+};
+
+// Find-or-create the underline for a 兩校 tab bar, then glide it to the active tab.
+function updateTabUnderline(container, animate) {
+  if (!container) return;
+  if (!container._underline) {
+    container._underline = createUnderline(
+      container, TAB_UNDERLINE, () => container.querySelector('.tab--active')
+    );
+  }
+  container._underline.move(container.querySelector('.tab--active'), animate);
+}
+
+// Reposition every underline (no animation) after a layout change.
+let _underlineRT;
+window.addEventListener('resize', () => {
+  clearTimeout(_underlineRT);
+  _underlineRT = setTimeout(() => slidingUnderlines.forEach(c => c.reposition()), 120);
+});
+
+// Re-settle (no animation) once web fonts / images finish — Chinese text width
+// isn't final until the font loads, which would otherwise leave a stale/0 width.
+// (navbar opts out via settle:false so its cross-page slide isn't snapped short.)
+function settleUnderlines() {
+  slidingUnderlines.forEach(c => { if (c.settle) c.reposition(); });
+}
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(settleUnderlines);
+window.addEventListener('load', settleUnderlines);
+
+/* ══════════════════════════════════════════════
    NAVBAR — Smart Scroll
 ══════════════════════════════════════════════ */
 const navbar = document.getElementById('navbar');
@@ -103,6 +169,15 @@ const MAPS = {
   casa: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3613.5231132257154!2d121.59732271161732!3d25.084147677691274!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442acec9eda1d77%3A0x2004eb433bb086d4!2z56eB56uL5a6255Sw6JKZ54m55qKt5Yip5bm85YWS5ZyS44CK5o6o6Jam5bm85YWS5ZyS44CL5YWn5rmW5Y2A6JKZ54m55qKt5Yip5pWZ5a24772c6ZuZ6Kqe5bm85YWS5ZyS772c5bCI5qWt5bm85YWS5ZyS772c5bCP54-t5Yi2772c5bm85YWS576O6Kqe6Kqy56iL772c5YSq6LOq5bm85YWS5ZyS!5e0!3m2!1szh-TW!2stw!4v1779440914491!5m2!1szh-TW!2stw'
 };
 
+/* Smooth directional slide when switching 咪咪 / 家田 panels.
+   casa is the right-hand tab, mimi the left → the panel slides in from that side. */
+function playTabSlide(panel, toRight) {
+  if (!panel) return;
+  panel.classList.remove('tab-slide-right', 'tab-slide-left');
+  void panel.offsetWidth; // reflow so the animation restarts on every switch
+  panel.classList.add(toRight ? 'tab-slide-right' : 'tab-slide-left');
+}
+
 function switchCampus(campus) {
   const iframe = document.getElementById('map-iframe');
   if (iframe) iframe.src = MAPS[campus] || '';
@@ -114,6 +189,9 @@ function switchCampus(campus) {
   document.querySelectorAll('.tab').forEach(tab => {
     tab.classList.toggle('tab--active', tab.dataset.campus === campus);
   });
+
+  playTabSlide(document.querySelector('.campus-info--active'), campus === 'casa');
+  updateTabUnderline(document.querySelector('.location__tabs'), true);
 }
 
 window.switchCampus = switchCampus;
@@ -476,6 +554,8 @@ bookingForm.addEventListener('submit', async (e) => {
     teamSection.querySelectorAll('.team__tabs .tab').forEach(tab => {
       tab.classList.toggle('tab--active', tab.dataset.campus === campus);
     });
+    playTabSlide(teamSection.querySelector('.team__list.is-active'), campus === 'casa');
+    updateTabUnderline(teamSection.querySelector('.team__tabs'), true);
   }
   teamSection.querySelectorAll('.team__tabs .tab').forEach(tab => {
     tab.addEventListener('click', () => switchTeam(tab.dataset.campus));
@@ -654,15 +734,39 @@ bookingForm.addEventListener('submit', async (e) => {
   const tabs = [...document.querySelectorAll('.campus-tabs .tab')];
 
   function show(school) {
+    const prev = panels.find(p => p.classList.contains('is-active'))?.dataset.school;
     panels.forEach(p => p.classList.toggle('is-active', p.dataset.school === school));
     tabs.forEach(t => {
       const active = t.dataset.school === school;
       t.classList.toggle('tab--active', active);
       t.setAttribute('aria-selected', active ? 'true' : 'false');
     });
+    const activePanel = panels.find(p => p.dataset.school === school);
+    if (!activePanel) return;
+    playTabSlide(activePanel, school === 'casa');
+
+    // Each panel has its own tab bar. Start its underline at the PREVIOUS tab's
+    // position, then glide to the new one — so it slides (in step with the panel).
+    const tabsC = activePanel.querySelector('.campus-tabs');
+    if (!tabsC) return;
+    if (!tabsC._underline) {
+      tabsC._underline = createUnderline(tabsC, TAB_UNDERLINE, () => tabsC.querySelector('.tab--active'));
+    }
+    const toTab = tabsC.querySelector('.tab--active');
+    const fromTab = prev ? tabsC.querySelector(`.tab[data-school="${prev}"]`) : null;
+    if (fromTab && prev !== school) {
+      tabsC._underline.move(fromTab, false); // jump to previous tab (forces a reflow internally)
+      tabsC._underline.move(toTab, true);    // then glide to the new tab
+    } else {
+      tabsC._underline.move(toTab, false);
+    }
   }
 
   tabs.forEach(t => t.addEventListener('click', () => show(t.dataset.school)));
+
+  // Initial underline under the visible panel's active tab.
+  const startPanel = panels.find(p => p.classList.contains('is-active'));
+  if (startPanel) updateTabUnderline(startPanel.querySelector('.campus-tabs'), false);
 })();
 
 /* ══════════════════════════════════════════════
@@ -672,6 +776,15 @@ bookingForm.addEventListener('submit', async (e) => {
   const sections = [...document.querySelectorAll('.feature[id]')];
   if (!sections.length) return;
   const links = [...document.querySelectorAll('[data-toc]')];
+
+  // Sliding underline for the desktop anchor bar.
+  const fnInner = document.querySelector('.feature-nav__inner');
+  const fnUnderline = createUnderline(
+    fnInner,
+    { height: 2, color: 'var(--color-action-primary-bg)', offsetY: 0 },
+    () => fnInner && fnInner.querySelector('.feature-nav__link.is-active')
+  );
+  let lastActiveId = null;
 
   // Scroll-spy: the active section is the last one whose top has passed the
   // 40%-viewport line. Deterministic (one active at a time) and robust against
@@ -683,6 +796,11 @@ bookingForm.addEventListener('submit', async (e) => {
       if (s.getBoundingClientRect().top <= line) activeId = s.id;
     }
     links.forEach(l => l.classList.toggle('is-active', l.dataset.toc === activeId));
+    if (fnUnderline && activeId !== lastActiveId) {
+      // First positioning is instant; later changes glide.
+      fnUnderline.move(fnInner.querySelector('.feature-nav__link.is-active'), lastActiveId !== null);
+      lastActiveId = activeId;
+    }
   }
   window.addEventListener('scroll', updateActiveLink, { passive: true });
   window.addEventListener('resize', updateActiveLink);
@@ -813,4 +931,44 @@ bookingForm.addEventListener('submit', async (e) => {
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') closeSheet();
   });
+})();
+
+/* ══════════════════════════════════════════════
+   SLIDING UNDERLINE — initial positions + navbar (cross-page slide)
+══════════════════════════════════════════════ */
+(function () {
+  // Two-school tab bars on this page (team / map / campus) → rest under the active tab.
+  document.querySelectorAll('.team__tabs, .location__tabs').forEach(c => updateTabUnderline(c, false));
+  const activeCampusTabs = document.querySelector('.campus-school.is-active .campus-tabs');
+  if (activeCampusTabs) updateTabUnderline(activeCampusTabs, false);
+
+  // Navbar: the underline marks the CURRENT page (not hover). When you click a
+  // nav link the site navigates (full page load); we remember the page you left
+  // in sessionStorage, so on the new page the underline starts there and glides
+  // to the new current page's link.
+  const nav = document.querySelector('.navbar__nav');
+  if (!nav) return;
+  const links = [...nav.querySelectorAll('.nav-link')];
+  const keyOf = el => el && (el.getAttribute('href') || el.textContent.trim());
+  const getActive = () => nav.querySelector('.nav-link.active');
+  const u = createUnderline(nav, { height: 1, color: '#ffffff', offsetY: 4, settle: false }, getActive);
+  if (!u) return;
+
+  const active = getActive();
+  const fromKey = sessionStorage.getItem('navSlideFrom');
+  sessionStorage.removeItem('navSlideFrom');
+  const fromEl = fromKey ? links.find(l => keyOf(l) === fromKey) : null;
+
+  if (active && fromEl && fromEl !== active) {
+    u.move(fromEl, false);  // start where we came from
+    requestAnimationFrame(() => requestAnimationFrame(() => u.move(active, true))); // glide to current page
+  } else {
+    u.move(active, false);  // direct load → rest under the current page (or hidden if none)
+  }
+
+  // Remember the page being left so the next page can glide from it.
+  links.forEach(l => l.addEventListener('click', () => {
+    const a = getActive();
+    if (a) sessionStorage.setItem('navSlideFrom', keyOf(a));
+  }));
 })();

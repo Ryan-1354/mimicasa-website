@@ -426,10 +426,7 @@ button {
 }
 .nav-link:hover  { opacity: 0.7; }
 .nav-link:visited { color: var(--color-text-inverse-primary); }
-.nav-link.active {
-  border-bottom: 1px solid #ffffff;
-  padding-bottom: 2px;
-}
+/* .nav-link.active underline is drawn by the sliding .slide-bar (see JS). */
 .navbar__hamburger {
   display: none;
   flex-direction: column;
@@ -786,20 +783,47 @@ button {
   position: relative;
   transition: color 0.2s;
 }
-.tab::after {
-  content: '';
+.tab--active { color: var(--color-text-primary); }
+.tab:hover   { color: var(--color-text-primary); }
+
+/* ── Sliding active underline (navbar / anchor nav / 兩校 tabs) ──
+   One <span class="slide-bar"> per bar; JS animates its left + width to the
+   active item, so the underline glides instead of jumping. */
+.location__tabs,
+.team__tabs,
+.campus-tabs,
+.navbar__nav,
+.feature-nav__inner { position: relative; }
+.slide-bar {
   position: absolute;
-  bottom: -1px;
+  top: 0;
   left: 0;
-  right: 0;
-  height: 3px;
-  background: var(--color-action-primary-bg);
-  transform: scaleX(0);
-  transition: transform 0.2s;
+  width: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: left 0.3s ease, width 0.3s ease, opacity 0.25s ease;
 }
-.tab--active        { color: var(--color-text-primary); }
-.tab--active::after { transform: scaleX(1); }
-.tab:hover          { color: var(--color-text-primary); }
+@media (prefers-reduced-motion: reduce) {
+  .slide-bar { transition: opacity 0.25s ease; }
+}
+
+/* ── Two-school (咪咪 / 家田) panel slide ──
+   Added by JS to the newly-active panel on every switch. html/body have
+   overflow-x:hidden, so the off-screen start position never shows a scrollbar. */
+@keyframes tabSlideFromRight {
+  from { opacity: 0; transform: translateX(28px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes tabSlideFromLeft {
+  from { opacity: 0; transform: translateX(-28px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+.tab-slide-right { animation: tabSlideFromRight 0.4s cubic-bezier(0.32, 0.72, 0, 1) both; }
+.tab-slide-left  { animation: tabSlideFromLeft  0.4s cubic-bezier(0.32, 0.72, 0, 1) both; }
+@media (prefers-reduced-motion: reduce) {
+  .tab-slide-right,
+  .tab-slide-left { animation: none; }
+}
 
 .location__body {
   display: flex;
@@ -2322,10 +2346,7 @@ body.page--inner { padding-top: 88px; }
     border-bottom: 2px solid transparent;
     transition: border-color 0.2s ease;
   }
-  /* 同色字，只用底線標示 active */
-  .feature-nav__link.is-active {
-    border-bottom-color: var(--color-action-primary-bg);
-  }
+  /* active underline is drawn by the sliding .slide-bar (see JS) */
   .feature-nav__num { margin-right: 6px; }
 }
 
