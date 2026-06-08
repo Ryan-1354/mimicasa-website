@@ -2,8 +2,20 @@
    BLUR-UP — photos fade + sharpen in as they load
 ══════════════════════════════════════════════ */
 (function () {
+  const LQIP = window.LQIP || {};
   document.querySelectorAll('img[loading="lazy"]').forEach(img => {
     img.classList.add('blur-up');
+
+    // LQIP: paint a tiny blurred preview behind the image so there's no blank
+    // gap before the full photo arrives. Falls back to the container colour.
+    const file = (img.getAttribute('src') || '').split('/').pop();
+    const placeholder = LQIP[file];
+    const holder = img.parentElement;
+    if (placeholder && holder) {
+      holder.style.setProperty('--lqip', `url("${placeholder}")`);
+      holder.classList.add('has-lqip');
+    }
+
     // Already finished (cached success OR already errored) → reveal instantly,
     // so a broken image is never left permanently hidden.
     if (img.complete) {

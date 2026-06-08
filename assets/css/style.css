@@ -72,6 +72,22 @@ img.blur-up.is-loaded {
 @media (prefers-reduced-motion: reduce) {
   img.blur-up { transition: opacity 0.3s ease; transform: none; filter: none; }
 }
+/* LQIP: a tiny blurred preview (data-URI in --lqip) painted behind the image,
+   so there's no blank gap before the photo loads. JS adds .has-lqip. */
+.has-lqip { position: relative; overflow: hidden; }
+.has-lqip::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1; /* above the container's bg colour, below the image (positioned or not) */
+  background-image: var(--lqip);
+  background-size: cover;
+  background-position: center;
+  filter: blur(12px);
+  transform: scale(1.1);
+  border-radius: inherit;
+  pointer-events: none;
+}
 a {
   color: inherit;
   text-decoration: none;
