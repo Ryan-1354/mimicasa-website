@@ -74,7 +74,10 @@ img.blur-up.is-loaded {
 }
 /* LQIP: a tiny blurred preview (data-URI in --lqip) painted behind the image,
    so there's no blank gap before the photo loads. JS adds .has-lqip. */
-.has-lqip { position: relative; overflow: hidden; }
+/* isolation:isolate makes .has-lqip its own stacking context, so the
+   z-index:-1 placeholder stays *inside* it (above the bg, below the image)
+   instead of escaping behind the container. */
+.has-lqip { position: relative; overflow: hidden; isolation: isolate; }
 .has-lqip::before {
   content: "";
   position: absolute;
