@@ -807,22 +807,16 @@ button {
   .slide-bar { transition: opacity 0.25s ease; }
 }
 
-/* ── Two-school (咪咪 / 家田) panel slide ──
-   Added by JS to the newly-active panel on every switch. html/body have
-   overflow-x:hidden, so the off-screen start position never shows a scrollbar. */
-@keyframes tabSlideFromRight {
-  from { opacity: 0; transform: translateX(28px); }
-  to   { opacity: 1; transform: translateX(0); }
+/* ── Two-school (咪咪 / 家田) content transition ──
+   Added by JS to the newly-active panel on every switch: a calm in-place
+   fade (no horizontal motion of the large panels). The underline still slides. */
+@keyframes tabFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
-@keyframes tabSlideFromLeft {
-  from { opacity: 0; transform: translateX(-28px); }
-  to   { opacity: 1; transform: translateX(0); }
-}
-.tab-slide-right { animation: tabSlideFromRight 0.4s cubic-bezier(0.32, 0.72, 0, 1) both; }
-.tab-slide-left  { animation: tabSlideFromLeft  0.4s cubic-bezier(0.32, 0.72, 0, 1) both; }
+.tab-fade-in { animation: tabFadeIn 0.25s ease both; }
 @media (prefers-reduced-motion: reduce) {
-  .tab-slide-right,
-  .tab-slide-left { animation: none; }
+  .tab-fade-in { animation: none; }
 }
 
 .location__body {

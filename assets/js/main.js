@@ -169,13 +169,12 @@ const MAPS = {
   casa: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3613.5231132257154!2d121.59732271161732!3d25.084147677691274!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442acec9eda1d77%3A0x2004eb433bb086d4!2z56eB56uL5a6255Sw6JKZ54m55qKt5Yip5bm85YWS5ZyS44CK5o6o6Jam5bm85YWS5ZyS44CL5YWn5rmW5Y2A6JKZ54m55qKt5Yip5pWZ5a24772c6ZuZ6Kqe5bm85YWS5ZyS772c5bCI5qWt5bm85YWS5ZyS772c5bCP54-t5Yi2772c5bm85YWS576O6Kqe6Kqy56iL772c5YSq6LOq5bm85YWS5ZyS!5e0!3m2!1szh-TW!2stw!4v1779440914491!5m2!1szh-TW!2stw'
 };
 
-/* Smooth directional slide when switching 咪咪 / 家田 panels.
-   casa is the right-hand tab, mimi the left → the panel slides in from that side. */
-function playTabSlide(panel, toRight) {
+/* Calm in-place fade for the newly-active 咪咪 / 家田 content panel. */
+function playPanelFade(panel) {
   if (!panel) return;
-  panel.classList.remove('tab-slide-right', 'tab-slide-left');
+  panel.classList.remove('tab-fade-in');
   void panel.offsetWidth; // reflow so the animation restarts on every switch
-  panel.classList.add(toRight ? 'tab-slide-right' : 'tab-slide-left');
+  panel.classList.add('tab-fade-in');
 }
 
 function switchCampus(campus) {
@@ -190,7 +189,7 @@ function switchCampus(campus) {
     tab.classList.toggle('tab--active', tab.dataset.campus === campus);
   });
 
-  playTabSlide(document.querySelector('.campus-info--active'), campus === 'casa');
+  playPanelFade(document.querySelector('.campus-info--active'));
   updateTabUnderline(document.querySelector('.location__tabs'), true);
 }
 
@@ -554,7 +553,7 @@ bookingForm.addEventListener('submit', async (e) => {
     teamSection.querySelectorAll('.team__tabs .tab').forEach(tab => {
       tab.classList.toggle('tab--active', tab.dataset.campus === campus);
     });
-    playTabSlide(teamSection.querySelector('.team__list.is-active'), campus === 'casa');
+    playPanelFade(teamSection.querySelector('.team__list.is-active'));
     updateTabUnderline(teamSection.querySelector('.team__tabs'), true);
   }
   teamSection.querySelectorAll('.team__tabs .tab').forEach(tab => {
@@ -743,7 +742,7 @@ bookingForm.addEventListener('submit', async (e) => {
     });
     const activePanel = panels.find(p => p.dataset.school === school);
     if (!activePanel) return;
-    playTabSlide(activePanel, school === 'casa');
+    playPanelFade(activePanel);
 
     // Each panel has its own tab bar. Start its underline at the PREVIOUS tab's
     // position, then glide to the new one — so it slides (in step with the panel).
