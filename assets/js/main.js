@@ -628,6 +628,26 @@ bookingForm.addEventListener('submit', async (e) => {
 })();
 
 /* ══════════════════════════════════════════════
+   CAMPUS — 校區切換（咪咪 / 家田）
+══════════════════════════════════════════════ */
+(function () {
+  const panels = [...document.querySelectorAll('.campus-school')];
+  if (!panels.length) return;
+  const tabs = [...document.querySelectorAll('.campus-tabs .tab')];
+
+  function show(school) {
+    panels.forEach(p => p.classList.toggle('is-active', p.dataset.school === school));
+    tabs.forEach(t => {
+      const active = t.dataset.school === school;
+      t.classList.toggle('tab--active', active);
+      t.setAttribute('aria-selected', active ? 'true' : 'false');
+    });
+  }
+
+  tabs.forEach(t => t.addEventListener('click', () => show(t.dataset.school)));
+})();
+
+/* ══════════════════════════════════════════════
    FEATURE NAV / TOC — 目錄 + scroll-spy
 ══════════════════════════════════════════════ */
 (function () {

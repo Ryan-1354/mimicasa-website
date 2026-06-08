@@ -1108,6 +1108,76 @@ body.page--inner { padding-top: 88px; }
   .page-header__desc { max-width: 720px; }
 }
 
+/* ══════════════════════════════════════════════
+   CAMPUS PAGE — 校園環境
+══════════════════════════════════════════════ */
+.campus-school { display: none; }
+.campus-school.is-active { display: block; }
+
+/* Section wrapper — alternating backgrounds, centred content */
+.campus-sec--alt { background: var(--color-bg-section); }
+.campus-sec__inner {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-stack-2xl);
+  max-width: 820px;
+  margin-inline: auto;
+}
+
+/* School tabs (re-uses .tab / .tab--active) */
+.campus-tabs {
+  display: flex;
+  gap: 24px;
+}
+
+/* Section head: title + sub + divider rule */
+.campus-sec__head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-stack-sm);
+}
+.campus-sec__title {
+  font-family: 'Noto Serif TC', serif;
+  font-weight: 600;
+  font-size: clamp(22px, 2.1vw, 30px);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--color-text-primary);
+}
+.campus-sec__sub {
+  font-family: 'Noto Sans TC', sans-serif;
+  font-weight: 400;
+  font-size: var(--fs-body-sm);
+  line-height: 1.5;
+  color: var(--color-text-tertiary);
+}
+.campus-sec__rule {
+  margin-top: var(--sp-stack-md);
+  height: 1px;
+  width: 100%;
+  background: var(--color-border-default);
+}
+
+/* Image groups (re-use .feature__media / .feature__pic for lightbox) */
+.campus-grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-stack-lg);
+  width: 100%;
+}
+.campus-row {
+  display: flex;
+  gap: var(--sp-stack-lg);
+}
+.campus-row > .campus-pic {
+  flex: 1 1 0;
+  min-width: 0;
+}
+.campus-pic { width: 100%; }
+.campus-pic--p { aspect-ratio: 3 / 4; }   /* 直幅 */
+.campus-pic--l { aspect-ratio: 4 / 3; }   /* 橫幅 */
+.campus-pic--w { aspect-ratio: 16 / 9; }  /* 寬幅 */
+
 /* Shared grey lead paragraph under a section title */
 .about-lead {
   font-family: 'Noto Sans TC', sans-serif;
