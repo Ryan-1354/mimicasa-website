@@ -1,4 +1,22 @@
 /* ══════════════════════════════════════════════
+   BLUR-UP — photos fade + sharpen in as they load
+══════════════════════════════════════════════ */
+(function () {
+  document.querySelectorAll('img[loading="lazy"]').forEach(img => {
+    img.classList.add('blur-up');
+    // Already finished (cached success OR already errored) → reveal instantly,
+    // so a broken image is never left permanently hidden.
+    if (img.complete) {
+      img.classList.add('is-loaded');
+    } else {
+      img.addEventListener('load',  () => img.classList.add('is-loaded'), { once: true });
+      // On error, still clear the blur so a broken image isn't left invisible.
+      img.addEventListener('error', () => img.classList.add('is-loaded'), { once: true });
+    }
+  });
+})();
+
+/* ══════════════════════════════════════════════
    NAVBAR — Smart Scroll
 ══════════════════════════════════════════════ */
 const navbar = document.getElementById('navbar');
