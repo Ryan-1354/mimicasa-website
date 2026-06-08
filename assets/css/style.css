@@ -2138,7 +2138,15 @@ body.page--inner { padding-top: 88px; }
   flex-direction: column;
   gap: var(--sp-stack-xs);
 }
-.feature__num,
+/* Feature number — small serif label, muted (per design) */
+.feature__num {
+  font-family: 'Noto Serif TC', serif;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--color-text-tertiary);
+}
 .feature__title {
   font-family: 'Noto Serif TC', serif;
   font-weight: 600;
@@ -2152,18 +2160,19 @@ body.page--inner { padding-top: 88px; }
   font-weight: 400;
   font-size: var(--fs-body);
   line-height: 1.5;
-  color: var(--color-text-tertiary);
+  color: var(--color-text-secondary);
 }
 .feature__list {
   list-style: none;
   display: flex;
   flex-direction: column;
+  gap: var(--sp-stack-sm);
 }
 .feature__list li {
   display: flex;
   align-items: center;
   gap: var(--sp-inset-lg);
-  padding: var(--sp-inset-lg) 0;
+  padding: var(--sp-inset-sm) 0;
   border-bottom: 1px solid var(--color-border-default);
 }
 .feature__list li::before {
@@ -2174,11 +2183,10 @@ body.page--inner { padding-top: 88px; }
   background: var(--color-border-tertiary);
 }
 .feature__list-text {
-  font-family: 'Noto Serif TC', serif;
-  font-weight: 600;
-  font-size: 18px;
-  line-height: 1.3;
-  letter-spacing: -0.02em;
+  font-family: 'Noto Sans TC', sans-serif;
+  font-weight: 400;
+  font-size: var(--fs-body);
+  line-height: 1.5;
   color: var(--color-text-primary);
 }
 
