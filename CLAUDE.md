@@ -7,12 +7,12 @@ mimicasa-website/
 ├── zh/
 │   ├── index.html
 │   ├── about.html
-│   ├── features.html
+│   ├── philosophy.html
 │   └── campus.html
 ├── en/
 │   ├── index.html
 │   ├── about.html
-│   ├── features.html
+│   ├── philosophy.html
 │   └── campus.html
 ├── assets/
 │   ├── images/        ← 網站圖片（JPG/PNG/SVG）
@@ -112,12 +112,12 @@ Tone         calm, confident, editorial — like a premium lifestyle brand, not 
 ```
 /zh/index.html        中文版首頁（Landing Page）
 /zh/about.html        關於我們
-/zh/features.html     教學特色
+/zh/philosophy.html     辦學理念
 /zh/campus.html       校園環境
 
 /en/index.html        英文版首頁
 /en/about.html        About Us
-/en/features.html     Our Features
+/en/philosophy.html     Our Commitment
 /en/campus.html       Campus
 ```
 
@@ -385,7 +385,7 @@ padding-x    size/spacing/layout/2xl  120px
 **連結**
 ```
 關於我們  →  /zh/about.html
-教學特色  →  /zh/features.html
+辦學理念  →  /zh/philosophy.html
 校園環境  →  /zh/campus.html
 預約參觀  →  開啟 Modal（綠色按鈕）
 EN        →  /en/index.html
@@ -453,7 +453,7 @@ CTA 按鈕置底置中：「立即預約參觀」→ 點擊開啟報名參觀 Mo
 
 ### Features 卡片互動規格
 
-每張卡片點擊後跳到 `/zh/features.html` 對應的 section（anchor link）。
+每張卡片點擊後跳到 `/zh/philosophy.html` 對應的 section（anchor link）。
 
 **視覺**
 ```
@@ -478,7 +478,7 @@ CTA 按鈕置底置中：「立即預約參觀」→ 點擊開啟報名參觀 Mo
 
 ---
 
-### 教學特色圖片 Lightbox 規格
+### 辦學理念 圖片 Lightbox 規格
 
 **Fullscreen 按鈕**
 ```
