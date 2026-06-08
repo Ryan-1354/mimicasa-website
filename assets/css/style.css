@@ -1587,8 +1587,7 @@ body.page--inner { padding-top: 88px; }
   border: none;
   border-radius: var(--r-2xl);
   padding: 0;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
+  overflow: hidden;
   background: var(--color-bg-section);
 }
 .booking-dialog::backdrop {
@@ -1596,31 +1595,34 @@ body.page--inner { padding-top: 88px; }
   animation: backdropFade 0.25s ease;
 }
 .booking-dialog[open] {
+  display: flex;
+  flex-direction: column;
   animation: dialogOpen 0.25s ease;
 }
 
 .booking-dialog__inner {
   display: flex;
   flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
 }
 
-/* Header pins to the top while the dialog scrolls */
+/* Header + subtitle + divider stay fixed; only the body (form) scrolls. */
 .booking-dialog__header {
-  position: sticky;
-  top: 0;
-  z-index: 2;
+  flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: var(--sp-inset-xl) var(--sp-inset-xl) var(--sp-stack-2xl);
+  padding: var(--sp-inset-xl) var(--sp-inset-xl) var(--sp-stack-lg);
   background: var(--color-bg-section);
 }
 
 .booking-dialog__body {
-  display: flex;
-  flex-direction: column;
-  gap: var(--sp-stack-2xl);
-  padding: 0 var(--sp-inset-xl) var(--sp-inset-xl);
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: var(--sp-stack-2xl) var(--sp-inset-xl) var(--sp-inset-xl);
 }
 .booking-dialog__title {
   font-family: 'Noto Serif TC', serif;
@@ -1646,9 +1648,18 @@ body.page--inner { padding-top: 88px; }
 .booking-dialog__close:active { transform: scale(0.94); }
 
 .booking-dialog__subtitle {
+  flex-shrink: 0;
+  padding: 0 var(--sp-inset-xl);
   font-size: var(--fs-body-sm);
   color: var(--color-text-tertiary);
   line-height: 1.5;
+}
+.booking-dialog__divider {
+  flex-shrink: 0;
+  height: 1px;
+  margin: var(--sp-stack-2xl) var(--sp-inset-xl) 0;
+  border: none;
+  background: var(--color-border-default);
 }
 
 /* ── Form ── */

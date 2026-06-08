@@ -26,7 +26,7 @@
       href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300&family=DM+Sans:wght@300;400;500&family=Noto+Serif+TC:wght@600&family=Noto+Sans+TC:wght@400;500&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="../assets/css/style.css?v=14" />
+    <link rel="stylesheet" href="../assets/css/style.css?v=15" />
   </head>
   <body class="page--inner">
     <!-- ══════════════════════════════════════════════
@@ -910,14 +910,15 @@
           </button>
         </div>
 
-        <!-- Scrollable body -->
-        <div class="booking-dialog__body">
-          <!-- Subtitle -->
-          <p class="booking-dialog__subtitle">
-            填寫完成後，校方將以電話與您確認參觀時間，感謝您的預約！
-          </p>
+        <!-- Subtitle (fixed) -->
+        <p class="booking-dialog__subtitle">
+          填寫完成後，校方將以電話與您確認參觀時間，感謝您的預約！
+        </p>
 
-          <!-- Form -->
+        <hr class="booking-dialog__divider" />
+
+        <!-- Scrollable body (form) -->
+        <div class="booking-dialog__body">
           <form class="booking-form" id="booking-form" novalidate>
             <div class="booking-form__fields">
               <!-- 參觀學校 -->
