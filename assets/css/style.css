@@ -2071,31 +2071,32 @@ body.page--inner { padding-top: 88px; }
   object-fit: cover;
   display: block;
 }
+/* Fullscreen hint (< 1280px) — purely a visual cue; the whole image opens
+   the lightbox. Persistent faint bg, deepens on hover. */
 .pic-fs {
   position: absolute;
   top: 8px;
   right: 8px;
-  width: 32px;
-  height: 32px;
+  width: 24px;
+  height: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(255, 255, 255, 0.5);
-  -webkit-backdrop-filter: blur(4px);
-  backdrop-filter: blur(4px);
+  background: rgba(255, 255, 255, 0.15);
   border-radius: var(--r-sm);
-  pointer-events: none;
+  cursor: pointer;
+  pointer-events: auto;
+  transition: background 0.2s ease;
+}
+.pic-fs:hover {
+  background: rgba(255, 255, 255, 0.35);
 }
 .pic-fs img {
   width: 16px;
   height: 16px;
   display: block;
 }
-/* 平板維持原尺寸（圖片較大） */
-@media (min-width: 768px) {
-  .pic-fs { width: 40px; height: 40px; }
-  .pic-fs img { width: 20px; height: 20px; }
-}
+/* 桌機（≥1280px）：隱藏 fullscreen btn */
 @media (min-width: 1280px) {
   .pic-fs { display: none; }
   .feature__pic { transition: opacity 0.2s ease; }
