@@ -2095,6 +2095,7 @@ body.page--inner { padding-top: 88px; }
   width: 16px;
   height: 16px;
   display: block;
+  filter: brightness(0) invert(1); /* render the icon white (#ffffff) */
 }
 /* 桌機（≥1280px）：隱藏 fullscreen btn */
 @media (min-width: 1280px) {
