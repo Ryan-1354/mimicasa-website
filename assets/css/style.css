@@ -2185,13 +2185,12 @@ body.page--inner { padding-top: 88px; }
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: var(--sp-stack-sm);
 }
 .feature__list li {
   display: flex;
   align-items: center;
   gap: var(--sp-inset-lg);
-  padding: var(--sp-inset-sm) 0;
+  padding: var(--sp-inset-lg) 0;
   border-bottom: 1px solid var(--color-border-default);
 }
 .feature__list li::before {
