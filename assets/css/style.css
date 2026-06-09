@@ -561,20 +561,21 @@ button {
   gap: min(1.11vw, 16px);
   width: min(48.5vw, 699px);
 }
-/* Soft scrim anchored to the text block — follows the headline on every
-   breakpoint, so it works across all three (different) hero images. */
-.hero__text::before {
-  content: "";
-  position: absolute;
-  inset: -28px -90px;
-  z-index: -1;
-  background: radial-gradient(
-    ellipse at center,
-    rgba(0, 0, 0, 0.5) 0%,
-    rgba(0, 0, 0, 0.3) 45%,
-    rgba(0, 0, 0, 0) 78%
-  );
-  pointer-events: none;
+/* Soft scrim behind the headline — desktop only. */
+@media (min-width: 1280px) {
+  .hero__text::before {
+    content: "";
+    position: absolute;
+    inset: -28px -90px;
+    z-index: -1;
+    background: radial-gradient(
+      ellipse at center,
+      rgba(0, 0, 0, 0.5) 0%,
+      rgba(0, 0, 0, 0.3) 45%,
+      rgba(0, 0, 0, 0) 78%
+    );
+    pointer-events: none;
+  }
 }
 .hero__h1 {
   font-family: 'Noto Serif TC', serif;
@@ -584,7 +585,7 @@ button {
   letter-spacing: -0.02em;
   color: #ffffff;
   text-align: left;
-  text-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.55);
   white-space: nowrap;
 }
 .hero__subtitle {
@@ -594,7 +595,7 @@ button {
   line-height: 1.2;
   letter-spacing: -0.02em;
   color: #ffffff;
-  text-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.55);
   text-align: right;
   white-space: nowrap;
 }
