@@ -1185,10 +1185,10 @@ body.page--inner { padding-top: 88px; }
 @media (min-width: 1280px) {
   .page-header__desc { max-width: 720px; }
 }
-/* About page header photos — landscape + portrait pair (Figma 220:98, h matched) */
+/* About page header photos — portrait + near-square pair (Figma 131:187, h matched) */
 .page-header__media {
   display: grid;
-  grid-template-columns: 220fr 98fr;
+  grid-template-columns: 131fr 187fr;
   gap: 16px;
   width: 100%;
 }
@@ -1199,8 +1199,8 @@ body.page--inner { padding-top: 88px; }
   background: var(--color-bg-section);
 }
 .about-pic img { display: block; width: 100%; height: 100%; object-fit: cover; }
-.about-pic--l { aspect-ratio: 220 / 147; }
-.about-pic--p { aspect-ratio: 98 / 147; }
+.about-pic:nth-child(1) { aspect-ratio: 131 / 196; }
+.about-pic:nth-child(2) { aspect-ratio: 187 / 196; }
 @media (min-width: 1280px) {
   .page-header__media { max-width: 600px; }
 }
