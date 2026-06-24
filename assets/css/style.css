@@ -2165,10 +2165,9 @@ body.page--inner { padding-top: 88px; }
   gap: 16px;
 }
 .feature__media--f4 > .feature__pic:nth-of-type(1) { aspect-ratio: 335 / 251; }
-.feature__media--f4 > .feature__pic:nth-of-type(2) { aspect-ratio: 335 / 223; }
-.feature__media--f4 .feature__row { grid-template-columns: 179fr 142fr; align-items: start; }
-.feature__media--f4 .feature__row .feature__pic:nth-of-type(1) { aspect-ratio: 179 / 213; }
-.feature__media--f4 .feature__row .feature__pic:nth-of-type(2) { aspect-ratio: 142 / 213; }
+.feature__media--f4 .feature__row { grid-template-columns: 168fr 150fr; align-items: start; }
+.feature__media--f4 .feature__row .feature__pic:nth-of-type(1) { aspect-ratio: 168 / 200; }
+.feature__media--f4 .feature__row .feature__pic:nth-of-type(2) { aspect-ratio: 150 / 200; }
 
 /* Feature 5 & 6 media: 2×2 grid */
 .feature__media--grid2 {
