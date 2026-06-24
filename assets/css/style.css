@@ -2153,12 +2153,12 @@ body.page--inner { padding-top: 88px; }
   .feature__pic:hover { opacity: 0.92; }
 }
 
-/* Feature 1 media: narrow + wide */
+/* Feature 1 media: narrow portrait + wide landscape (Figma 110:203, h matched) */
 .feature__media--f1 {
   display: grid;
-  grid-template-columns: 78fr 245fr;
-  gap: 12px;
-  aspect-ratio: 335 / 150;
+  grid-template-columns: 110fr 203fr;
+  gap: 16px;
+  aspect-ratio: 335 / 170;
 }
 .feature__media--f1 .feature__pic { height: 100%; }
 
