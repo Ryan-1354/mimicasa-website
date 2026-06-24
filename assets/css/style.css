@@ -1593,6 +1593,9 @@ body.page--inner { padding-top: 88px; }
 @media (max-width: 1279px) {
   :root { --sp-layout-2xl: 24px; }
 
+  /* Section padding-y → 平板 64px（對齊 CLAUDE.md，桌機 80px 為 base） */
+  .section { padding-block: 64px; }
+
   /* Navbar → 漢堡 */
   .navbar__nav            { display: none; }
   .navbar__hamburger      { display: flex; }
@@ -1611,8 +1614,10 @@ body.page--inner { padding-top: 88px; }
 @media (max-width: 767px) {
   :root {
     --sp-layout-2xl: 20px;
-    --sp-layout-xl:  60px;
   }
+
+  /* Section padding-y → 手機 48px（對齊 CLAUDE.md） */
+  .section { padding-block: 48px; }
 
   /* Navbar wordmark */
   .navbar__wordmark img   { height: 18px; }
