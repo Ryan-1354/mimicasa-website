@@ -3,14 +3,22 @@
 ══════════════════════════════════════════════ */
 (function () {
   const LQIP = window.LQIP || {};
-  document.querySelectorAll('img[loading="lazy"]').forEach(img => {
+  // Lazy photos + the eager hero background all get the blur-up treatment.
+  document.querySelectorAll('img[loading="lazy"], .hero__bg').forEach(img => {
     img.classList.add('blur-up');
 
     // LQIP: paint a tiny blurred preview behind the image so there's no blank
     // gap before the full photo arrives. Falls back to the container colour.
-    const file = (img.getAttribute('src') || '').split('/').pop();
+    // currentSrc resolves the <picture> variant the browser actually picked
+    // (the hero serves different files per breakpoint); src covers plain imgs.
+    const src = img.currentSrc || img.getAttribute('src') || '';
+    const file = src.split('?')[0].split('/').pop();
     const placeholder = LQIP[file];
-    const holder = img.parentElement;
+    // The hero img is absolutely positioned inside a zero-sized <picture>, so
+    // the placeholder must live on the .hero section; plain imgs use the parent.
+    const holder = img.classList.contains('hero__bg')
+      ? img.closest('.hero')
+      : img.parentElement;
     if (placeholder && holder) {
       holder.style.setProperty('--lqip', `url("${placeholder}")`);
       holder.classList.add('has-lqip');

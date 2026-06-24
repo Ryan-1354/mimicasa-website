@@ -18,9 +18,11 @@ PAGES=(zh/index.html zh/philosophy.html zh/campus.html)
 TMP="$(mktemp -t lqip).jpg"
 trap 'rm -f "$TMP"' EXIT
 
-# Unique photo filenames referenced on the photo pages (skip the non-lazy hero).
-files=$(grep -rhoE 'src="\.\./assets/images/[a-z0-9._-]+\.jpg"' "${PAGES[@]}" \
-  | sed 's#.*/##; s/"//' | sort -u | grep -v '^hero-' || true)
+# Unique photo filenames referenced on the photo pages, from both src= and
+# srcset= (the hero uses <picture><source srcset> for its responsive variants,
+# and it gets blur-up too).
+files=$(grep -rhoE '(src|srcset)="\.\./assets/images/[a-z0-9._-]+\.jpg"' "${PAGES[@]}" \
+  | sed 's#.*/##; s/"//' | sort -u || true)
 
 {
   echo "/* Low-Quality Image Placeholders — tiny blurred previews shown while the"
