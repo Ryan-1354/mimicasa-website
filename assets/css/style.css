@@ -1185,6 +1185,25 @@ body.page--inner { padding-top: 88px; }
 @media (min-width: 1280px) {
   .page-header__desc { max-width: 720px; }
 }
+/* About page header photos — landscape + portrait pair (Figma 220:98, h matched) */
+.page-header__media {
+  display: grid;
+  grid-template-columns: 220fr 98fr;
+  gap: 16px;
+  width: 100%;
+}
+.about-pic {
+  margin: 0;
+  border-radius: var(--r-xs);
+  overflow: hidden;
+  background: var(--color-bg-section);
+}
+.about-pic img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.about-pic--l { aspect-ratio: 220 / 147; }
+.about-pic--p { aspect-ratio: 98 / 147; }
+@media (min-width: 1280px) {
+  .page-header__media { max-width: 600px; }
+}
 
 /* ══════════════════════════════════════════════
    CAMPUS PAGE — 校園環境
