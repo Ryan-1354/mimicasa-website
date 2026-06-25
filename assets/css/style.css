@@ -2132,7 +2132,7 @@ body.page--inner { padding-top: 88px; }
   align-items: center;
   justify-content: space-between;
   gap: var(--sp-inset-md);
-  background: rgba(89, 112, 47, 0.7);   /* brand green @ 70% */
+  background: rgba(133, 119, 101, 0.7);   /* brown/700 (#857765) @ 70% */
   -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
   border-radius: var(--r-lg);
