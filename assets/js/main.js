@@ -1087,3 +1087,70 @@ bookingForm.addEventListener('submit', async (e) => {
     if (a) sessionStorage.setItem('navSlideFrom', keyOf(a));
   }));
 })();
+
+/* ══════════════════════════════════════════════
+   SHARE SNACKBAR — prompt to share after a likely screenshot
+   (mobile/tablet only; once per session)
+══════════════════════════════════════════════ */
+(function () {
+  const SEEN_KEY = 'mc-share-snackbar-seen';
+  let snackbar = null;
+  let wasAway = false;
+
+  function canShow() {
+    return !snackbar
+      && !sessionStorage.getItem(SEEN_KEY)
+      && typeof navigator.share === 'function'
+      && window.innerWidth < 1280;
+  }
+
+  function removeSnackbar() {
+    if (!snackbar) return;
+    const el = snackbar;
+    snackbar = null;
+    el.classList.add('is-closing');
+    el.addEventListener('transitionend', () => el.remove(), { once: true });
+    setTimeout(() => el.remove(), 400);   // fallback
+  }
+
+  function buildSnackbar() {
+    const bar = document.createElement('div');
+    bar.className = 'snackbar';
+    bar.setAttribute('role', 'dialog');
+    bar.setAttribute('aria-label', '分享這個頁面');
+    bar.innerHTML =
+      '<button type="button" class="snackbar__main">' +
+        '<img class="snackbar__icon" src="../assets/images/icon-share.svg" alt="" aria-hidden="true">' +
+        '<span class="snackbar__text">點此分享給親朋好友</span>' +
+      '</button>' +
+      '<button type="button" class="snackbar__close" aria-label="關閉">' +
+        '<img class="snackbar__icon" src="../assets/images/icon-close.svg" alt="" aria-hidden="true">' +
+      '</button>';
+    bar.querySelector('.snackbar__main').addEventListener('click', async () => {
+      try {
+        await navigator.share({ url: window.location.href });
+      } catch { /* cancelled / unsupported — ignore */ }
+    });
+    bar.querySelector('.snackbar__close').addEventListener('click', removeSnackbar);
+    return bar;
+  }
+
+  function showSnackbar() {
+    if (!canShow()) return;
+    sessionStorage.setItem(SEEN_KEY, '1');
+    snackbar = buildSnackbar();
+    document.body.appendChild(snackbar);
+    requestAnimationFrame(() => snackbar.classList.add('is-open'));
+  }
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'hidden') {
+      wasAway = true;
+    } else if (document.visibilityState === 'visible' && wasAway) {
+      wasAway = false;
+      showSnackbar();
+    }
+  });
+  window.addEventListener('blur', () => { wasAway = true; });
+  window.addEventListener('focus', () => { if (wasAway) { wasAway = false; showSnackbar(); } });
+})();
