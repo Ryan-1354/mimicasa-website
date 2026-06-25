@@ -2138,7 +2138,7 @@ body.page--inner { padding-top: 88px; }
   border-radius: var(--r-lg);
   padding: var(--sp-inset-md) var(--sp-inset-lg);
   opacity: 0;
-  transition: opacity 0.25s ease, transform 0.25s ease;
+  transition: opacity 0.25s ease, transform 0.25s ease, top 0.3s ease;
 }
 .snackbar.is-open    { opacity: 1; transform: translateX(-50%) translateY(0); }
 .snackbar.is-closing { opacity: 0; transform: translateX(-50%) translateY(-12px); }

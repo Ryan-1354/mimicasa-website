@@ -1135,15 +1135,24 @@ bookingForm.addEventListener('submit', async (e) => {
     return bar;
   }
 
+  // Follow the navbar: below it when it's showing, at viewport top when it's hidden.
+  function positionSnackbar() {
+    if (!snackbar) return;
+    const navShowing = navbar && navbar.classList.contains('navbar--visible');
+    snackbar.style.top = (navShowing ? navbar.offsetHeight + 16 : 16) + 'px';
+  }
+
   function showSnackbar() {
     if (!canShow()) return;
     sessionStorage.setItem(SEEN_KEY, '1');
     snackbar = buildSnackbar();
     document.body.appendChild(snackbar);
-    // Sit just below the navbar instead of overlapping it.
-    if (navbar) snackbar.style.top = (navbar.offsetHeight + 16) + 'px';
+    positionSnackbar();
     requestAnimationFrame(() => snackbar.classList.add('is-open'));
   }
+
+  // Re-anchor as the navbar collapses / reappears on scroll.
+  window.addEventListener('scroll', () => { if (snackbar) positionSnackbar(); }, { passive: true });
 
   document.addEventListener('visibilitychange', () => {
     if (document.visibilityState === 'hidden') {
