@@ -953,6 +953,46 @@ bookingForm.addEventListener('submit', async (e) => {
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') closeSheet();
   });
+
+  // Drag-to-dismiss: grab the handle / bar (or the list when scrolled to top)
+  // and pull the sheet down with a finger; release past 1/4 height to close.
+  const panel   = sheet.querySelector('.toc-sheet__panel');
+  const overlay = sheet.querySelector('.toc-sheet__overlay');
+  let dragStartY = 0, dragDY = 0, dragging = false;
+
+  panel.addEventListener('touchstart', (e) => {
+    if (!sheet.classList.contains('is-open')) return;
+    const fromGrip = e.target.closest('.toc-sheet__handle, .toc-sheet__bar');
+    if (!fromGrip && panel.scrollTop > 0) return;   // let the list scroll
+    dragStartY = e.touches[0].clientY;
+    dragDY = 0;
+    dragging = true;
+    panel.style.transition = 'none';                // follow the finger
+  }, { passive: true });
+
+  panel.addEventListener('touchmove', (e) => {
+    if (!dragging) return;
+    dragDY = Math.max(0, e.touches[0].clientY - dragStartY);   // downward only
+    if (dragDY > 0) {
+      e.preventDefault();                            // stop page/list scroll
+      panel.style.transform = `translateY(${dragDY}px)`;
+      const h = panel.offsetHeight || 1;
+      overlay.style.opacity = String(Math.max(0, 1 - dragDY / h));
+    }
+  }, { passive: false });
+
+  function endDrag() {
+    if (!dragging) return;
+    dragging = false;
+    panel.style.transition = '';                     // restore CSS easing
+    overlay.style.opacity = '';
+    const closed = dragDY > (panel.offsetHeight || 0) * 0.25;
+    panel.style.transform = '';                      // class drives the rest
+    if (closed) closeSheet();                         // → slides to translateY(100%)
+    dragDY = 0;
+  }
+  panel.addEventListener('touchend', endDrag);
+  panel.addEventListener('touchcancel', endDrag);
 })();
 
 /* ══════════════════════════════════════════════

@@ -2505,6 +2505,17 @@ body.page--inner { padding-top: 88px; }
   transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1);
 }
 .toc-sheet.is-open .toc-sheet__panel { transform: translateY(0); }
+.toc-sheet__handle {
+  flex-shrink: 0;
+  width: 40px;
+  height: 4px;
+  margin: 10px auto 0;
+  border-radius: 999px;
+  background: var(--color-text-muted);
+  /* drag affordance — finger grabs here to pull the sheet down */
+  touch-action: none;
+  cursor: grab;
+}
 .toc-sheet__bar {
   position: sticky;
   top: 0;
