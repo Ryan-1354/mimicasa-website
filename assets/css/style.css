@@ -1411,6 +1411,7 @@ body.page--inner { padding-top: 88px; }
   line-height: 1.5;
   color: var(--color-text-primary);
 }
+.member__title { color: var(--color-text-tertiary); }
 .member__role {
   font-family: 'Noto Sans TC', sans-serif;
   font-weight: 400;
@@ -1456,13 +1457,41 @@ body.page--inner { padding-top: 88px; }
   height: 100svh;
   display: flex;
   flex-direction: column;
-  background: var(--color-bg-default);
+  /* Theme tokens — overridden per role below (JS adds the modifier class) */
+  --dw-bg: var(--color-bg-section);
+  --dw-text: var(--color-text-primary);
+  --dw-muted: var(--color-text-tertiary);
+  --dw-bar-border: var(--color-border-default);
+  --dw-bio-border: var(--color-border-default);
+  --dw-close-bg: transparent;
+  --dw-close-hover: var(--color-border-default);
+  --dw-close-icon: var(--color-text-primary);
+  background: var(--dw-bg);
   transform: translateX(100%);
   transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1);
 }
 .team-drawer.is-open .team-drawer__panel { transform: translateX(0); }
 @media (max-width: 767px) {
   .team-drawer__panel { width: 100vw; }
+}
+/* Role themes — 執行長 (brand green) / 園長 (brown) / 老師・廚師 (default light) */
+.team-drawer--ceo .team-drawer__panel {
+  --dw-bg: #40521f;                                 /* green/950 */
+  --dw-text: var(--color-text-inverse-primary);     /* #ffffff */
+  --dw-muted: var(--color-text-inverse-secondary);  /* #bdbdbd */
+  --dw-bio-border: #989898;                          /* border/secondary（bar 沿用 #dcdcdc） */
+  --dw-close-bg: transparent;
+  --dw-close-hover: rgba(255, 255, 255, 0.12);
+  --dw-close-icon: var(--color-text-inverse-primary);
+}
+.team-drawer--mgmt .team-drawer__panel {
+  --dw-bg: #6e6152;                                 /* brown/800 */
+  --dw-text: var(--color-text-inverse-primary);     /* #ffffff */
+  --dw-muted: var(--color-text-inverse-secondary);  /* #bdbdbd */
+  --dw-bio-border: #989898;                          /* border/secondary（bar 沿用 #dcdcdc） */
+  --dw-close-bg: transparent;
+  --dw-close-hover: rgba(255, 255, 255, 0.12);
+  --dw-close-icon: var(--color-text-inverse-primary);
 }
 
 /* Sticky top bar — 師資介紹 • 校區 */
@@ -1473,8 +1502,8 @@ body.page--inner { padding-top: 88px; }
   justify-content: space-between;
   gap: var(--sp-inset-md);
   padding: var(--sp-stack-lg) var(--sp-layout-xs);
-  border-bottom: 1px solid var(--color-border-default);
-  background: var(--color-bg-default);
+  border-bottom: 1px solid var(--dw-bar-border);
+  background: var(--dw-bg);
 }
 .team-drawer__crumb {
   display: flex;
@@ -1483,12 +1512,11 @@ body.page--inner { padding-top: 88px; }
   min-width: 0;
 }
 .team-drawer__crumb span:not(.team-drawer__dot) {
-  font-family: 'Noto Serif TC', serif;
-  font-weight: 600;
-  font-size: 18px;
-  line-height: 1.2;
-  letter-spacing: -0.02em;
-  color: var(--color-text-tertiary);
+  font-family: 'Noto Sans TC', sans-serif;
+  font-weight: 400;
+  font-size: var(--fs-body);
+  line-height: 1.5;
+  color: var(--dw-muted);
   white-space: nowrap;
 }
 .team-drawer__dot {
@@ -1496,7 +1524,7 @@ body.page--inner { padding-top: 88px; }
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: var(--color-text-tertiary);
+  background: var(--dw-muted);
 }
 .team-drawer__close {
   flex-shrink: 0;
@@ -1506,10 +1534,11 @@ body.page--inner { padding-top: 88px; }
   width: 44px;
   height: 44px;
   border-radius: var(--r-sm);
-  background: var(--color-bg-default);
+  background: var(--dw-close-bg);
+  color: var(--dw-close-icon);
   transition: background 0.15s ease;
 }
-.team-drawer__close:hover  { background: var(--color-bg-section); }
+.team-drawer__close:hover  { background: var(--dw-close-hover); }
 .team-drawer__close:active { transform: scale(0.94); }
 
 /* Scrollable body */
@@ -1540,7 +1569,7 @@ body.page--inner { padding-top: 88px; }
   font-size: 28px;
   line-height: 1.2;
   letter-spacing: -0.02em;
-  color: var(--color-text-primary);
+  color: var(--dw-text);
 }
 .team-drawer__role {
   font-family: 'Noto Sans TC', sans-serif;
@@ -1559,12 +1588,11 @@ body.page--inner { padding-top: 88px; }
 }
 .team-drawer__bio-title {
   padding: 0 var(--sp-layout-xs);
-  font-family: 'Noto Serif TC', serif;
-  font-weight: 600;
-  font-size: 18px;
-  line-height: 1.2;
-  letter-spacing: -0.02em;
-  color: var(--color-text-tertiary);
+  font-family: 'Noto Sans TC', sans-serif;
+  font-weight: 400;
+  font-size: var(--fs-body);
+  line-height: 1.5;
+  color: var(--dw-muted);
 }
 .team-drawer__bio {
   list-style: none;
@@ -1574,18 +1602,17 @@ body.page--inner { padding-top: 88px; }
   gap: var(--sp-inset-lg);
   margin: 0 var(--sp-layout-xs);
   padding: var(--sp-inset-lg) 0;
-  border-bottom: 1px solid var(--color-border-default);
-  font-family: 'Noto Serif TC', serif;
-  font-weight: 600;
-  font-size: 18px;
-  line-height: 1.4;
-  letter-spacing: -0.02em;
-  color: var(--color-text-primary);
+  border-bottom: 1px solid var(--dw-bio-border);
+  font-family: 'Noto Sans TC', sans-serif;
+  font-weight: 400;
+  font-size: var(--fs-body);
+  line-height: 1.5;
+  color: var(--dw-text);
 }
 .team-drawer__bio li::before {
   content: '•';
   flex-shrink: 0;
-  color: var(--color-text-primary);
+  color: var(--dw-text);
 }
 
 /* ══════════════════════════════════════════════

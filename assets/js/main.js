@@ -585,7 +585,6 @@ bookingForm.addEventListener('submit', async (e) => {
   const campusEl = teamDrawer.querySelector('.team-drawer__campus');
   const nameEl   = teamDrawer.querySelector('.team-drawer__name');
   const titleEl  = teamDrawer.querySelector('.team-drawer__title');
-  const roleEl   = teamDrawer.querySelector('.team-drawer__role');
   const bioEl    = teamDrawer.querySelector('.team-drawer__bio');
   const CAMPUS_NAMES = { mimi: '咪咪幼兒園', casa: '家田幼兒園' };
   let teamScrollY = 0;
@@ -595,8 +594,12 @@ bookingForm.addEventListener('submit', async (e) => {
     const campus = trigger.closest('.team__list')?.dataset.campus;
     campusEl.textContent = CAMPUS_NAMES[campus] || '';
     nameEl.textContent  = trigger.querySelector('.member__name')?.textContent.trim() || '';
-    titleEl.textContent = trigger.querySelector('.member__title')?.textContent.trim() || '';
-    roleEl.textContent  = trigger.querySelector('.member__role')?.textContent.trim() || '';
+    const title = trigger.querySelector('.member__title')?.textContent.trim() || '';
+    titleEl.textContent = title;
+    // Role-based theme: 執行長 (green) / 園長 (brown) / 老師・廚師 (default light)
+    teamDrawer.classList.remove('team-drawer--ceo', 'team-drawer--mgmt');
+    if (title === '執行長') teamDrawer.classList.add('team-drawer--ceo');
+    else if (title === '園長') teamDrawer.classList.add('team-drawer--mgmt');
     bioEl.innerHTML = '';
     const tpl = member?.querySelector('.member__bio');
     if (tpl) bioEl.appendChild(tpl.content.cloneNode(true));
