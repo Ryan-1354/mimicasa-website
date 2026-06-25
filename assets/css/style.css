@@ -2133,6 +2133,8 @@ body.page--inner { padding-top: 88px; }
   justify-content: space-between;
   gap: var(--sp-inset-md);
   background: rgba(89, 112, 47, 0.7);   /* brand green @ 70% */
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
   border-radius: var(--r-lg);
   padding: var(--sp-inset-md) var(--sp-inset-lg);
   opacity: 0;
