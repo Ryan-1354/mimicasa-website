@@ -1126,10 +1126,10 @@ bookingForm.addEventListener('submit', async (e) => {
       '<button type="button" class="snackbar__close" aria-label="關閉">' +
         '<img class="snackbar__icon" src="../assets/images/icon-snackbar-close.svg" alt="" aria-hidden="true">' +
       '</button>';
-    bar.querySelector('.snackbar__main').addEventListener('click', async () => {
-      try {
-        await navigator.share({ url: window.location.href });
-      } catch { /* cancelled / unsupported — ignore */ }
+    bar.querySelector('.snackbar__main').addEventListener('click', () => {
+      const url = window.location.href;
+      removeSnackbar();   // close as soon as the share sheet opens
+      navigator.share({ url }).catch(() => { /* cancelled / unsupported */ });
     });
     bar.querySelector('.snackbar__close').addEventListener('click', removeSnackbar);
     return bar;

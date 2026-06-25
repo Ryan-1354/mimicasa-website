@@ -2132,9 +2132,8 @@ body.page--inner { padding-top: 88px; }
   align-items: center;
   justify-content: space-between;
   gap: var(--sp-inset-md);
-  background: var(--color-bg-default);
+  background: rgba(89, 112, 47, 0.7);   /* brand green @ 70% */
   border-radius: var(--r-lg);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
   padding: var(--sp-inset-md) var(--sp-inset-lg);
   opacity: 0;
   transition: opacity 0.25s ease, transform 0.25s ease;
@@ -2158,7 +2157,7 @@ body.page--inner { padding-top: 88px; }
   font-weight: 400;
   font-size: var(--fs-body-sm);   /* 隨裝置：13 / 14 / 15px */
   line-height: 1.5;
-  color: var(--color-text-primary);
+  color: var(--color-text-inverse-primary);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
