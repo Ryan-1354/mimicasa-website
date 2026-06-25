@@ -1120,11 +1120,11 @@ bookingForm.addEventListener('submit', async (e) => {
     bar.setAttribute('aria-label', '分享這個頁面');
     bar.innerHTML =
       '<button type="button" class="snackbar__main">' +
-        '<img class="snackbar__icon" src="../assets/images/icon-share.svg" alt="" aria-hidden="true">' +
+        '<img class="snackbar__icon" src="../assets/images/icon-snackbar-share.svg" alt="" aria-hidden="true">' +
         '<span class="snackbar__text">點此分享給親朋好友</span>' +
       '</button>' +
       '<button type="button" class="snackbar__close" aria-label="關閉">' +
-        '<img class="snackbar__icon" src="../assets/images/icon-close.svg" alt="" aria-hidden="true">' +
+        '<img class="snackbar__icon" src="../assets/images/icon-snackbar-close.svg" alt="" aria-hidden="true">' +
       '</button>';
     bar.querySelector('.snackbar__main').addEventListener('click', async () => {
       try {
