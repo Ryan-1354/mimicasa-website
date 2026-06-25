@@ -1766,7 +1766,7 @@ body.page--inner { padding-top: 88px; }
   justify-content: center;
   width: 44px;
   height: 44px;
-  background: var(--color-bg-default);
+  background: transparent;
   border: none;
   border-radius: var(--r-sm);
   flex-shrink: 0;
