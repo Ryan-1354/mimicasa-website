@@ -272,29 +272,29 @@ function openBookingDialog() {
   bookingDialog.showModal();
 }
 
-function closeBookingDialog() {
-  function finish() {
-    document.removeEventListener('touchmove', preventDialogScroll);
-    document.body.style.position = '';
-    document.body.style.top = '';
-    document.body.style.width = '';
-    window.scrollTo({ top: bookingScrollY, behavior: 'instant' });
-    bookingDialog.close();
-    bookingForm.reset();
-    document.getElementById('field-birthday')?.classList.add('date--empty');
-    if (phoneInput) phoneInput.placeholder = '請輸入手機或市話';
-    bookingForm.querySelectorAll('.field--error').forEach(el => el.classList.remove('field--error'));
-    bookingForm.querySelectorAll('.form-error').forEach(el => { el.hidden = true; });
-  }
+function finishBookingClose() {
+  document.removeEventListener('touchmove', preventDialogScroll);
+  document.body.style.position = '';
+  document.body.style.top = '';
+  document.body.style.width = '';
+  window.scrollTo({ top: bookingScrollY, behavior: 'instant' });
+  bookingDialog.close();
+  bookingForm.reset();
+  document.getElementById('field-birthday')?.classList.add('date--empty');
+  if (phoneInput) phoneInput.placeholder = '請輸入手機或市話';
+  bookingForm.querySelectorAll('.field--error').forEach(el => el.classList.remove('field--error'));
+  bookingForm.querySelectorAll('.form-error').forEach(el => { el.hidden = true; });
+}
 
+function closeBookingDialog() {
   if (window.matchMedia('(max-width: 767px)').matches) {
     bookingDialog.classList.add('is-closing');
     bookingDialog.addEventListener('animationend', () => {
       bookingDialog.classList.remove('is-closing');
-      finish();
+      finishBookingClose();
     }, { once: true });
   } else {
-    finish();
+    finishBookingClose();
   }
 }
 
@@ -310,6 +310,51 @@ document.querySelectorAll('[data-open-booking]').forEach(btn => {
     openBookingDialog();
   });
 });
+
+// Mobile drag-to-dismiss — same feel as the philosophy 目錄 sheet
+(function () {
+  const dlgBody = bookingDialog.querySelector('.booking-dialog__body');
+  let startY = 0, dy = 0, dragging = false;
+
+  bookingDialog.addEventListener('touchstart', (e) => {
+    if (!bookingDialog.open) return;
+    if (!window.matchMedia('(max-width: 767px)').matches) return;
+    const fromGrip = e.target.closest('.booking-dialog__handle, .booking-dialog__header');
+    if (!fromGrip && dlgBody && dlgBody.scrollTop > 0) return;   // let the form scroll
+    startY = e.touches[0].clientY;
+    dy = 0;
+    dragging = true;
+    bookingDialog.style.transition = 'none';
+  }, { passive: true });
+
+  bookingDialog.addEventListener('touchmove', (e) => {
+    if (!dragging) return;
+    dy = Math.max(0, e.touches[0].clientY - startY);   // downward only
+    if (dy > 0) {
+      e.preventDefault();
+      bookingDialog.style.transform = `translateY(${dy}px)`;
+    }
+  }, { passive: false });
+
+  function endDrag() {
+    if (!dragging) return;
+    dragging = false;
+    if (dy <= 0) { bookingDialog.style.transition = ''; bookingDialog.style.transform = ''; return; }
+    const closing = dy > (bookingDialog.offsetHeight || 0) * 0.25;
+    bookingDialog.style.transition = 'transform 0.3s cubic-bezier(0.32, 0.72, 0, 1)';
+    bookingDialog.addEventListener('transitionend', function te(ev) {
+      if (ev.target !== bookingDialog || ev.propertyName !== 'transform') return;
+      bookingDialog.removeEventListener('transitionend', te);
+      bookingDialog.style.transition = '';
+      bookingDialog.style.transform = '';
+      if (closing) finishBookingClose();
+    });
+    bookingDialog.style.transform = closing ? 'translateY(100%)' : 'translateY(0)';
+    dy = 0;
+  }
+  bookingDialog.addEventListener('touchend', endDrag);
+  bookingDialog.addEventListener('touchcancel', endDrag);
+})();
 
 // Birthday date range
 (function () {

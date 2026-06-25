@@ -1736,6 +1736,9 @@ body.page--inner { padding-top: 88px; }
   min-height: 0;
 }
 
+/* Drag handle — mobile bottom-sheet only (desktop modal is centred) */
+.booking-dialog__handle { display: none; }
+
 /* Header + subtitle + divider stay fixed; only the body (form) scrolls. */
 .booking-dialog__header {
   flex-shrink: 0;
@@ -2073,6 +2076,16 @@ body.page--inner { padding-top: 88px; }
   }
   .booking-dialog.is-closing {
     animation: sheetSlideDown 0.3s ease forwards;
+  }
+  .booking-dialog__handle {
+    display: block;
+    flex-shrink: 0;
+    width: 40px;
+    height: 4px;
+    margin: 10px auto 0;
+    border-radius: 999px;
+    background: var(--color-text-muted);
+    touch-action: none;
   }
 }
 
