@@ -754,9 +754,9 @@ bookingForm.addEventListener('submit', async (e) => {
   function prev() { if (idx > 0) { idx--; render(); } }
   function next() { if (idx < gallery.length - 1) { idx++; render(); } }
 
-  // Each feature media is its own gallery
-  document.querySelectorAll('.feature__media').forEach(media => {
-    const pics  = [...media.querySelectorAll('.feature__pic')];
+  // Each media group is its own gallery (feature pics + about page-header pics)
+  document.querySelectorAll('.feature__media, .page-header__media').forEach(media => {
+    const pics  = [...media.querySelectorAll('.feature__pic, .about-pic')];
     const items = pics.map(p => ({
       src: p.dataset.lbSrc,
       alt: p.querySelector('img')?.alt || '',
