@@ -237,10 +237,18 @@ document.querySelectorAll('[data-reveal]').forEach(el => {
 /* ══════════════════════════════════════════════
    TOAST
 ══════════════════════════════════════════════ */
-function showToast(message) {
+function showToast(message, type = 'success') {
   const el = document.createElement('div');
-  el.className = 'toast';
-  el.textContent = message;
+  el.className = `toast toast--${type}`;
+  const icon = document.createElement('img');
+  icon.className = 'toast__icon';
+  icon.src = `../assets/images/icon-toast-${type === 'fail' ? 'fail' : 'success'}.svg`;
+  icon.alt = '';
+  icon.setAttribute('aria-hidden', 'true');
+  const text = document.createElement('span');
+  text.className = 'toast__text';
+  text.textContent = message;
+  el.append(icon, text);
   document.body.appendChild(el);
   setTimeout(() => el.remove(), 3000);
 }
@@ -514,7 +522,7 @@ bookingForm.addEventListener('submit', async (e) => {
   } catch {
     submitBtn.disabled    = false;
     submitBtn.textContent = '確定送出';
-    alert('送出失敗，請稍後再試。');
+    showToast('預約參觀表單送出失敗，請再試一次', 'fail');
   } finally {
     submitBtn.disabled    = false;
     submitBtn.textContent = '確定送出';

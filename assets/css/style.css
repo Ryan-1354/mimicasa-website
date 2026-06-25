@@ -2098,20 +2098,25 @@ body.page--inner { padding-top: 88px; }
   bottom: 40px;
   left: 50%;
   transform: translateX(-50%) translateY(0);
-  background: var(--color-bg-dark);
-  color: var(--color-text-inverse-primary);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--color-bg-default);
+  color: var(--color-text-primary);
   font-family: 'Noto Sans TC', sans-serif;
-  font-size: var(--fs-body-sm);
-  font-weight: 500;
+  font-size: var(--fs-body-sm);   /* 隨裝置：13 / 14 / 15px */
+  font-weight: 400;
   line-height: 1.5;
-  padding: 14px 24px;
-  border-radius: var(--r-pill);
+  padding: var(--sp-inset-md) var(--sp-inset-lg);
+  border-radius: var(--r-lg);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
   white-space: nowrap;
   z-index: 9999;
   pointer-events: none;
   opacity: 0;
   animation: toastIn 0.3s ease forwards, toastOut 0.3s ease 2.7s forwards;
 }
+.toast__icon { flex-shrink: 0; width: 24px; height: 24px; }
 
 @keyframes toastIn {
   from { opacity: 0; transform: translateX(-50%) translateY(12px); }
