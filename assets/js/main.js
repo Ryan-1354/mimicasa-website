@@ -1120,11 +1120,11 @@ bookingForm.addEventListener('submit', async (e) => {
     bar.setAttribute('aria-label', '分享這個頁面');
     bar.innerHTML =
       '<button type="button" class="snackbar__main">' +
-        '<img class="snackbar__icon" src="../assets/images/icon-snackbar-share.svg" alt="" aria-hidden="true">' +
+        '<img class="snackbar__icon" src="../assets/images/icon-snackbar-share.svg?v=2" alt="" aria-hidden="true">' +
         '<span class="snackbar__text">點此分享給親朋好友</span>' +
       '</button>' +
       '<button type="button" class="snackbar__close" aria-label="關閉">' +
-        '<img class="snackbar__icon" src="../assets/images/icon-snackbar-close.svg" alt="" aria-hidden="true">' +
+        '<img class="snackbar__icon" src="../assets/images/icon-snackbar-close.svg?v=2" alt="" aria-hidden="true">' +
       '</button>';
     bar.querySelector('.snackbar__main').addEventListener('click', () => {
       const url = window.location.href;
@@ -1140,6 +1140,8 @@ bookingForm.addEventListener('submit', async (e) => {
     sessionStorage.setItem(SEEN_KEY, '1');
     snackbar = buildSnackbar();
     document.body.appendChild(snackbar);
+    // Sit just below the navbar instead of overlapping it.
+    if (navbar) snackbar.style.top = (navbar.offsetHeight + 16) + 'px';
     requestAnimationFrame(() => snackbar.classList.add('is-open'));
   }
 
