@@ -2148,8 +2148,9 @@ body.page--inner { padding-top: 88px; }
 }
 .snackbar.is-open    { opacity: 1; transform: translateY(0); }
 .snackbar.is-closing { opacity: 0; transform: translateY(-12px); }
-/* 漢堡選單開啟時隱藏 snackbar */
-.drawer.open ~ .snackbar { display: none; }
+/* 漢堡選單或 lightbox 開啟時隱藏 snackbar */
+.drawer.open ~ .snackbar,
+.lightbox.is-open ~ .snackbar { display: none; }
 .snackbar__main {
   display: flex;
   align-items: center;
