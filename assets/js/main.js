@@ -1149,7 +1149,12 @@ bookingForm.addEventListener('submit', async (e) => {
   function positionSnackbar() {
     if (!snackbar) return;
     const navShowing = navbar && navbar.classList.contains('navbar--visible');
-    snackbar.style.top = (navShowing ? navbar.offsetHeight + 16 : 16) + 'px';
+    // Use the navbar's true rendered bottom edge (not offsetHeight) so the bar
+    // stays flush even after fonts reflow the navbar height.
+    const navBottom = navShowing
+      ? Math.max(0, Math.round(navbar.getBoundingClientRect().bottom))
+      : 0;
+    snackbar.style.top = navBottom + 'px';
   }
 
   function showSnackbar() {
@@ -1161,8 +1166,13 @@ bookingForm.addEventListener('submit', async (e) => {
     requestAnimationFrame(() => snackbar.classList.add('is-open'));
   }
 
-  // Re-anchor as the navbar collapses / reappears on scroll.
+  // Re-anchor as the navbar collapses / reappears on scroll, on resize, and
+  // once web fonts finish loading (font swap changes the navbar height).
   window.addEventListener('scroll', () => { if (snackbar) positionSnackbar(); }, { passive: true });
+  window.addEventListener('resize', () => { if (snackbar) positionSnackbar(); });
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(() => { if (snackbar) positionSnackbar(); });
+  }
 
   document.addEventListener('visibilitychange', () => {
     if (document.visibilityState === 'hidden') {
