@@ -1148,13 +1148,12 @@ bookingForm.addEventListener('submit', async (e) => {
   // Follow the navbar: below it when it's showing, at viewport top when it's hidden.
   function positionSnackbar() {
     if (!snackbar) return;
-    const navShowing = navbar && navbar.classList.contains('navbar--visible');
-    // Use the navbar's true rendered bottom edge (not offsetHeight) so the bar
-    // stays flush even after fonts reflow the navbar height.
-    const navBottom = navShowing
-      ? Math.max(0, Math.round(navbar.getBoundingClientRect().bottom))
-      : 0;
-    snackbar.style.top = navBottom + 'px';
+    // Anchor to the navbar's real rendered bottom edge. When the navbar is
+    // hidden it sits at translateY(-100%), so its bottom is ~0 → snackbar pins
+    // to the top; when visible, the bar sits flush under it. Driving this off
+    // geometry (not the --visible class) avoids overlap during state changes.
+    const navBottom = navbar ? navbar.getBoundingClientRect().bottom : 0;
+    snackbar.style.top = Math.max(0, Math.round(navBottom)) + 'px';
   }
 
   function showSnackbar() {
@@ -1172,6 +1171,13 @@ bookingForm.addEventListener('submit', async (e) => {
   window.addEventListener('resize', () => { if (snackbar) positionSnackbar(); });
   if (document.fonts && document.fonts.ready) {
     document.fonts.ready.then(() => { if (snackbar) positionSnackbar(); });
+  }
+  // Re-anchor once the navbar finishes sliding in/out — a scroll event can fire
+  // mid-transition (navbar still translated), so re-measure when it settles.
+  if (navbar) {
+    navbar.addEventListener('transitionend', (e) => {
+      if (e.propertyName === 'transform' && snackbar) positionSnackbar();
+    });
   }
 
   document.addEventListener('visibilitychange', () => {
