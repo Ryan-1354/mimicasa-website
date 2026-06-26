@@ -322,7 +322,7 @@ document.querySelectorAll('[data-open-booking]').forEach(btn => {
 // Mobile drag-to-dismiss — same feel as the philosophy 目錄 sheet
 (function () {
   const dlgBody = bookingDialog.querySelector('.booking-dialog__body');
-  let startY = 0, dy = 0, dragging = false;
+  let startY = 0, dy = 0, dragging = false, lastY = 0, lastT = 0, vy = 0;
 
   bookingDialog.addEventListener('touchstart', (e) => {
     if (!bookingDialog.open) return;
@@ -332,12 +332,16 @@ document.querySelectorAll('[data-open-booking]').forEach(btn => {
     startY = e.touches[0].clientY;
     dy = 0;
     dragging = true;
+    lastY = startY; lastT = e.timeStamp; vy = 0;
     bookingDialog.style.transition = 'none';
   }, { passive: true });
 
   bookingDialog.addEventListener('touchmove', (e) => {
     if (!dragging) return;
-    dy = Math.max(0, e.touches[0].clientY - startY);   // downward only
+    const y = e.touches[0].clientY, now = e.timeStamp;
+    if (now > lastT) vy = (y - lastY) / (now - lastT);   // px/ms, downward = positive
+    lastY = y; lastT = now;
+    dy = Math.max(0, y - startY);   // downward only
     if (dy > 0) {
       e.preventDefault();
       bookingDialog.style.transform = `translateY(${dy}px)`;
@@ -348,7 +352,8 @@ document.querySelectorAll('[data-open-booking]').forEach(btn => {
     if (!dragging) return;
     dragging = false;
     if (dy <= 0) { bookingDialog.style.transition = ''; bookingDialog.style.transform = ''; return; }
-    const closing = dy > (bookingDialog.offsetHeight || 0) * 0.25;
+    // Only dismiss when pulled (almost) to the bottom or flicked down fast.
+    const closing = dy > (bookingDialog.offsetHeight || 0) * 0.9 || vy > 0.6;
     bookingDialog.style.transition = 'transform 0.3s cubic-bezier(0.32, 0.72, 0, 1)';
     bookingDialog.addEventListener('transitionend', function te(ev) {
       if (ev.target !== bookingDialog || ev.propertyName !== 'transform') return;
@@ -1011,7 +1016,7 @@ bookingForm.addEventListener('submit', async (e) => {
   // and pull the sheet down with a finger; release past 1/4 height to close.
   const panel   = sheet.querySelector('.toc-sheet__panel');
   const overlay = sheet.querySelector('.toc-sheet__overlay');
-  let dragStartY = 0, dragDY = 0, dragging = false;
+  let dragStartY = 0, dragDY = 0, dragging = false, dragLastY = 0, dragLastT = 0, dragVY = 0;
 
   panel.addEventListener('touchstart', (e) => {
     if (!sheet.classList.contains('is-open')) return;
@@ -1020,12 +1025,16 @@ bookingForm.addEventListener('submit', async (e) => {
     dragStartY = e.touches[0].clientY;
     dragDY = 0;
     dragging = true;
+    dragLastY = dragStartY; dragLastT = e.timeStamp; dragVY = 0;
     panel.style.transition = 'none';                // follow the finger
   }, { passive: true });
 
   panel.addEventListener('touchmove', (e) => {
     if (!dragging) return;
-    dragDY = Math.max(0, e.touches[0].clientY - dragStartY);   // downward only
+    const y = e.touches[0].clientY, now = e.timeStamp;
+    if (now > dragLastT) dragVY = (y - dragLastY) / (now - dragLastT);   // px/ms, downward = positive
+    dragLastY = y; dragLastT = now;
+    dragDY = Math.max(0, y - dragStartY);   // downward only
     if (dragDY > 0) {
       e.preventDefault();                            // stop page/list scroll
       panel.style.transform = `translateY(${dragDY}px)`;
@@ -1039,7 +1048,8 @@ bookingForm.addEventListener('submit', async (e) => {
     dragging = false;
     panel.style.transition = '';                     // restore CSS easing
     overlay.style.opacity = '';
-    const closed = dragDY > (panel.offsetHeight || 0) * 0.25;
+    // Only dismiss when pulled (almost) to the bottom or flicked down fast.
+    const closed = dragDY > (panel.offsetHeight || 0) * 0.9 || dragVY > 0.6;
     panel.style.transform = '';                      // class drives the rest
     if (closed) closeSheet();                         // → slides to translateY(100%)
     dragDY = 0;
