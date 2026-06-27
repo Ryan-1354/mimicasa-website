@@ -601,6 +601,8 @@ html[lang="en"] {
   text-shadow: 0 2px 12px rgba(0, 0, 0, 0.55);
   white-space: nowrap;
 }
+/* The EN headline is longer than the ZH one — let it wrap instead of overflowing */
+html[lang="en"] .hero__h1 { white-space: normal; text-wrap: balance; }
 .hero__subtitle {
   font-family: var(--font-serif);
   font-weight: 600;
@@ -1689,6 +1691,8 @@ body.page--inner { padding-top: 88px; }
 
   /* Hero */
   .hero__text { left: 24px; }
+  /* The wrapping EN headline needs more width than the narrow ZH text column */
+  html[lang="en"] .hero__text { width: min(82vw, 320px); }
   .hero__cta  { bottom: 48px; }
 
   /* Features */
