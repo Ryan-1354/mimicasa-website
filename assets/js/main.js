@@ -1,4 +1,11 @@
 /* ══════════════════════════════════════════════
+   I18N — runtime copy follows the page's <html lang>
+   (HTML is per-language; JS is shared, so pick strings here)
+══════════════════════════════════════════════ */
+const MC_LANG = (document.documentElement.lang || 'zh').toLowerCase().startsWith('en') ? 'en' : 'zh';
+const mcText = (zh, en) => (MC_LANG === 'en' ? en : zh);
+
+/* ══════════════════════════════════════════════
    BLUR-UP — photos fade + sharpen in as they load
 ══════════════════════════════════════════════ */
 (function () {
@@ -289,7 +296,7 @@ function finishBookingClose() {
   bookingDialog.close();
   bookingForm.reset();
   document.getElementById('field-birthday')?.classList.add('date--empty');
-  if (phoneInput) phoneInput.placeholder = '請輸入手機或市話';
+  if (phoneInput) phoneInput.placeholder = mcText('請輸入手機或市話', 'Mobile or landline number');
   bookingForm.querySelectorAll('.field--error').forEach(el => el.classList.remove('field--error'));
   bookingForm.querySelectorAll('.form-error').forEach(el => { el.hidden = true; });
 }
@@ -453,7 +460,7 @@ if (phoneInput) {
       e.target.placeholder = '(0X) XXXX-XXXX';
     } else {
       e.target.value       = digits.slice(0, 10);
-      e.target.placeholder = '請輸入手機或市話';
+      e.target.placeholder = mcText('請輸入手機或市話', 'Mobile or landline number');
     }
   });
 }
@@ -483,13 +490,13 @@ bookingForm.addEventListener('submit', async (e) => {
 
     if (empty) {
       fieldEl?.classList.add('field--error');
-      if (err) { err.hidden = false; err.textContent = '此欄位為必填'; }
+      if (err) { err.hidden = false; err.textContent = mcText('此欄位為必填', 'This field is required'); }
       valid = false;
     } else if (field === phoneInput) {
       const digits = field.value.replace(/\D/g, '');
       if (digits.length < 10) {
         fieldEl?.classList.add('field--error');
-        if (err) { err.hidden = false; err.textContent = '請輸入有效的電話號碼，市話需加區碼'; }
+        if (err) { err.hidden = false; err.textContent = mcText('請輸入有效的電話號碼，市話需加區碼', 'Please enter a valid phone number (include the area code for landlines)'); }
         valid = false;
       } else {
         fieldEl?.classList.remove('field--error');
@@ -504,7 +511,7 @@ bookingForm.addEventListener('submit', async (e) => {
 
   const submitBtn = bookingForm.querySelector('.booking-form__submit');
   submitBtn.disabled    = true;
-  submitBtn.textContent = '送出中…';
+  submitBtn.textContent = mcText('送出中…', 'Submitting…');
 
   const campus = bookingForm.school.value;
   const payload = {
@@ -523,14 +530,14 @@ bookingForm.addEventListener('submit', async (e) => {
   try {
     await fetch(gasUrl, { method: 'POST', body: JSON.stringify(payload), mode: 'no-cors' });
     closeBookingDialog();
-    showToast('預約參觀表單送出成功');
+    showToast(mcText('預約參觀表單送出成功', 'Your visit request was submitted successfully'));
   } catch {
     submitBtn.disabled    = false;
-    submitBtn.textContent = '確定送出';
-    showToast('預約參觀表單送出失敗，請再試一次', 'fail');
+    submitBtn.textContent = mcText('確定送出', 'Submit');
+    showToast(mcText('預約參觀表單送出失敗，請再試一次', 'Submission failed. Please try again'), 'fail');
   } finally {
     submitBtn.disabled    = false;
-    submitBtn.textContent = '確定送出';
+    submitBtn.textContent = mcText('確定送出', 'Submit');
   }
 });
 
@@ -644,7 +651,7 @@ bookingForm.addEventListener('submit', async (e) => {
   const nameEl   = teamDrawer.querySelector('.team-drawer__name');
   const titleEl  = teamDrawer.querySelector('.team-drawer__title');
   const bioEl    = teamDrawer.querySelector('.team-drawer__bio');
-  const CAMPUS_NAMES = { mimi: '咪咪幼兒園', casa: '家田幼兒園' };
+  const CAMPUS_NAMES = { mimi: mcText('咪咪幼兒園', 'Mimi Preschool'), casa: mcText('家田幼兒園', 'Casa Preschool') };
   let teamScrollY = 0;
 
   function openTeamDrawer(trigger) {
@@ -654,10 +661,10 @@ bookingForm.addEventListener('submit', async (e) => {
     nameEl.textContent  = trigger.querySelector('.member__name')?.textContent.trim() || '';
     const title = trigger.querySelector('.member__title')?.textContent.trim() || '';
     titleEl.textContent = title;
-    // Role-based theme: 執行長 (green) / 園長 (brown) / 老師・廚師 (default light)
+    // Role-based theme: 執行長/Executive Director (green) / 園長/Principal (brown) / 老師・廚師 (default light)
     teamDrawer.classList.remove('team-drawer--ceo', 'team-drawer--mgmt');
-    if (title === '執行長') teamDrawer.classList.add('team-drawer--ceo');
-    else if (title === '園長') teamDrawer.classList.add('team-drawer--mgmt');
+    if (title === '執行長' || title === 'Executive Director') teamDrawer.classList.add('team-drawer--ceo');
+    else if (title === '園長' || title === 'Principal') teamDrawer.classList.add('team-drawer--mgmt');
     bioEl.innerHTML = '';
     const tpl = member?.querySelector('.member__bio');
     if (tpl) bioEl.appendChild(tpl.content.cloneNode(true));
@@ -731,7 +738,7 @@ bookingForm.addEventListener('submit', async (e) => {
       const b = document.createElement('button');
       b.type = 'button';
       b.className = 'lightbox__dot';
-      b.setAttribute('aria-label', `第 ${i + 1} 張`);
+      b.setAttribute('aria-label', mcText(`第 ${i + 1} 張`, `Image ${i + 1}`));
       b.addEventListener('click', () => { idx = i; render(); });
       dotsEl.appendChild(b);
     });
@@ -1127,13 +1134,13 @@ bookingForm.addEventListener('submit', async (e) => {
     const bar = document.createElement('div');
     bar.className = 'snackbar';
     bar.setAttribute('role', 'dialog');
-    bar.setAttribute('aria-label', '分享這個頁面');
+    bar.setAttribute('aria-label', mcText('分享這個頁面', 'Share this page'));
     bar.innerHTML =
       '<button type="button" class="snackbar__main">' +
         '<img class="snackbar__icon" src="../assets/images/icon-snackbar-share.svg?v=2" alt="" aria-hidden="true">' +
-        '<span class="snackbar__text">點此分享給親朋好友</span>' +
+        '<span class="snackbar__text">' + mcText('點此分享給親朋好友', 'Share this site with family &amp; friends') + '</span>' +
       '</button>' +
-      '<button type="button" class="snackbar__close" aria-label="關閉">' +
+      '<button type="button" class="snackbar__close" aria-label="' + mcText('關閉', 'Close') + '">' +
         '<img class="snackbar__icon" src="../assets/images/icon-snackbar-close.svg?v=2" alt="" aria-hidden="true">' +
       '</button>';
     bar.querySelector('.snackbar__main').addEventListener('click', () => {

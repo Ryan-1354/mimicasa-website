@@ -51,7 +51,7 @@ body {
   overflow-x: hidden;
   color: var(--color-text-primary);
   background: var(--color-bg-default);
-  font-family: 'Noto Sans TC', sans-serif;
+  font-family: var(--font-sans);
 }
 img {
   max-width: 100%;
@@ -190,6 +190,18 @@ button {
   --fs-label:       14px;
   --fs-logo-nav-zh: 18px;
   --fs-logo-nav-en: 12px;
+
+  /* Font families — Chinese (default); English pages override below */
+  --font-serif: var(--font-serif);
+  --font-sans:  var(--font-sans);
+  --font-logo:  var(--font-logo);
+}
+
+/* English pages use the Latin type system: Cormorant Garamond + DM Sans */
+html[lang="en"] {
+  --font-serif: 'Cormorant Garamond', serif;
+  --font-sans:  'DM Sans', sans-serif;
+  --font-logo:  'Cormorant Garamond', serif;
 }
 
 /* Tablet ≥ 768px */
@@ -218,45 +230,45 @@ button {
    TYPOGRAPHY CLASSES
 ══════════════════════════════════════════════ */
 .t-h1 {
-  font-family: 'Noto Serif TC', serif;
+  font-family: var(--font-serif);
   font-weight: 600;
   font-size: clamp(32px, 4.2vw, 60px);
   line-height: 1.2;
   letter-spacing: -0.02em;
 }
 .t-h2 {
-  font-family: 'Noto Serif TC', serif;
+  font-family: var(--font-serif);
   font-weight: 600;
   font-size: clamp(28px, 3.3vw, 48px);
   line-height: 1.2;
   letter-spacing: -0.02em;
 }
 .t-h3 {
-  font-family: 'Noto Serif TC', serif;
+  font-family: var(--font-serif);
   font-weight: 600;
   font-size: clamp(22px, 2.1vw, 30px);
   line-height: 1.2;
 }
 .t-h4 {
-  font-family: 'Noto Serif TC', serif;
+  font-family: var(--font-serif);
   font-weight: 600;
   font-size: clamp(18px, 1.7vw, 24px);
   line-height: 1.2;
 }
 .t-body {
-  font-family: 'Noto Sans TC', sans-serif;
+  font-family: var(--font-sans);
   font-weight: 400;
   font-size: var(--fs-body);
   line-height: 1.5;
 }
 .t-body-sm {
-  font-family: 'Noto Sans TC', sans-serif;
+  font-family: var(--font-sans);
   font-weight: 400;
   font-size: var(--fs-body-sm);
   line-height: 1.5;
 }
 .t-label {
-  font-family: 'Noto Sans TC', sans-serif;
+  font-family: var(--font-sans);
   font-weight: 500;
   font-size: var(--fs-label);
   line-height: 1.5;
@@ -276,7 +288,7 @@ button {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  font-family: 'Noto Sans TC', sans-serif;
+  font-family: var(--font-sans);
   font-weight: 500;
   font-size: var(--fs-label);
   letter-spacing: 0.04em;
@@ -337,7 +349,7 @@ button {
   width: 100%;
 }
 .card__title {
-  font-family: 'Noto Serif TC', serif;
+  font-family: var(--font-serif);
   font-weight: 600;
   font-size: clamp(18px, 1.7vw, 24px);
   line-height: 1.2;
@@ -351,7 +363,7 @@ button {
   flex-shrink: 0;
 }
 .card__body {
-  font-family: 'Noto Sans TC', sans-serif;
+  font-family: var(--font-sans);
   font-weight: 400;
   font-size: 15px;
   line-height: 1.5;
@@ -405,7 +417,7 @@ button {
   width: auto;
 }
 .navbar__wordmark-title {
-  font-family: 'DFPLiShuW5-B5', 'Noto Serif TC', serif;
+  font-family: var(--font-logo);
   font-weight: 400;
   font-size: var(--fs-logo-nav-zh);
   line-height: 1;
@@ -436,7 +448,7 @@ button {
   gap: 20px;
 }
 .nav-link {
-  font-family: 'Noto Sans TC', sans-serif;
+  font-family: var(--font-sans);
   font-weight: 500;
   font-size: 16px;
   letter-spacing: 0.04em;
@@ -508,7 +520,7 @@ button {
 }
 .drawer__close:hover { opacity: 1; }
 .drawer__link {
-  font-family: 'Noto Sans TC', sans-serif;
+  font-family: var(--font-sans);
   font-size: 24px;
   font-weight: 500;
   color: #ffffff;
@@ -579,7 +591,7 @@ button {
   }
 }
 .hero__h1 {
-  font-family: 'Noto Serif TC', serif;
+  font-family: var(--font-serif);
   font-weight: 600;
   font-size: clamp(32px, 4.2vw, 60px);
   line-height: 1.2;
@@ -590,7 +602,7 @@ button {
   white-space: nowrap;
 }
 .hero__subtitle {
-  font-family: 'Noto Serif TC', serif;
+  font-family: var(--font-serif);
   font-weight: 600;
   font-size: clamp(32px, 4.2vw, 60px);
   line-height: 1.2;
@@ -624,7 +636,7 @@ button {
   padding: var(--sp-layout-xl) max(var(--sp-layout-2xl), calc((100% - 1200px) / 2));
 }
 .section__eyebrow {
-  font-family: 'Noto Sans TC', sans-serif;
+  font-family: var(--font-sans);
   font-weight: 500;
   font-size: 15px;
   letter-spacing: 0.08em;
@@ -632,7 +644,7 @@ button {
   text-transform: uppercase;
 }
 .section__h2 {
-  font-family: 'Noto Serif TC', serif;
+  font-family: var(--font-serif);
   font-weight: 600;
   font-size: clamp(28px, 3.3vw, 48px);
   line-height: 1.2;
@@ -697,7 +709,7 @@ button {
   gap: var(--sp-stack-lg);
 }
 .philosophy__eyebrow {
-  font-family: 'Noto Serif TC', serif;
+  font-family: var(--font-serif);
   font-weight: 600;
   font-size: clamp(22px, 2.1vw, 30px);
   line-height: 1.2;
@@ -705,7 +717,7 @@ button {
   color: var(--color-border-brand);
 }
 .philosophy__h2 {
-  font-family: 'Noto Serif TC', serif;
+  font-family: var(--font-serif);
   font-weight: 600;
   font-size: clamp(18px, 1.7vw, 24px);
   line-height: 1.2;
@@ -713,7 +725,7 @@ button {
   color: var(--color-text-primary);
 }
 .philosophy__quote {
-  font-family: 'Noto Sans TC', sans-serif;
+  font-family: var(--font-sans);
   font-weight: 400;
   font-size: var(--fs-body);
   line-height: 1.5;
@@ -743,7 +755,7 @@ button {
   flex-shrink: 0;
 }
 .philosophy__list-text {
-  font-family: 'Noto Sans TC', sans-serif;
+  font-family: var(--font-sans);
   font-weight: 400;
   font-size: var(--fs-body);
   line-height: 1.5;
@@ -765,7 +777,7 @@ button {
   margin-bottom: var(--sp-stack-3xl);
 }
 .features__eyebrow {
-  font-family: 'Noto Serif TC', serif;
+  font-family: var(--font-serif);
   font-weight: 600;
   font-size: clamp(22px, 2.1vw, 30px);
   line-height: 1.2;
@@ -773,7 +785,7 @@ button {
   color: var(--color-border-brand);
 }
 .features__h2 {
-  font-family: 'Noto Serif TC', serif;
+  font-family: var(--font-serif);
   font-weight: 600;
   font-size: clamp(18px, 1.7vw, 24px);
   line-height: 1.2;
@@ -800,7 +812,7 @@ button {
   background: var(--color-bg-default);
 }
 .location__eyebrow {
-  font-family: 'Noto Serif TC', serif;
+  font-family: var(--font-serif);
   font-weight: 600;
   font-size: clamp(22px, 2.1vw, 30px);
   line-height: 1.2;
@@ -815,7 +827,7 @@ button {
   margin-bottom: 48px;
 }
 .tab {
-  font-family: 'Noto Serif TC', serif;
+  font-family: var(--font-serif);
   font-weight: 600;
   font-size: clamp(18px, 1.7vw, 24px);
   line-height: 1.2;
@@ -897,7 +909,7 @@ button {
 }
 
 .campus-info__name {
-  font-family: 'Noto Serif TC', serif;
+  font-family: var(--font-serif);
   font-weight: 600;
   font-size: clamp(28px, 3.3vw, 48px);
   line-height: 1.2;
@@ -914,7 +926,7 @@ button {
   display: flex;
   align-items: flex-start;
   gap: 12px;
-  font-family: 'Noto Sans TC', sans-serif;
+  font-family: var(--font-sans);
   font-size: var(--fs-label);
   font-weight: 500;
   line-height: 1.5;
@@ -998,7 +1010,7 @@ button {
   width: auto;
 }
 .footer__wordmark-zh {
-  font-family: 'DFPLiShuW5-B5', serif;
+  font-family: var(--font-logo);
   font-weight: 400;
   font-size: 24px;
   line-height: 1;
@@ -1016,7 +1028,7 @@ button {
   white-space: nowrap;
 }
 .footer__tagline {
-  font-family: 'Noto Sans TC', sans-serif;
+  font-family: var(--font-sans);
   font-size: var(--fs-body);
   color: var(--color-text-inverse-secondary);
   line-height: 1.5;
@@ -1029,7 +1041,7 @@ button {
   gap: 24px;
 }
 .footer__section-label {
-  font-family: 'Noto Sans TC', sans-serif;
+  font-family: var(--font-sans);
   font-size: 14px;
   color: var(--color-text-inverse-tertiary);
   line-height: 1.4;
@@ -1041,7 +1053,7 @@ button {
   gap: 12px;
 }
 .footer__campus-label {
-  font-family: 'Noto Sans TC', sans-serif;
+  font-family: var(--font-sans);
   font-size: var(--fs-body);
   color: var(--color-text-inverse-accent);
   line-height: 1.5;
@@ -1064,7 +1076,7 @@ button {
   margin-top: 3px;
 }
 .footer__info-item {
-  font-family: 'Noto Sans TC', sans-serif;
+  font-family: var(--font-sans);
   font-weight: 500;
   font-size: var(--fs-label);
   color: #efefef;
@@ -1100,7 +1112,7 @@ a.footer__info-item--link:hover { opacity: 0.7; }
   align-items: baseline;
 }
 .footer__copy-zh {
-  font-family: 'Noto Sans TC', sans-serif;
+  font-family: var(--font-sans);
   font-size: 15px;
   color: var(--color-text-inverse-tertiary);
   line-height: 1.5;
@@ -1148,7 +1160,7 @@ body.page--inner { padding-top: 88px; }
   background: var(--color-text-brand);
 }
 .about-eyebrow__text {
-  font-family: 'Noto Sans TC', sans-serif;
+  font-family: var(--font-sans);
   font-weight: 400;
   font-size: var(--fs-body);
   line-height: 1.5;
@@ -1171,7 +1183,7 @@ body.page--inner { padding-top: 88px; }
   color: var(--color-text-primary);
 }
 .page-header__desc {
-  font-family: 'Noto Sans TC', sans-serif;
+  font-family: var(--font-sans);
   font-weight: 400;
   font-size: var(--fs-body);
   line-height: 1.5;
@@ -1240,7 +1252,7 @@ body.page--inner { padding-top: 88px; }
   gap: var(--sp-stack-sm);
 }
 .campus-sec__title {
-  font-family: 'Noto Serif TC', serif;
+  font-family: var(--font-serif);
   font-weight: 600;
   font-size: clamp(22px, 2.1vw, 30px);
   line-height: 1.2;
@@ -1248,7 +1260,7 @@ body.page--inner { padding-top: 88px; }
   color: var(--color-text-primary);
 }
 .campus-sec__sub {
-  font-family: 'Noto Sans TC', sans-serif;
+  font-family: var(--font-sans);
   font-weight: 400;
   font-size: var(--fs-body-sm);
   line-height: 1.5;
@@ -1283,7 +1295,7 @@ body.page--inner { padding-top: 88px; }
 
 /* Shared grey lead paragraph under a section title */
 .about-lead {
-  font-family: 'Noto Sans TC', sans-serif;
+  font-family: var(--font-sans);
   font-weight: 400;
   font-size: var(--fs-body);
   line-height: 1.5;
@@ -1330,7 +1342,7 @@ body.page--inner { padding-top: 88px; }
   border-radius: var(--r-xs);
 }
 .content-card__num {
-  font-family: 'Noto Serif TC', serif;
+  font-family: var(--font-serif);
   font-weight: 600;
   font-size: 28px;
   line-height: 1.2;
@@ -1343,7 +1355,7 @@ body.page--inner { padding-top: 88px; }
   background: var(--color-text-muted);
 }
 .content-card__text {
-  font-family: 'Noto Serif TC', serif;
+  font-family: var(--font-serif);
   font-weight: 600;
   font-size: 18px;
   line-height: 1.2;
@@ -1411,7 +1423,7 @@ body.page--inner { padding-top: 88px; }
 }
 .member__name,
 .member__title {
-  font-family: 'Noto Sans TC', sans-serif;
+  font-family: var(--font-sans);
   font-weight: 400;
   font-size: 16px;
   line-height: 1.5;
@@ -1419,7 +1431,7 @@ body.page--inner { padding-top: 88px; }
 }
 .member__title { color: var(--color-text-tertiary); }
 .member__role {
-  font-family: 'Noto Sans TC', sans-serif;
+  font-family: var(--font-sans);
   font-weight: 400;
   font-size: 13px;
   line-height: 1.5;
@@ -1518,7 +1530,7 @@ body.page--inner { padding-top: 88px; }
   min-width: 0;
 }
 .team-drawer__crumb span:not(.team-drawer__dot) {
-  font-family: 'Noto Sans TC', sans-serif;
+  font-family: var(--font-sans);
   font-weight: 400;
   font-size: var(--fs-body);
   line-height: 1.5;
@@ -1570,7 +1582,7 @@ body.page--inner { padding-top: 88px; }
 }
 .team-drawer__name,
 .team-drawer__title {
-  font-family: 'Noto Serif TC', serif;
+  font-family: var(--font-serif);
   font-weight: 600;
   font-size: 28px;
   line-height: 1.2;
@@ -1578,7 +1590,7 @@ body.page--inner { padding-top: 88px; }
   color: var(--dw-text);
 }
 .team-drawer__role {
-  font-family: 'Noto Sans TC', sans-serif;
+  font-family: var(--font-sans);
   font-weight: 400;
   font-size: 16px;
   line-height: 1.5;
@@ -1594,7 +1606,7 @@ body.page--inner { padding-top: 88px; }
 }
 .team-drawer__bio-title {
   padding: 0 var(--sp-layout-xs);
-  font-family: 'Noto Sans TC', sans-serif;
+  font-family: var(--font-sans);
   font-weight: 400;
   font-size: var(--fs-body);
   line-height: 1.5;
@@ -1609,7 +1621,7 @@ body.page--inner { padding-top: 88px; }
   margin: 0 var(--sp-layout-xs);
   padding: var(--sp-inset-lg) 0;
   border-bottom: 1px solid var(--dw-bio-border);
-  font-family: 'Noto Sans TC', sans-serif;
+  font-family: var(--font-sans);
   font-weight: 400;
   font-size: var(--fs-body);
   line-height: 1.5;
@@ -1763,7 +1775,7 @@ body.page--inner { padding-top: 88px; }
   padding: var(--sp-stack-2xl) var(--sp-inset-xl) var(--sp-inset-xl);
 }
 .booking-dialog__title {
-  font-family: 'Noto Serif TC', serif;
+  font-family: var(--font-serif);
   font-weight: 600;
   font-size: clamp(22px, 2.1vw, 30px);
   line-height: 1.2;
@@ -1837,7 +1849,7 @@ body.page--inner { padding-top: 88px; }
 }
 .form-asterisk {
   width: 8px;
-  font-family: 'Noto Sans TC', sans-serif;
+  font-family: var(--font-sans);
   font-weight: 500;
   font-size: var(--fs-label);
   color: var(--color-status-warning);
@@ -1869,7 +1881,7 @@ body.page--inner { padding-top: 88px; }
 }
 .form-field-wrap .field { flex: none; width: 100%; }
 .form-error {
-  font-family: 'Noto Sans TC', sans-serif;
+  font-family: var(--font-sans);
   font-size: var(--fs-body-sm);
   color: var(--color-status-warning);
   line-height: 1.5;
@@ -1881,7 +1893,7 @@ body.page--inner { padding-top: 88px; }
   width: 100%;
   border: none;
   background: transparent;
-  font-family: 'Noto Sans TC', sans-serif;
+  font-family: var(--font-sans);
   font-size: var(--fs-body);
   font-weight: 400;
   line-height: 1.5;
@@ -1893,7 +1905,7 @@ body.page--inner { padding-top: 88px; }
 .field input::placeholder { color: var(--color-text-muted); }
 
 .field option {
-  font-family: 'Noto Sans TC', sans-serif;
+  font-family: var(--font-sans);
   font-size: var(--fs-body);
 }
 
@@ -1951,7 +1963,7 @@ body.page--inner { padding-top: 88px; }
 }
 .csp__option {
   padding: 10px 16px;
-  font-family: 'Noto Sans TC', sans-serif;
+  font-family: var(--font-sans);
   font-size: var(--fs-body);
   color: var(--color-text-primary);
   cursor: pointer;
@@ -1984,7 +1996,7 @@ body.page--inner { padding-top: 88px; }
   transform: translateY(-50%);
   pointer-events: none;
   color: var(--color-text-muted);
-  font-family: 'Noto Sans TC', sans-serif;
+  font-family: var(--font-sans);
   font-size: var(--fs-body);
 }
 .field--date input[type="date"].date--empty { color: transparent; }
@@ -2018,7 +2030,7 @@ body.page--inner { padding-top: 88px; }
   width: 100%;
   background: var(--color-action-primary-bg);
   color: #efefef;
-  font-family: 'Noto Sans TC', sans-serif;
+  font-family: var(--font-sans);
   font-weight: 500;
   font-size: var(--fs-label);
   letter-spacing: 0.04em;
@@ -2057,7 +2069,7 @@ body.page--inner { padding-top: 88px; }
   text-align: center;
 }
 .booking-success__title {
-  font-family: 'Noto Serif TC', serif;
+  font-family: var(--font-serif);
   font-weight: 600;
   font-size: clamp(22px, 2.1vw, 30px);
   color: var(--color-text-primary);
@@ -2110,7 +2122,7 @@ body.page--inner { padding-top: 88px; }
   gap: 10px;
   background: var(--color-bg-default);
   color: var(--color-text-primary);
-  font-family: 'Noto Sans TC', sans-serif;
+  font-family: var(--font-sans);
   font-size: var(--fs-body-sm);   /* 隨裝置：13 / 14 / 15px */
   font-weight: 400;
   line-height: 1.5;
@@ -2164,7 +2176,7 @@ body.page--inner { padding-top: 88px; }
 }
 .snackbar__main:active { opacity: 0.7; }
 .snackbar__text {
-  font-family: 'Noto Sans TC', sans-serif;
+  font-family: var(--font-sans);
   font-weight: 400;
   font-size: var(--fs-body-sm);   /* 隨裝置：13 / 14 / 15px */
   line-height: 1.5;
@@ -2325,7 +2337,7 @@ body.page--inner { padding-top: 88px; }
 }
 /* Feature number — small serif label, muted (per design) */
 .feature__num {
-  font-family: 'Noto Serif TC', serif;
+  font-family: var(--font-serif);
   font-weight: 600;
   font-size: 18px;
   line-height: 1.2;
@@ -2333,7 +2345,7 @@ body.page--inner { padding-top: 88px; }
   color: var(--color-text-tertiary);
 }
 .feature__title {
-  font-family: 'Noto Serif TC', serif;
+  font-family: var(--font-serif);
   font-weight: 600;
   font-size: clamp(28px, 3.3vw, 48px);
   line-height: 1.2;
@@ -2341,7 +2353,7 @@ body.page--inner { padding-top: 88px; }
   color: var(--color-text-primary);
 }
 .feature__desc {
-  font-family: 'Noto Sans TC', sans-serif;
+  font-family: var(--font-sans);
   font-weight: 400;
   font-size: var(--fs-body);
   line-height: 1.5;
@@ -2367,7 +2379,7 @@ body.page--inner { padding-top: 88px; }
   background: var(--color-border-tertiary);
 }
 .feature__list-text {
-  font-family: 'Noto Sans TC', sans-serif;
+  font-family: var(--font-sans);
   font-weight: 400;
   font-size: var(--fs-body);
   line-height: 1.5;
@@ -2422,7 +2434,7 @@ body.page--inner { padding-top: 88px; }
   width: 100%;
 }
 .lightbox__counter {
-  font-family: 'Noto Sans TC', sans-serif;
+  font-family: var(--font-sans);
   font-size: 16px;
   line-height: 1.5;
   color: #ffffff;
@@ -2523,7 +2535,7 @@ body.page--inner { padding-top: 88px; }
   .feature-nav__link {
     flex-shrink: 0;
     white-space: nowrap;
-    font-family: 'Noto Sans TC', sans-serif;
+    font-family: var(--font-sans);
     font-weight: 500;
     font-size: var(--fs-label);
     letter-spacing: 0.04em;
@@ -2552,7 +2564,7 @@ body.page--inner { padding-top: 88px; }
   background: var(--color-bg-dark);
   color: var(--color-text-inverse-primary);
   border-radius: var(--r-pill);
-  font-family: 'Noto Sans TC', sans-serif;
+  font-family: var(--font-sans);
   font-weight: 500;
   font-size: var(--fs-label);   /* 手機 14 / 平板 15，跟隨 label token */
   letter-spacing: 0.04em;
@@ -2622,7 +2634,7 @@ body.page--inner { padding-top: 88px; }
   display: flex;
   align-items: center;
   gap: var(--sp-inset-md);
-  font-family: 'Noto Serif TC', serif;
+  font-family: var(--font-serif);
   font-weight: 600;
   font-size: 18px;
   letter-spacing: -0.02em;
@@ -2664,14 +2676,14 @@ body.page--inner { padding-top: 88px; }
 }
 .toc-sheet__list a:active { background: var(--color-bg-section); }
 .toc-sheet__num {
-  font-family: 'Noto Sans TC', sans-serif;
+  font-family: var(--font-sans);
   font-size: 16px;
   line-height: 1.5;
   color: var(--color-text-tertiary);
 }
 .toc-sheet__title {
   flex: 1;
-  font-family: 'Noto Sans TC', sans-serif;
+  font-family: var(--font-sans);
   font-size: 16px;
   line-height: 1.5;
   color: var(--color-text-primary);
