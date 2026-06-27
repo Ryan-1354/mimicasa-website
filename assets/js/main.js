@@ -651,7 +651,7 @@ bookingForm.addEventListener('submit', async (e) => {
   const nameEl   = teamDrawer.querySelector('.team-drawer__name');
   const titleEl  = teamDrawer.querySelector('.team-drawer__title');
   const bioEl    = teamDrawer.querySelector('.team-drawer__bio');
-  const CAMPUS_NAMES = { mimi: mcText('咪咪幼兒園', 'Mimi Preschool'), casa: mcText('家田幼兒園', 'Casa Preschool') };
+  const CAMPUS_NAMES = { mimi: mcText('咪咪幼兒園', 'Mimi Montessori'), casa: mcText('家田幼兒園', 'Casa Montessori') };
   let teamScrollY = 0;
 
   function openTeamDrawer(trigger) {
