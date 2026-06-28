@@ -192,9 +192,9 @@ button {
   --fs-logo-nav-en: 12px;
 
   /* Font families — Chinese (default); English pages override below */
-  --font-serif: var(--font-serif);
-  --font-sans:  var(--font-sans);
-  --font-logo:  var(--font-logo);
+  --font-serif: 'Noto Serif TC', serif;
+  --font-sans:  'Noto Sans TC', sans-serif;
+  --font-logo:  'DFPLiShuW5-B5', 'Noto Serif TC', serif;
 }
 
 /* English pages use the Latin type system: Cormorant Garamond + DM Sans */
