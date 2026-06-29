@@ -996,6 +996,7 @@ html[lang="en"] .hero__h1 { white-space: normal; text-wrap: balance; }
   width: 143px;
   height: 100px;
   object-fit: contain;
+  object-position: left center;
 }
 .footer__wordmark {
   display: flex;
