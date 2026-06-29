@@ -14,7 +14,8 @@ set -euo pipefail
 cd "$(dirname "$0")/.."   # repo root
 
 OUT="assets/js/lqip.js"
-PAGES=(zh/index.html zh/about.html zh/philosophy.html zh/campus.html)
+PAGES=(zh/index.html zh/about.html zh/philosophy.html zh/campus.html \
+       en/index.html en/about.html en/philosophy.html en/campus.html)
 TMP="$(mktemp -t lqip).jpg"
 trap 'rm -f "$TMP"' EXIT
 
