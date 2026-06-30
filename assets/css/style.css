@@ -1839,17 +1839,16 @@ body.page--inner { padding-top: 88px; }
   display: flex;
   align-items: center;
   flex-shrink: 0;
+  width: 7em;                 /* uniform label column so every field's left edge aligns */
   font-size: var(--fs-body-sm);
   color: var(--color-text-secondary);
   line-height: 1.5;
   padding-top: var(--sp-inset-md);
 }
 .form-label__text {
-  width: 60px;
-}
-.form-label--plain .form-label__text,
-.form-label--plain {
   width: auto;
+}
+.form-label--plain {
   white-space: nowrap;
 }
 .form-asterisk {
@@ -1936,7 +1935,7 @@ body.page--inner { padding-top: 88px; }
   background-position: center;
   pointer-events: none;
 }
-.field--select select.select--empty { color: var(--color-text-tertiary); }
+.field--select select.select--empty { color: var(--color-text-muted); }
 
 /* Custom select */
 .field--custom-select { cursor: pointer; user-select: none; }
@@ -1952,7 +1951,7 @@ body.page--inner { padding-top: 88px; }
   color: var(--color-text-primary);
   line-height: 1.5;
 }
-.custom-select__label.select--empty { color: var(--color-text-tertiary); }
+.custom-select__label.select--empty { color: var(--color-text-muted); }
 
 /* Dropdown panel */
 .csp {
@@ -1973,7 +1972,7 @@ body.page--inner { padding-top: 88px; }
   color: var(--color-text-primary);
   cursor: pointer;
   line-height: 1.5;
-  white-space: nowrap;
+  white-space: normal;        /* let long options (full school names) wrap instead of clipping */
 }
 .csp__option:hover { background: var(--color-bg-section); }
 .csp__option--active { color: var(--color-action-primary-bg); font-weight: 500; }
@@ -2008,6 +2007,15 @@ body.page--inner { padding-top: 88px; }
 .field--date input[type="date"].date--empty:focus { color: var(--color-text-primary); }
 .field--date input[type="date"]:not(.date--empty) ~ .date-placeholder,
 .field--date input[type="date"]:focus ~ .date-placeholder { display: none; }
+
+/* Birthday picker: native <input type=date> on phone/tablet (nice wheel picker
+   with year selection); Year/Month/Day <select>s on desktop, because Safari's
+   desktop date picker has no year navigation. Toggled at the desktop breakpoint. */
+.bday-sel { display: none; }
+@media (min-width: 1280px) {
+  .bday-native { display: none; }
+  .bday-sel { display: flex; }
+}
 .field--date input[type="date"]::-webkit-date-and-time-value {
   text-align: left;
   width: 100%;

@@ -17,7 +17,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=DM+Sans:wght@300;400;500&family=Noto+Serif+TC:wght@600&family=Noto+Sans+TC:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../assets/css/style.css?v=66">
+  <link rel="stylesheet" href="../assets/css/style.css?v=69">
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-77L0DV3L8Y"></script>
   <script>
@@ -457,8 +457,8 @@
               <span class="custom-select__label select--empty">選擇學校</span>
               <select id="field-school" name="school" required>
                 <option value="" disabled selected>選擇學校</option>
-                <option value="咪咪幼兒園">臺北市私立咪咪蒙特梭利幼兒園</option>
-                <option value="家田幼兒園">臺北市私立家田蒙特梭利幼兒園</option>
+                <option value="咪咪幼兒園">咪咪蒙特梭利幼兒園</option>
+                <option value="家田幼兒園">家田蒙特梭利幼兒園</option>
               </select>
             </div>
             <p class="form-error" hidden>此欄位為必填</p>
@@ -481,18 +481,85 @@
 
         <!-- 出生日期 -->
         <div class="form-row">
-          <label class="form-label" for="field-birthday">
-            <span class="form-label__text">出生日期</span>
-            <span class="form-asterisk">*</span>
-          </label>
-          <div class="form-field-wrap">
-            <div class="field field--date">
-              <input type="date" id="field-birthday" name="birthday" required>
-              <span class="date-placeholder">請選擇日期</span>
+            <span class="form-label form-label--plain">出生日期<span class="form-asterisk">*</span></span>
+            <div class="form-field-wrap bday-native">
+              <div class="field field--date">
+                <input type="date" id="field-birthday" name="birthday" required>
+                <span class="date-placeholder">請選擇出生日期</span>
+              </div>
+              <p class="form-error" hidden>此欄位為必填</p>
             </div>
-            <p class="form-error" hidden>此欄位為必填</p>
+            <div class="form-field-wrap bday-sel">
+              <div class="field field--select field--custom-select">
+                <span class="custom-select__label select--empty">YYYY</span>
+                <select id="field-birth-year" name="birthYear" required>
+                  <option value="" disabled selected>YYYY</option>
+                </select>
+              </div>
+              <p class="form-error" hidden>此欄位為必填</p>
+            </div>
+            <div class="form-field-wrap bday-sel">
+              <div class="field field--select field--custom-select">
+                <span class="custom-select__label select--empty">MM</span>
+                <select id="field-birth-month" name="birthMonth" required>
+                  <option value="" disabled selected>MM</option>
+                  <option value="01">01</option>
+                  <option value="02">02</option>
+                  <option value="03">03</option>
+                  <option value="04">04</option>
+                  <option value="05">05</option>
+                  <option value="06">06</option>
+                  <option value="07">07</option>
+                  <option value="08">08</option>
+                  <option value="09">09</option>
+                  <option value="10">10</option>
+                  <option value="11">11</option>
+                  <option value="12">12</option>
+                </select>
+              </div>
+              <p class="form-error" hidden>此欄位為必填</p>
+            </div>
+            <div class="form-field-wrap bday-sel">
+              <div class="field field--select field--custom-select">
+                <span class="custom-select__label select--empty">DD</span>
+                <select id="field-birth-day" name="birthDay" required>
+                  <option value="" disabled selected>DD</option>
+                  <option value="01">01</option>
+                  <option value="02">02</option>
+                  <option value="03">03</option>
+                  <option value="04">04</option>
+                  <option value="05">05</option>
+                  <option value="06">06</option>
+                  <option value="07">07</option>
+                  <option value="08">08</option>
+                  <option value="09">09</option>
+                  <option value="10">10</option>
+                  <option value="11">11</option>
+                  <option value="12">12</option>
+                  <option value="13">13</option>
+                  <option value="14">14</option>
+                  <option value="15">15</option>
+                  <option value="16">16</option>
+                  <option value="17">17</option>
+                  <option value="18">18</option>
+                  <option value="19">19</option>
+                  <option value="20">20</option>
+                  <option value="21">21</option>
+                  <option value="22">22</option>
+                  <option value="23">23</option>
+                  <option value="24">24</option>
+                  <option value="25">25</option>
+                  <option value="26">26</option>
+                  <option value="27">27</option>
+                  <option value="28">28</option>
+                  <option value="29">29</option>
+                  <option value="30">30</option>
+                  <option value="31">31</option>
+                </select>
+              </div>
+              <p class="form-error" hidden>此欄位為必填</p>
+            </div>
           </div>
-        </div>
 
         <!-- 幼生性別 -->
         <div class="form-row">
@@ -594,6 +661,6 @@
 
 <script src="../assets/js/lqip.js?v=14"></script>
 
-<script src="../assets/js/main.js?v=40"></script>
+<script src="../assets/js/main.js?v=41"></script>
 </body>
 </html>

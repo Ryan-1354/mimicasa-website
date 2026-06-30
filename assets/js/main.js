@@ -376,29 +376,36 @@ document.querySelectorAll('[data-open-booking]').forEach(btn => {
   bookingDialog.addEventListener('touchcancel', endDrag);
 })();
 
-// Birthday date range
+// Birthday — responsive: native <input type="date"> on phone/tablet (nice wheel
+// picker), Year/Month/Day <select>s on desktop (Safari desktop has no year nav).
+// Both live in the DOM; CSS shows one per breakpoint. Set up both here.
 (function () {
-  const today   = new Date();
-  const minDate = new Date();
-  minDate.setFullYear(today.getFullYear() - 6);
+  // Native date input (mobile/tablet): min = 6 years ago, max = today.
   const input = document.getElementById('field-birthday');
-  if (!input) return;
-  input.max = today.toISOString().split('T')[0];
-  input.min = minDate.toISOString().split('T')[0];
-  input.addEventListener('change', () => {
-    input.classList.toggle('date--empty', !input.value);
-  });
-  input.classList.add('date--empty');
-})();
-
-// Date field — click anywhere to open picker
-(function () {
-  const dateField = document.querySelector('.field--date');
-  const dateInput = document.getElementById('field-birthday');
-  if (!dateField || !dateInput) return;
-  dateField.addEventListener('click', () => {
-    try { dateInput.showPicker(); } catch (_) {}
-  });
+  if (input) {
+    const today = new Date();
+    const minDate = new Date();
+    minDate.setFullYear(today.getFullYear() - 6);
+    input.max = today.toISOString().split('T')[0];
+    input.min = minDate.toISOString().split('T')[0];
+    input.classList.add('date--empty');
+    input.addEventListener('change', () => {
+      input.classList.toggle('date--empty', !input.value);
+    });
+    const field = input.closest('.field--date');
+    field?.addEventListener('click', () => { try { input.showPicker(); } catch (_) {} });
+  }
+  // Year dropdown (desktop): today back through 6 years. Month/Day live in HTML.
+  const yearSelect = document.getElementById('field-birth-year');
+  if (yearSelect) {
+    const current = new Date().getFullYear();
+    for (let y = current; y >= current - 6; y--) {
+      const opt = document.createElement('option');
+      opt.value = String(y);
+      opt.textContent = String(y);
+      yearSelect.appendChild(opt);
+    }
+  }
 })();
 
 // Enroll year options
@@ -484,6 +491,10 @@ bookingForm.addEventListener('submit', async (e) => {
   let valid = true;
   bookingForm.querySelectorAll('[required]').forEach(field => {
     const wrap    = field.closest('.form-field-wrap');
+    // Skip only fields whose WRAPPER is hidden at this breakpoint (the birthday
+    // has both a native date input and Y/M/D selects in the DOM). Don't test the
+    // field's own offsetParent — custom-select <select>s are hidden but active.
+    if (wrap && wrap.offsetParent === null) return;
     const fieldEl = field.closest('.field');
     const err     = wrap?.querySelector('.form-error');
     const empty   = field.value.trim() === '';
@@ -517,7 +528,9 @@ bookingForm.addEventListener('submit', async (e) => {
   const payload = {
     timestamp:   new Date().toLocaleString('zh-TW'),
     childName:   bookingForm.childName.value,
-    birthday:    bookingForm.birthday.value,
+    birthday:    window.matchMedia('(min-width: 1280px)').matches
+      ? `${bookingForm.birthYear.value}-${bookingForm.birthMonth.value}-${bookingForm.birthDay.value}`
+      : bookingForm.birthday.value,
     gender:      bookingForm.gender.value,
     campus,
     enrollYear:  bookingForm.enrollYear.value,
