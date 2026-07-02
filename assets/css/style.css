@@ -2339,7 +2339,7 @@ body.page--inner { padding-top: 88px; }
   gap: 16px;
   align-items: start;
 }
-.feature__media--f1 > .feature__pic { aspect-ratio: 194 / 256; }
+.feature__media--f1 > .feature__pic { aspect-ratio: 1228 / 1737; }
 .feature__media--f1 .feature__row { display: flex; flex-direction: column; }
 .feature__media--f1 .feature__row .feature__pic:nth-of-type(1) { aspect-ratio: 124 / 104; }
 .feature__media--f1 .feature__row .feature__pic:nth-of-type(2) { aspect-ratio: 124 / 156; }
