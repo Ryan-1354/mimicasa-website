@@ -1219,9 +1219,12 @@ body.page--inner { padding-top: 88px; }
   cursor: pointer;
 }
 .about-pic img { display: block; width: 100%; height: 100%; object-fit: cover; }
-.about-pic:nth-child(1) { aspect-ratio: 82 / 123; }
-.about-pic:nth-child(2) { aspect-ratio: 117 / 123; }
-.about-pic:nth-child(3) { aspect-ratio: 103 / 123; }
+/* Mobile/tablet: the 2 small images flatten back into the 3-across grid so this
+   layout is unchanged; the wrapper only becomes a real column on desktop. */
+.page-header__media-col { display: contents; }
+.page-header__media > .about-pic { aspect-ratio: 82 / 123; }          /* main image (about-pic-2) */
+.page-header__media-col > .about-pic:first-child { aspect-ratio: 117 / 123; }
+.page-header__media-col > .about-pic:last-child  { aspect-ratio: 103 / 123; }
 @media (min-width: 1280px) {
   .page-header__media { max-width: 600px; }
 }
@@ -1241,9 +1244,23 @@ body.page--inner { padding-top: 88px; }
     align-items: flex-start;
   }
   #about-header .page-header__text  { width: 45%; }
-  #about-header .page-header__media { width: 55%; max-width: none; align-items: start; }
-  #about-header .about-pic          { aspect-ratio: auto; }
-  #about-header .about-pic img      { height: auto; }
+  /* Right column: 1 big image (left) + 2 small stacked (right), natural heights */
+  #about-header .page-header__media {
+    width: 55%;
+    max-width: none;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  #about-header .page-header__media > .about-pic { width: 55%; }   /* main image */
+  #about-header .page-header__media-col {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 45%;
+  }
+  #about-header .about-pic     { aspect-ratio: auto; }
+  #about-header .about-pic img { height: auto; }
 }
 
 /* ══════════════════════════════════════════════
