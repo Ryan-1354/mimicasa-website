@@ -1226,6 +1226,26 @@ body.page--inner { padding-top: 88px; }
   .page-header__media { max-width: 600px; }
 }
 
+/* About page header — text block wrapper (keeps head + descs stacked) */
+.page-header__text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-stack-2xl);
+}
+/* Desktop: About header becomes two columns — text left, image group right.
+   Images keep their natural heights (no forced ratio) and top-align, staggered. */
+@media (min-width: 1280px) {
+  #about-header .page-header__inner {
+    flex-direction: row;
+    gap: 48px;
+    align-items: flex-start;
+  }
+  #about-header .page-header__text  { width: 45%; }
+  #about-header .page-header__media { width: 55%; max-width: none; align-items: start; }
+  #about-header .about-pic          { aspect-ratio: auto; }
+  #about-header .about-pic img      { height: auto; }
+}
+
 /* ══════════════════════════════════════════════
    CAMPUS PAGE — 校園環境
 ══════════════════════════════════════════════ */
