@@ -2332,13 +2332,17 @@ body.page--inner { padding-top: 88px; }
 }
 
 /* Feature 1 media: narrow portrait + wide landscape (Figma 110:203, h matched) */
+/* Feature 1 media: 1 big (left) + 2 stacked (right) */
 .feature__media--f1 {
   display: grid;
-  grid-template-columns: 110fr 203fr;
+  grid-template-columns: 194fr 124fr;
   gap: 16px;
-  aspect-ratio: 335 / 170;
+  align-items: start;
 }
-.feature__media--f1 .feature__pic { height: 100%; }
+.feature__media--f1 > .feature__pic { aspect-ratio: 194 / 256; }
+.feature__media--f1 .feature__row { display: flex; flex-direction: column; }
+.feature__media--f1 .feature__row .feature__pic:nth-of-type(1) { aspect-ratio: 124 / 104; }
+.feature__media--f1 .feature__row .feature__pic:nth-of-type(2) { aspect-ratio: 124 / 156; }
 
 /* Feature 2 media: 1 full + 2 below */
 .feature__media--f2 {
