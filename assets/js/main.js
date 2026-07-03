@@ -594,6 +594,12 @@ bookingForm.addEventListener('submit', async (e) => {
   const gasUrl = GAS_URLS[campus] ?? GAS_URLS['咪咪幼兒園'];
   try {
     await fetch(gasUrl, { method: 'POST', body: JSON.stringify(payload), mode: 'no-cors' });
+    if (typeof gtag === 'function') {
+      gtag('event', 'form_submit', {
+        event_category: 'booking',
+        event_label: '預約參觀表單',
+      });
+    }
     closeBookingDialog();
     showToast(mcText('預約參觀表單送出成功', 'Your visit request was submitted successfully'));
   } catch {
