@@ -504,8 +504,11 @@ bookingForm.addEventListener('submit', async (e) => {
       if (err) { err.hidden = false; err.textContent = mcText('此欄位為必填', 'This field is required'); }
       valid = false;
     } else if (field === phoneInput) {
-      const digits = field.value.replace(/\D/g, '');
-      if (digits.length < 10) {
+      const digits     = field.value.replace(/\D/g, '');
+      const isMobile   = /^09\d{8}$/.test(digits);          // 09XX-XXX-XXX
+      const isLandline = /^0[1-9]\d{7,8}$/.test(digits);    // (0X) area code + 7~8 digits
+      const allSame    = /^(\d)\1+$/.test(digits);          // reject 0000000000 etc.
+      if (!(isMobile || isLandline) || allSame) {
         fieldEl?.classList.add('field--error');
         if (err) { err.hidden = false; err.textContent = mcText('請輸入有效的電話號碼，市話需加區碼', 'Please enter a valid phone number (include the area code for landlines)'); }
         valid = false;
@@ -532,6 +535,35 @@ bookingForm.addEventListener('submit', async (e) => {
       const err     = wrap?.querySelector('.form-error');
       fieldEl?.classList.add('field--error');
       if (err) { err.hidden = false; err.textContent = mcText('入學時間不能早於本月', 'Enrollment cannot be earlier than this month'); }
+      valid = false;
+    }
+  }
+
+  // Birthday must be a real calendar date and not in the future
+  const isDesktopBday = window.matchMedia('(min-width: 1280px)').matches;
+  let bdayStr = '', bdayField = null;
+  if (isDesktopBday) {
+    const by = bookingForm.birthYear.value, bm = bookingForm.birthMonth.value, bd = bookingForm.birthDay.value;
+    if (by && bm && bd) { bdayStr = `${by}-${bm}-${bd}`; bdayField = bookingForm.birthDay; }
+  } else if (bookingForm.birthday.value) {
+    bdayStr = bookingForm.birthday.value; bdayField = bookingForm.birthday;
+  }
+  if (bdayStr && bdayField) {
+    const [by, bm, bd] = bdayStr.split('-').map(Number);
+    const dt = new Date(by, bm - 1, bd);
+    const realDate = dt.getFullYear() === by && dt.getMonth() === bm - 1 && dt.getDate() === bd;
+    const today = new Date(); today.setHours(0, 0, 0, 0);
+    if (!realDate || dt > today) {
+      const wrap    = bdayField.closest('.form-field-wrap');
+      const fieldEl = bdayField.closest('.field');
+      const err     = wrap?.querySelector('.form-error');
+      fieldEl?.classList.add('field--error');
+      if (err) {
+        err.hidden = false;
+        err.textContent = !realDate
+          ? mcText('請選擇有效的日期', 'Please select a valid date')
+          : mcText('出生日期不能是未來日期', 'Date of birth cannot be in the future');
+      }
       valid = false;
     }
   }
