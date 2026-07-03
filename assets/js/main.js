@@ -595,7 +595,7 @@ bookingForm.addEventListener('submit', async (e) => {
   try {
     await fetch(gasUrl, { method: 'POST', body: JSON.stringify(payload), mode: 'no-cors' });
     if (typeof gtag === 'function') {
-      gtag('event', 'form_submit', {
+      gtag('event', 'booking_submit', {
         event_category: 'booking',
         event_label: '預約參觀表單',
       });
