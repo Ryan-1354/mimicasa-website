@@ -560,9 +560,7 @@ bookingForm.addEventListener('submit', async (e) => {
       fieldEl?.classList.add('field--error');
       if (err) {
         err.hidden = false;
-        err.textContent = !realDate
-          ? mcText('請選擇有效的日期', 'Please select a valid date')
-          : mcText('出生日期不能是未來日期', 'Date of birth cannot be in the future');
+        err.textContent = mcText('日期無效', 'Invalid date');
       }
       valid = false;
     }

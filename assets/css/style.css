@@ -1927,6 +1927,7 @@ body.page--inner { padding-top: 88px; }
   color: var(--color-status-warning);
   line-height: 1.5;
   text-align: right;
+  white-space: nowrap;
 }
 
 .field input,
