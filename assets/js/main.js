@@ -518,6 +518,24 @@ bookingForm.addEventListener('submit', async (e) => {
       if (err) err.hidden = true;
     }
   });
+
+  // Enroll year/month must not be earlier than the current month (allow this month onward)
+  const eYear  = bookingForm.enrollYear;
+  const eMonth = bookingForm.enrollMonth;
+  if (eYear.value && eMonth.value) {
+    const now   = new Date();
+    const selYM = Number(eYear.value) * 100 + Number(eMonth.value);
+    const curYM = now.getFullYear() * 100 + (now.getMonth() + 1);
+    if (selYM < curYM) {
+      const wrap    = eMonth.closest('.form-field-wrap');
+      const fieldEl = eMonth.closest('.field');
+      const err     = wrap?.querySelector('.form-error');
+      fieldEl?.classList.add('field--error');
+      if (err) { err.hidden = false; err.textContent = mcText('入學時間不能早於本月', 'Enrollment cannot be earlier than this month'); }
+      valid = false;
+    }
+  }
+
   if (!valid) return;
 
   const submitBtn = bookingForm.querySelector('.booking-form__submit');
