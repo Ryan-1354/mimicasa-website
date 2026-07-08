@@ -2296,6 +2296,7 @@ body.page--inner { padding-top: 88px; }
   height: 100%;
   object-fit: cover;
   display: block;
+  border-radius: inherit;
 }
 /* Fullscreen hint (< 1280px) — purely a visual cue; the whole image opens
    the lightbox. Persistent faint bg, deepens on hover. */
