@@ -285,6 +285,7 @@ function openBookingDialog() {
   document.body.style.width = '100%';
   document.addEventListener('touchmove', preventDialogScroll, { passive: false });
   bookingDialog.showModal();
+  restoreBookingDraft();
 }
 
 function finishBookingClose() {
@@ -600,6 +601,7 @@ bookingForm.addEventListener('submit', async (e) => {
         event_label: '預約參觀表單',
       });
     }
+    clearBookingDraft();
     closeBookingDialog();
     showToast(mcText('預約參觀表單送出成功', 'Your visit request was submitted successfully'));
   } catch {
@@ -692,6 +694,83 @@ bookingForm.addEventListener('submit', async (e) => {
     });
   });
 })();
+
+/* ══════════════════════════════════════════════
+   BOOKING FORM DRAFT — sessionStorage 暫存
+   關閉 modal 不清除；送出成功才清除。
+══════════════════════════════════════════════ */
+const BOOKING_DRAFT_PREFIX = 'booking_';
+
+// 生日：桌機用 Y/M/D 下拉、手機/平板用 native input，統一存成 YYYY-MM-DD
+function bookingDraftReadBirthday() {
+  const y = bookingForm.birthYear.value, m = bookingForm.birthMonth.value, d = bookingForm.birthDay.value;
+  if (y && m && d) return `${y}-${m}-${d}`;
+  return bookingForm.birthday.value || '';
+}
+
+// 復原 custom-select：設 value + 同步視覺 label 與 select--empty
+function bookingDraftSetSelect(sel, value) {
+  if (!sel || value == null || value === '') return;
+  const opt = Array.from(sel.options).find(o => o.value === value);
+  if (!opt) return;
+  sel.value = value;
+  const label = sel.closest('.field--custom-select')?.querySelector('.custom-select__label');
+  if (label) { label.textContent = opt.text; label.classList.remove('select--empty'); }
+  sel.classList.remove('select--empty');
+}
+
+function saveBookingDraft() {
+  try {
+    const set = (k, v) => v
+      ? sessionStorage.setItem(BOOKING_DRAFT_PREFIX + k, v)
+      : sessionStorage.removeItem(BOOKING_DRAFT_PREFIX + k);
+    set('childName',   bookingForm.childName.value);
+    set('birthday',    bookingDraftReadBirthday());
+    set('gender',      bookingForm.gender.value);
+    set('campus',      bookingForm.school.value);
+    set('enrollYear',  bookingForm.enrollYear.value);
+    set('enrollMonth', bookingForm.enrollMonth.value);
+    set('parentName',  bookingForm.parentName.value);
+    set('phone',       bookingForm.phone.value);
+  } catch (_) {}
+}
+
+function restoreBookingDraft() {
+  try {
+    const get = k => sessionStorage.getItem(BOOKING_DRAFT_PREFIX + k);
+    if (get('childName'))  bookingForm.childName.value  = get('childName');
+    if (get('parentName')) bookingForm.parentName.value = get('parentName');
+    if (get('phone')) {
+      bookingForm.phone.value = get('phone');
+      bookingForm.phone.dispatchEvent(new Event('input', { bubbles: true }));
+    }
+    bookingDraftSetSelect(bookingForm.gender,      get('gender'));
+    bookingDraftSetSelect(bookingForm.school,      get('campus'));
+    bookingDraftSetSelect(bookingForm.enrollYear,  get('enrollYear'));
+    bookingDraftSetSelect(bookingForm.enrollMonth, get('enrollMonth'));
+    const bday = get('birthday');
+    if (bday) {
+      const nativeEl = document.getElementById('field-birthday');
+      if (nativeEl) { nativeEl.value = bday; nativeEl.classList.remove('date--empty'); }
+      const [y, m, d] = bday.split('-');
+      bookingDraftSetSelect(bookingForm.birthYear,  y);
+      bookingDraftSetSelect(bookingForm.birthMonth, m);
+      bookingDraftSetSelect(bookingForm.birthDay,   d);
+    }
+  } catch (_) {}
+}
+
+function clearBookingDraft() {
+  try {
+    Object.keys(sessionStorage)
+      .filter(k => k.startsWith(BOOKING_DRAFT_PREFIX))
+      .forEach(k => sessionStorage.removeItem(k));
+  } catch (_) {}
+}
+
+// 每個欄位 input/change 時暫存（custom-select 會 dispatch 冒泡的 change）
+bookingForm.addEventListener('input',  saveBookingDraft);
+bookingForm.addEventListener('change', saveBookingDraft);
 
 /* ══════════════════════════════════════════════
    TEAM ROSTER + DRAWER (about page)
