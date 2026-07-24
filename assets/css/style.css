@@ -299,7 +299,9 @@ html[lang="en"] {
   overflow: hidden;
   transition: opacity 0.2s ease, transform 0.2s ease;
 }
-.btn--primary {
+.btn--primary,
+.btn--primary:link,
+.btn--primary:visited {
   background: var(--color-action-primary-bg);
   color: var(--color-action-primary-label);
   padding: var(--sp-inset-md) var(--sp-inset-xl);
