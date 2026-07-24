@@ -2750,3 +2750,22 @@ body.page--inner { padding-top: 88px; }
   height: 24px;
   flex-shrink: 0;
 }
+
+/* ══════════════════════════════════════════════
+   404 — 找不到此頁面
+══════════════════════════════════════════════ */
+.notfound {
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--sp-stack-4xl) var(--sp-layout-xs);
+  text-align: center;
+}
+.notfound__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-stack-3xl);
+}
+.notfound__text { color: var(--color-text-secondary); }
