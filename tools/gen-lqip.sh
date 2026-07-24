@@ -21,8 +21,9 @@ trap 'rm -f "$TMP"' EXIT
 
 # Unique photo filenames referenced on the photo pages, from both src= and
 # srcset= (the hero uses <picture><source srcset> for its responsive variants,
-# and it gets blur-up too).
-files=$(grep -rhoE '(src|srcset)="\.\./assets/images/[a-z0-9._-]+\.jpg"' "${PAGES[@]}" \
+# and it gets blur-up too). Pages now reference .webp — the LQIP key must match
+# what the browser reports as currentSrc, i.e. the .webp filename.
+files=$(grep -rhoE '(src|srcset)="\.\./assets/images/[a-z0-9._-]+\.webp"' "${PAGES[@]}" \
   | sed 's#.*/##; s/"//' | sort -u || true)
 
 {
@@ -33,7 +34,9 @@ files=$(grep -rhoE '(src|srcset)="\.\./assets/images/[a-z0-9._-]+\.jpg"' "${PAGE
 
 n=0
 for name in $files; do
-  src="assets/images/$name"
+  # Key by the .webp filename (matches currentSrc), but generate the tiny JPEG
+  # preview from the retained .jpg original — macOS `sips` can't read WebP.
+  src="assets/images/${name%.webp}.jpg"
   [ -f "$src" ] || { echo "  ! missing $src (referenced but not found) — skipped" >&2; continue; }
   sips -Z 16 -s formatOptions 45 "$src" --out "$TMP" >/dev/null 2>&1
   b64=$(base64 -i "$TMP" | tr -d '\n')
