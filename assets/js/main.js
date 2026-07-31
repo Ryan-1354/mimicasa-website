@@ -856,42 +856,41 @@ bookingForm.addEventListener('change', saveBookingDraft);
   const lb = document.getElementById('lightbox');
   if (!lb) return;
 
-  const imgEl   = document.getElementById('lightboxImg');
-  const curEl   = document.getElementById('lbCurrent');
-  const totalEl = document.getElementById('lbTotal');
-  const dotsEl  = document.getElementById('lightboxDots');
-  const prevBtn = lb.querySelector('[data-lb-prev]');
-  const nextBtn = lb.querySelector('[data-lb-next]');
+  const imgEl     = document.getElementById('lightboxImg');
+  const captionEl = document.getElementById('lightboxCaption');
+  const curEl     = document.getElementById('lbCurrent');
+  const totalEl   = document.getElementById('lbTotal');
+  const prevBtn   = lb.querySelector('[data-lb-prev]');
+  const nextBtn   = lb.querySelector('[data-lb-next]');
   let gallery = [];
   let idx = 0;
+  let title = '';
   let lbScrollY = 0;
 
+  // Section title for a media group → the caption chip (image bottom-left).
+  function groupTitle(media) {
+    const scope = media.closest('.feature, .page-header, .campus-sec');
+    const h = scope && scope.querySelector('.feature__title, .page-header__title, .campus-sec__title');
+    return h ? h.textContent.trim() : '';
+  }
+
   function render() {
+    closeShareMenu();               // switching images closes the share menu
     const item = gallery[idx];
     if (!item) return;
     imgEl.src = item.src;
     imgEl.alt = item.alt;
+    if (captionEl) captionEl.textContent = title;
     curEl.textContent = idx + 1;
     totalEl.textContent = gallery.length;
-    dotsEl.querySelectorAll('.lightbox__dot').forEach((d, i) => {
-      d.classList.toggle('is-active', i === idx);
-    });
     if (prevBtn) prevBtn.disabled = idx === 0;
     if (nextBtn) nextBtn.disabled = idx === gallery.length - 1;
   }
 
-  function openLightbox(items, start) {
+  function openLightbox(items, start, groupName) {
     gallery = items;
     idx = start;
-    dotsEl.innerHTML = '';
-    items.forEach((_, i) => {
-      const b = document.createElement('button');
-      b.type = 'button';
-      b.className = 'lightbox__dot';
-      b.setAttribute('aria-label', mcText(`第 ${i + 1} 張`, `Image ${i + 1}`));
-      b.addEventListener('click', () => { idx = i; render(); });
-      dotsEl.appendChild(b);
-    });
+    title = groupName || '';
     lb.classList.toggle('lightbox--single', items.length <= 1);
 
     lbScrollY = window.scrollY;
@@ -905,6 +904,7 @@ bookingForm.addEventListener('change', saveBookingDraft);
 
   function closeLightbox() {
     if (!lb.classList.contains('is-open')) return;
+    closeShareMenu();
     lb.classList.remove('is-open');
     lb.setAttribute('aria-hidden', 'true');
     document.body.style.position = '';
@@ -916,28 +916,97 @@ bookingForm.addEventListener('change', saveBookingDraft);
   function prev() { if (idx > 0) { idx--; render(); } }
   function next() { if (idx < gallery.length - 1) { idx++; render(); } }
 
-  // Each media group is its own gallery (feature pics + about page-header pics)
+  // Each media group is its own gallery (feature / about / campus pics)
   document.querySelectorAll('.feature__media, .page-header__media').forEach(media => {
     const pics  = [...media.querySelectorAll('.feature__pic, .about-pic')];
+    if (!pics.length) return;
     const items = pics.map(p => ({
       src: p.dataset.lbSrc,
       alt: p.querySelector('img')?.alt || '',
     }));
-    pics.forEach((p, i) => p.addEventListener('click', () => openLightbox(items, i)));
+    const groupName = groupTitle(media);
+    pics.forEach((p, i) => p.addEventListener('click', () => openLightbox(items, i, groupName)));
   });
 
   lb.querySelectorAll('[data-lb-close]').forEach(el => el.addEventListener('click', closeLightbox));
-  lb.querySelector('[data-lb-prev]')?.addEventListener('click', prev);
-  lb.querySelector('[data-lb-next]')?.addEventListener('click', next);
-  // Click anywhere that isn't the image or a control closes the lightbox
+  prevBtn?.addEventListener('click', prev);
+  nextBtn?.addEventListener('click', next);
+
+  // ── Share: a small custom menu (LINE / Facebook / copy link) we fully control,
+  // so its open/close state is deterministic — unlike the native share sheet, the
+  // two-step "click closes the menu, next click closes the lightbox" always holds.
+  const shareBtn  = lb.querySelector('[data-lb-share]');
+  const shareMenu = lb.querySelector('.lightbox__share-menu');
+  let menuOpen = false;
+
+  function closeShareMenu() {
+    if (!menuOpen) return;
+    menuOpen = false;
+    if (shareMenu) shareMenu.hidden = true;
+    shareBtn?.setAttribute('aria-expanded', 'false');
+  }
+  function openShareMenu() {
+    menuOpen = true;
+    if (shareMenu) shareMenu.hidden = false;
+    shareBtn?.setAttribute('aria-expanded', 'true');
+  }
+
+  shareBtn?.addEventListener('click', (e) => {
+    e.stopPropagation();                       // don't let this reach the backdrop handler
+    menuOpen ? closeShareMenu() : openShareMenu();
+  });
+
+  function flashCopied() {
+    let toast = lb.querySelector('.lightbox__toast');
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.className = 'lightbox__toast';
+      lb.querySelector('.lightbox__content')?.appendChild(toast);
+    }
+    toast.textContent = mcText('已複製連結', 'Link copied');
+    toast.classList.add('is-visible');
+    clearTimeout(flashCopied._t);
+    flashCopied._t = setTimeout(() => toast.classList.remove('is-visible'), 1600);
+  }
+
+  shareMenu?.querySelectorAll('.lightbox__share-item').forEach(item => {
+    item.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const url = location.href;
+      switch (item.dataset.share) {
+        case 'line':
+          window.open('https://social-plugins.line.me/lineit/share?url=' + encodeURIComponent(url), '_blank', 'noopener');
+          break;
+        case 'facebook':
+          window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(url), '_blank', 'noopener');
+          break;
+        case 'copy':
+          navigator.clipboard?.writeText(url).then(flashCopied).catch(() => {});
+          break;
+      }
+      closeShareMenu();
+    });
+  });
+
+  // 預約參觀 → close the lightbox FIRST so the shared body-scroll lock is released
+  // (otherwise openBookingDialog reads scrollY as 0), then open the booking form.
+  lb.querySelector('[data-lb-book]')?.addEventListener('click', () => {
+    closeLightbox();
+    openBookingDialog();
+  });
+
+  // Click any dark/blank area (the letterbox beside the image or the margins)
+  // to close — only the image itself and the controls are safe. If the share
+  // menu is open, the click just closes the menu first (deterministic two-step).
   lb.addEventListener('click', (e) => {
-    if (e.target.closest('.lightbox__img, .lightbox__nav, .lightbox__dot')) return;
+    if (menuOpen) { closeShareMenu(); return; }
+    if (e.target.closest('.lightbox__figure, .lightbox__top, .lightbox__nav, .lightbox__book')) return;
     closeLightbox();
   });
 
   document.addEventListener('keydown', (e) => {
     if (!lb.classList.contains('is-open')) return;
-    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'Escape') { menuOpen ? closeShareMenu() : closeLightbox(); }
     else if (e.key === 'ArrowLeft') prev();
     else if (e.key === 'ArrowRight') next();
   });

@@ -2468,100 +2468,177 @@ body.page--inner { padding-top: 88px; }
   z-index: 700;
   display: none;
 }
-.lightbox.is-open { display: block; }
+.lightbox.is-open {
+  display: block;
+  overflow: hidden;   /* everything fits one screen — never scroll */
+}
 .lightbox__overlay {
-  position: absolute;
+  position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.92);
 }
+/* Same layout on all three devices — only the image width cap changes.
+   The column is exactly one viewport tall; the image is height-capped
+   (see .lightbox__img) so the top row, nav and book always stay on screen. */
 .lightbox__content {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
+  position: relative;
+  z-index: 1;
+  box-sizing: border-box;
+  height: 100vh;
+  height: 100svh;
+  width: 100%;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--sp-stack-2xl);
-  width: min(92vw, 720px);
-  padding: var(--sp-inset-xl) 0;
+  justify-content: center;
+  gap: var(--sp-stack-2xl);          /* 24px */
+  padding-block: var(--sp-inset-xl); /* 24px */
 }
+@media (min-width: 768px)  { .lightbox__content { max-width: 600px; } }
+@media (min-width: 1280px) { .lightbox__content { max-width: 800px; } }
+
+/* Top row: close (left) + share (right) */
 .lightbox__top {
-  flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
   width: 100%;
+  padding-inline: var(--sp-inset-lg); /* 16px */
+}
+
+/* Image + section-title caption pinned to its bottom-left */
+/* Fixed-size stage: a constant box (column width × leftover height) that does
+   NOT change between portrait and landscape, so switching images never moves
+   the top row / nav / book. The image is contained & centered inside it. */
+.lightbox__stage {
+  width: 100%;
+  height: calc(100vh - 260px);
+  height: calc(100svh - 260px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+}
+/* The figure shrinks to the rendered image, so the caption pins to the real
+   image bottom-left (not the fixed stage's letterbox edge). */
+.lightbox__figure {
+  position: relative;
+  max-width: 100%;
+  max-height: 100%;
+  line-height: 0;
+}
+.lightbox__img {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  /* Absolute cap (not %) — the figure has no definite height, so max-height:100%
+     would collapse to none and the image would overflow the stage. Matches the
+     stage height so a portrait fills it and a landscape letterboxes inside it. */
+  max-height: calc(100vh - 260px);
+  max-height: calc(100svh - 260px);
+  border-radius: var(--r-xs);
+}
+.lightbox__caption {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+  padding: 4px 8px;
+  background: rgba(0, 0, 0, 0.5);
+  color: #ffffff;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  line-height: 1.5;
+}
+.lightbox__caption:empty { display: none; }
+
+/* Nav row: prev + N/N counter + next (arrows on both sides of the text) */
+.lightbox__nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 48px;
 }
 .lightbox__counter {
   font-family: var(--font-sans);
   font-size: 16px;
   line-height: 1.5;
   color: #ffffff;
+  white-space: nowrap;
 }
-.lightbox__close {
+
+/* Ghost icon buttons — icon #dcdcdc, brightens to #fff on hover, #656565 disabled */
+.lightbox__btn {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 44px;
-  height: 44px;
-  border-radius: var(--r-sm);
-  color: #ffffff;
-  transition: opacity 0.2s ease;
+  color: #dcdcdc;
+  transition: color 0.2s ease, transform 0.2s ease;
 }
-.lightbox__close:hover  { opacity: 0.7; }
-.lightbox__close:active { transform: scale(0.94); }
-.lightbox__stage {
-  flex: 1 1 auto;
-  min-height: 0;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.lightbox__img {
-  max-width: 100%;
-  max-height: 100%;
-  width: auto;
-  object-fit: contain;
-  border-radius: var(--r-xs);
-}
-.lightbox__controls {
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  gap: var(--sp-inset-sm);
-}
-.lightbox__nav {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 10px;
-  color: #ffffff;
-  transition: opacity 0.2s ease;
-}
-.lightbox__nav:hover    { opacity: 0.7; }
-.lightbox__nav:disabled { opacity: 0.35; cursor: default; }
-.lightbox__dots {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.lightbox__dot {
-  width: 8px;
-  height: 8px;
-  padding: 0;
-  border: 1px solid rgba(255, 255, 255, 0.6);
-  border-radius: 50%;
-  background: transparent;
-  cursor: pointer;
-}
-.lightbox__dot.is-active {
+.lightbox__btn svg { display: block; }
+.lightbox__btn:hover  { color: #ffffff; }
+.lightbox__btn:active { transform: scale(0.94); }
+.lightbox__close { width: 44px; height: 44px; border-radius: var(--r-sm); }
+.lightbox__share,
+.lightbox__arrow { padding: 10px; }            /* 10 + 24 + 10 = 44 */
+.lightbox__arrow:disabled { color: #656565; cursor: default; transform: none; }
+
+.lightbox__book { flex-shrink: 0; }
+
+/* Custom share menu (LINE / Facebook / copy link) anchored to the share button */
+.lightbox__share-wrap { position: relative; }
+.lightbox__share-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 2;
+  min-width: 168px;
+  padding: 8px;
   background: #ffffff;
-  border-color: #ffffff;
+  border-radius: var(--r-sm);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.24);
 }
-.lightbox--single .lightbox__controls { display: none; }
+.lightbox__share-menu[hidden] { display: none; }
+.lightbox__share-item {
+  display: block;
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: var(--r-xs);
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.5;
+  color: #292929;
+  text-align: left;
+  transition: background-color 0.15s ease;
+}
+.lightbox__share-item:hover {
+  background: var(--color-action-primary-bg);
+  color: var(--color-action-primary-label);
+}
+
+/* “Link copied” toast (created on demand by main.js) */
+.lightbox__toast {
+  position: absolute;
+  left: 50%;
+  bottom: 24px;
+  transform: translate(-50%, 8px);
+  padding: 8px 16px;
+  background: rgba(41, 41, 41, 0.92);
+  color: #ffffff;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  border-radius: 1000px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+.lightbox__toast.is-visible { opacity: 1; transform: translate(-50%, 0); }
+
+/* Single image → no nav row */
+.lightbox--single .lightbox__nav { display: none; }
 
 /* ══════════════════════════════════════════════
    FEATURE NAV — 目錄

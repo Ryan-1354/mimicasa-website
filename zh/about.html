@@ -20,7 +20,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=DM+Sans:wght@300;400;500&family=Noto+Serif+TC:wght@600&family=Noto+Sans+TC:wght@400;500&display=swap" rel="stylesheet">
   <link rel="preload" href="../assets/fonts/dfp-lishu-subset.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="../assets/css/style.css?v=81">
+  <link rel="stylesheet" href="../assets/css/style.css?v=91">
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-77L0DV3L8Y"></script>
   <script>
@@ -635,36 +635,50 @@
      LIGHTBOX — 圖片放大檢視
 ══════════════════════════════════════════════ -->
 <div class="lightbox" id="lightbox" aria-hidden="true">
-  <div class="lightbox__overlay" data-lb-close></div>
-  <div class="lightbox__content">
-    <div class="lightbox__top">
-      <p class="lightbox__counter">
-        <span id="lbCurrent">1</span>/<span id="lbTotal">1</span>
-      </p>
-      <button class="lightbox__close" type="button" data-lb-close aria-label="關閉">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path d="M18 6L6 18M6 6l12 12" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </button>
+      <div class="lightbox__overlay"></div>
+      <div class="lightbox__content">
+        <div class="lightbox__top">
+          <button class="lightbox__btn lightbox__close" type="button" data-lb-close aria-label="關閉">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M18 6 6 18M6 6l12 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div class="lightbox__share-wrap">
+            <button class="lightbox__btn lightbox__share" type="button" data-lb-share aria-haspopup="true" aria-expanded="false" aria-label="分享">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M14 4h6v6M20 4l-9 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <div class="lightbox__share-menu" role="menu" hidden>
+              <button class="lightbox__share-item" type="button" role="menuitem" data-share="line">LINE</button>
+              <button class="lightbox__share-item" type="button" role="menuitem" data-share="facebook">Facebook</button>
+              <button class="lightbox__share-item" type="button" role="menuitem" data-share="copy">複製連結</button>
+            </div>
+          </div>
+        </div>
+        <div class="lightbox__stage">
+          <div class="lightbox__figure">
+            <img class="lightbox__img" id="lightboxImg" src="" alt="">
+            <span class="lightbox__caption" id="lightboxCaption"></span>
+          </div>
+        </div>
+        <div class="lightbox__nav">
+          <button class="lightbox__btn lightbox__arrow lightbox__arrow--prev" type="button" data-lb-prev aria-label="上一張">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M11 5l-7 7 7 7M4 12h16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <p class="lightbox__counter"><span id="lbCurrent">1</span>/<span id="lbTotal">1</span></p>
+          <button class="lightbox__btn lightbox__arrow lightbox__arrow--next" type="button" data-lb-next aria-label="下一張">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M13 5l7 7-7 7M20 12H4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+        <button class="btn btn--primary lightbox__book" type="button" data-lb-book>預約參觀</button>
+      </div>
     </div>
-    <div class="lightbox__stage">
-      <img class="lightbox__img" id="lightboxImg" src="" alt="" />
-    </div>
-    <div class="lightbox__controls">
-      <button class="lightbox__nav lightbox__nav--prev" type="button" data-lb-prev aria-label="上一張">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path d="M15 18l-6-6 6-6" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </button>
-      <div class="lightbox__dots" id="lightboxDots"></div>
-      <button class="lightbox__nav lightbox__nav--next" type="button" data-lb-next aria-label="下一張">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path d="M9 6l6 6-6 6" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </button>
-    </div>
-  </div>
-</div>
 
 
 <!-- ══════════════════════════════════════════════
@@ -1008,6 +1022,6 @@
 </dialog>
 
 <script src="../assets/js/lqip.js?v=21"></script>
-<script src="../assets/js/main.js?v=47"></script>
+<script src="../assets/js/main.js?v=54"></script>
 </body>
 </html>
