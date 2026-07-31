@@ -953,6 +953,12 @@ bookingForm.addEventListener('change', saveBookingDraft);
 
   shareBtn?.addEventListener('click', (e) => {
     e.stopPropagation();                       // don't let this reach the backdrop handler
+    // Phone / tablet (touch input) → native share sheet, so it can hand off to
+    // installed apps (LINE, IG, Messenger…). Desktop → our own menu.
+    if (navigator.share && window.matchMedia('(pointer: coarse)').matches) {
+      navigator.share({ title: document.title, url: location.href }).catch(() => {});
+      return;
+    }
     menuOpen ? closeShareMenu() : openShareMenu();
   });
 
@@ -975,7 +981,8 @@ bookingForm.addEventListener('change', saveBookingDraft);
       const url = location.href;
       switch (item.dataset.share) {
         case 'line':
-          window.open('https://social-plugins.line.me/lineit/share?url=' + encodeURIComponent(url), '_blank', 'noopener');
+          // Universal link — opens the LINE app on mobile, LINE web/app on desktop.
+          window.open('https://line.me/R/share?text=' + encodeURIComponent(url), '_blank', 'noopener');
           break;
         case 'facebook':
           window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(url), '_blank', 'noopener');
