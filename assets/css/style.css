@@ -2467,6 +2467,7 @@ body.page--inner { padding-top: 88px; }
   inset: 0;
   z-index: 700;
   display: none;
+  touch-action: manipulation;   /* no double-tap zoom anywhere in the lightbox */
 }
 .lightbox.is-open {
   display: block;
@@ -2577,6 +2578,7 @@ body.page--inner { padding-top: 88px; }
   justify-content: center;
   color: #dcdcdc;
   transition: color 0.2s ease, transform 0.2s ease;
+  touch-action: manipulation;   /* fast double-tap on arrows must not zoom */
 }
 .lightbox__btn svg { display: block; }
 .lightbox__btn:hover  { color: #ffffff; }
@@ -2586,7 +2588,7 @@ body.page--inner { padding-top: 88px; }
 .lightbox__arrow { padding: 10px; }            /* 10 + 24 + 10 = 44 */
 .lightbox__arrow:disabled { color: #656565; cursor: default; transform: none; }
 
-.lightbox__book { flex-shrink: 0; }
+.lightbox__book { flex-shrink: 0; touch-action: manipulation; }
 
 /* Custom share menu (LINE / Facebook / copy link) anchored to the share button */
 .lightbox__share-wrap { position: relative; }
