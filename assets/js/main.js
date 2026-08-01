@@ -981,8 +981,7 @@ bookingForm.addEventListener('change', saveBookingDraft);
       const url = location.href;
       switch (item.dataset.share) {
         case 'line':
-          // Universal link — opens the LINE app on mobile, LINE web/app on desktop.
-          window.open('https://line.me/R/share?text=' + encodeURIComponent(url), '_blank', 'noopener');
+          window.open('https://social-plugins.line.me/lineit/share?url=' + encodeURIComponent(url), '_blank', 'noopener');
           break;
         case 'facebook':
           window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(url), '_blank', 'noopener');
