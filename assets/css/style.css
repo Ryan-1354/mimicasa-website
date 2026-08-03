@@ -2577,7 +2577,7 @@ body.page--inner { padding-top: 88px; }
   align-items: center;
   justify-content: center;
   color: #dcdcdc;
-  transition: color 0.2s ease, transform 0.2s ease;
+  transition: color 0.2s ease, transform 0.2s ease, background-color 0.2s ease;
   touch-action: manipulation;   /* fast double-tap on arrows must not zoom */
 }
 .lightbox__btn svg { display: block; }
@@ -2586,7 +2586,11 @@ body.page--inner { padding-top: 88px; }
 .lightbox__close { width: 44px; height: 44px; border-radius: var(--r-sm); }
 .lightbox__share,
 .lightbox__arrow { padding: 10px; }            /* 10 + 24 + 10 = 44 */
+/* Slider arrows: pill-shaped ghost hover per Figma (bg-hover #656565) */
+.lightbox__arrow { border-radius: var(--r-pill); }
+.lightbox__arrow:hover { background-color: #656565; }
 .lightbox__arrow:disabled { color: #656565; cursor: default; transform: none; }
+.lightbox__arrow:disabled:hover { background-color: transparent; }
 
 .lightbox__book { flex-shrink: 0; touch-action: manipulation; }
 
