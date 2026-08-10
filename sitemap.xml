@@ -1,27 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://mimicasa.org/zh/index.html</loc>
+    <loc>https://mimicasa.org/</loc>
   </url>
   <url>
-    <loc>https://mimicasa.org/zh/about.html</loc>
+    <loc>https://mimicasa.org/about.html</loc>
   </url>
   <url>
-    <loc>https://mimicasa.org/zh/philosophy.html</loc>
+    <loc>https://mimicasa.org/philosophy.html</loc>
   </url>
   <url>
-    <loc>https://mimicasa.org/zh/campus.html</loc>
-  </url>
-  <url>
-    <loc>https://mimicasa.org/en/index.html</loc>
-  </url>
-  <url>
-    <loc>https://mimicasa.org/en/about.html</loc>
-  </url>
-  <url>
-    <loc>https://mimicasa.org/en/philosophy.html</loc>
-  </url>
-  <url>
-    <loc>https://mimicasa.org/en/campus.html</loc>
+    <loc>https://mimicasa.org/campus.html</loc>
   </url>
 </urlset>
