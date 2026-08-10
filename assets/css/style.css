@@ -2581,16 +2581,19 @@ body.page--inner { padding-top: 88px; }
   touch-action: manipulation;   /* fast double-tap on arrows must not zoom */
 }
 .lightbox__btn svg { display: block; }
-.lightbox__btn:hover  { color: #ffffff; }
 .lightbox__btn:active { transform: scale(0.94); }
 .lightbox__close { width: 44px; height: 44px; border-radius: var(--r-sm); }
 .lightbox__share,
 .lightbox__arrow { padding: 10px; }            /* 10 + 24 + 10 = 44 */
 /* Slider arrows: pill-shaped ghost hover per Figma (bg-hover #656565) */
 .lightbox__arrow { border-radius: var(--r-pill); }
-.lightbox__arrow:hover { background-color: #656565; }
 .lightbox__arrow:disabled { color: #656565; cursor: default; transform: none; }
-.lightbox__arrow:disabled:hover { background-color: transparent; }
+/* Hover only on real pointers — otherwise the style sticks after a tap on touch */
+@media (hover: hover) {
+  .lightbox__btn:hover  { color: #ffffff; }
+  .lightbox__arrow:hover { background-color: #656565; }
+  .lightbox__arrow:disabled:hover { background-color: transparent; }
+}
 
 .lightbox__book { flex-shrink: 0; touch-action: manipulation; }
 
@@ -2620,9 +2623,11 @@ body.page--inner { padding-top: 88px; }
   text-align: left;
   transition: background-color 0.15s ease;
 }
-.lightbox__share-item:hover {
-  background: var(--color-action-primary-bg);
-  color: var(--color-action-primary-label);
+@media (hover: hover) {
+  .lightbox__share-item:hover {
+    background: var(--color-action-primary-bg);
+    color: var(--color-action-primary-label);
+  }
 }
 
 /* “Link copied” toast (created on demand by main.js) */
