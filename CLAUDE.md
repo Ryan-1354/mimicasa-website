@@ -799,11 +799,13 @@ Location Section「預約參觀」按鈕
 ```
 參觀學校      select（咪咪幼兒園 / 家田幼兒園）
 幼生姓名      text input
-出生日期      date picker（見下方規格）
+出生日期      date picker（見下方規格，年份西元，三裝置統一）
 幼生性別      select（男 / 女）
-預計入學年月  select × 2（YYYY / MM）
+預計入學學年  單一 select，動態產生當期起未來三年的 2月/8月時間點（民國顯示與 value）
 家長姓名      text input
+聯絡 Email    text input，必填，檢查格式
 聯絡電話      單一 input，動態判斷格式（見下方規格）
+方便聯絡時段  單一 select，非必填（早上09:00~12:00 / 中午12:00~13:00 / 下午13:00~18:00）
 ```
 
 **聯絡電話動態格式規格**
@@ -946,13 +948,15 @@ fetch(url, {
 {
   timestamp:   new Date().toLocaleString('zh-TW'),
   childName:   // 幼生姓名
-  birthday:    // 出生日期
+  birthday:    // 出生日期（西元 YYYY-MM-DD）
   gender:      // 幼生性別
   campus:      // 參觀學校（咪咪幼兒園 / 家田幼兒園）
-  enrollYear:  // 預計入學年
-  enrollMonth: // 預計入學月
+  enrollYear:  // 預計入學學年－年（民國，例 115）
+  enrollMonth: // 預計入學學年－月（例 08）
   parentName:  // 家長姓名
+  email:       // 聯絡 Email
   phone:       // 聯絡電話
+  contactTime: // 方便聯絡時段（可空白，非必填）
 }
 ```
 
@@ -963,11 +967,13 @@ B  幼生姓名
 C  出生日期
 D  幼生性別
 E  參觀學校
-F  預計入學年月
+F  預計入學學年    ← enrollYear 年 + enrollMonth 月（民國，例 115年8月）
 G  家長姓名
-H  聯絡電話
-I  狀態          ← 預設「未處理」，老師手動改
-J  備註          ← 空白，老師聯絡後手動填
+H  聯絡 Email
+I  聯絡電話
+J  方便聯絡時段
+K  狀態          ← 預設「未處理」，老師手動改
+L  備註          ← 空白，老師聯絡後手動填
 ```
 
 ---

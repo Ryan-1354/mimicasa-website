@@ -1119,37 +1119,17 @@
                 </div>
               </div>
 
-              <!-- 預計入學年月 -->
+              <!-- 預計入學學年 -->
               <div class="form-row">
-                <span class="form-label form-label--plain"
-                  >預計入學年月<span class="form-asterisk">*</span></span
-                >
+                <label class="form-label" for="field-enroll-term">
+                  <span class="form-label__text">預計入學學年</span>
+                  <span class="form-asterisk">*</span>
+                </label>
                 <div class="form-field-wrap">
                   <div class="field field--select field--custom-select">
-                    <span class="custom-select__label select--empty">YYYY</span>
-                    <select id="field-enroll-year" name="enrollYear" required>
-                      <option value="" disabled selected>YYYY</option>
-                    </select>
-                  </div>
-                  <p class="form-error" hidden>此欄位為必填</p>
-                </div>
-                <div class="form-field-wrap">
-                  <div class="field field--select field--custom-select">
-                    <span class="custom-select__label select--empty">MM</span>
-                    <select id="field-enroll-month" name="enrollMonth" required>
-                      <option value="" disabled selected>MM</option>
-                      <option value="01">01</option>
-                      <option value="02">02</option>
-                      <option value="03">03</option>
-                      <option value="04">04</option>
-                      <option value="05">05</option>
-                      <option value="06">06</option>
-                      <option value="07">07</option>
-                      <option value="08">08</option>
-                      <option value="09">09</option>
-                      <option value="10">10</option>
-                      <option value="11">11</option>
-                      <option value="12">12</option>
+                    <span class="custom-select__label select--empty">選擇入學學年</span>
+                    <select id="field-enroll-term" name="enrollTerm" required>
+                      <option value="" disabled selected>選擇入學學年</option>
                     </select>
                   </div>
                   <p class="form-error" hidden>此欄位為必填</p>
@@ -1177,6 +1157,20 @@
                 </div>
               </div>
 
+              <!-- 聯絡 Email -->
+              <div class="form-row">
+                <label class="form-label" for="field-email">
+                  <span class="form-label__text">聯絡 Email</span>
+                  <span class="form-asterisk">*</span>
+                </label>
+                <div class="form-field-wrap">
+                  <div class="field">
+                    <input type="email" id="field-email" name="email" placeholder="請輸入電子信箱" required autocomplete="off">
+                  </div>
+                  <p class="form-error" hidden>此欄位為必填</p>
+                </div>
+              </div>
+
               <!-- 聯絡電話 -->
               <div class="form-row">
                 <label class="form-label" for="field-phone">
@@ -1197,6 +1191,24 @@
                   <p class="form-error" hidden>此欄位為必填</p>
                 </div>
               </div>
+
+              <!-- 方便聯絡時段 -->
+              <div class="form-row">
+                <label class="form-label" for="field-contact-time">
+                  <span class="form-label__text">方便聯絡時段</span>
+                </label>
+                <div class="form-field-wrap">
+                  <div class="field field--select field--custom-select">
+                    <span class="custom-select__label select--empty">選擇聯絡時段</span>
+                    <select id="field-contact-time" name="contactTime">
+                      <option value="" disabled selected>選擇聯絡時段</option>
+                      <option value="早上09:00~12:00">早上09:00~12:00</option>
+                      <option value="中午12:00~13:00">中午12:00~13:00</option>
+                      <option value="下午13:00~18:00">下午13:00~18:00</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
             </div>
 
             <button class="booking-form__submit" type="submit">確定送出</button>
@@ -1213,6 +1225,6 @@
 
     <script src="assets/js/lqip.js?v=21"></script>
 
-    <script src="assets/js/main.js?v=56"></script>
+    <script src="assets/js/main.js?v=57"></script>
   </body>
 </html>

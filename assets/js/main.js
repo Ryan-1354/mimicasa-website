@@ -397,6 +397,7 @@ document.querySelectorAll('[data-open-booking]').forEach(btn => {
     field?.addEventListener('click', () => { try { input.showPicker(); } catch (_) {} });
   }
   // Year dropdown (desktop): today back through 6 years. Month/Day live in HTML.
+  // 西元年，三裝置統一（手機/平板用原生 date picker 亦為西元）。
   const yearSelect = document.getElementById('field-birth-year');
   if (yearSelect) {
     const current = new Date().getFullYear();
@@ -409,16 +410,26 @@ document.querySelectorAll('[data-open-booking]').forEach(btn => {
   }
 })();
 
-// Enroll year options
+// 預計入學學年：每年 2 月與 8 月各一個入學時間點，選項顯示與 value 皆為民國
+// 「YYY-MM」（例：115-08）。動態產生從今天起未來三年（含當期）共 6 個選項；
+// 每個時間點在該月結束前都保留（例如 8 月時「115年8月」仍在，直到 8 月過完）。
 (function () {
-  const yearSelect = document.getElementById('field-enroll-year');
-  if (!yearSelect) return;
-  const current = new Date().getFullYear();
-  for (let y = current; y <= current + 4; y++) {
+  const sel = document.getElementById('field-enroll-term');
+  if (!sel) return;
+  const now = new Date();
+  const m = now.getMonth() + 1;         // 1–12
+  let ty = now.getFullYear(), tm;       // 第一個仍可選的入學時間點（西元年）
+  if (m <= 2)      tm = 2;
+  else if (m <= 8) tm = 8;
+  else { tm = 2; ty += 1; }
+  for (let i = 0; i < 6; i++) {
+    const roc = ty - 1911;
     const opt = document.createElement('option');
-    opt.value = y;
-    opt.textContent = y;
-    yearSelect.appendChild(opt);
+    opt.value = `${roc}-${String(tm).padStart(2, '0')}`;
+    opt.textContent = `${roc}年${tm}月`;
+    sel.appendChild(opt);
+    if (tm === 2) tm = 8;
+    else { tm = 2; ty += 1; }
   }
 })();
 
@@ -428,6 +439,8 @@ document.querySelectorAll('.field--select select').forEach(sel => {
   sync();
   sel.addEventListener('change', sync);
 });
+
+const emailInput = document.getElementById('field-email');
 
 // Phone auto-format + character limit
 const phoneInput = document.getElementById('field-phone');
@@ -504,6 +517,16 @@ bookingForm.addEventListener('submit', async (e) => {
       fieldEl?.classList.add('field--error');
       if (err) { err.hidden = false; err.textContent = mcText('此欄位為必填', 'This field is required'); }
       valid = false;
+    } else if (field === emailInput) {
+      const ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(field.value.trim());
+      if (!ok) {
+        fieldEl?.classList.add('field--error');
+        if (err) { err.hidden = false; err.textContent = mcText('請輸入有效的電子信箱', 'Please enter a valid email address'); }
+        valid = false;
+      } else {
+        fieldEl?.classList.remove('field--error');
+        if (err) err.hidden = true;
+      }
     } else if (field === phoneInput) {
       const digits     = field.value.replace(/\D/g, '');
       const isMobile   = /^09\d{8}$/.test(digits);          // 09XX-XXX-XXX
@@ -523,22 +546,7 @@ bookingForm.addEventListener('submit', async (e) => {
     }
   });
 
-  // Enroll year/month must not be earlier than the current month (allow this month onward)
-  const eYear  = bookingForm.enrollYear;
-  const eMonth = bookingForm.enrollMonth;
-  if (eYear.value && eMonth.value) {
-    const now   = new Date();
-    const selYM = Number(eYear.value) * 100 + Number(eMonth.value);
-    const curYM = now.getFullYear() * 100 + (now.getMonth() + 1);
-    if (selYM < curYM) {
-      const wrap    = eMonth.closest('.form-field-wrap');
-      const fieldEl = eMonth.closest('.field');
-      const err     = wrap?.querySelector('.form-error');
-      fieldEl?.classList.add('field--error');
-      if (err) { err.hidden = false; err.textContent = mcText('入學時間不能早於本月', 'Enrollment cannot be earlier than this month'); }
-      valid = false;
-    }
-  }
+  // 預計入學學年選項已在載入時只產生「當期起未來三年」的有效時間點，毋需再驗證過期。
 
   // Birthday must be a real calendar date and not in the future
   const isDesktopBday = window.matchMedia('(min-width: 1280px)').matches;
@@ -574,6 +582,8 @@ bookingForm.addEventListener('submit', async (e) => {
   submitBtn.textContent = mcText('送出中…', 'Submitting…');
 
   const campus = bookingForm.school.value;
+  // enrollTerm value 為民國「YYY-MM」（例 115-08），拆成 enrollYear(民國)/enrollMonth
+  const [enrollYear = '', enrollMonth = ''] = (bookingForm.enrollTerm.value || '').split('-');
   const payload = {
     timestamp:   new Date().toLocaleString('zh-TW', {
       timeZone: 'Asia/Taipei', hourCycle: 'h23',
@@ -586,10 +596,12 @@ bookingForm.addEventListener('submit', async (e) => {
       : bookingForm.birthday.value,
     gender:      bookingForm.gender.value,
     campus,
-    enrollYear:  bookingForm.enrollYear.value,
-    enrollMonth: bookingForm.enrollMonth.value,
+    enrollYear,
+    enrollMonth,
     parentName:  bookingForm.parentName.value,
+    email:       bookingForm.email.value,
     phone:       bookingForm.phone.value,
+    contactTime: bookingForm.contactTime.value,
   };
 
   const gasUrl = GAS_URLS[campus] ?? GAS_URLS['咪咪幼兒園'];
@@ -728,10 +740,11 @@ function saveBookingDraft() {
     set('birthday',    bookingDraftReadBirthday());
     set('gender',      bookingForm.gender.value);
     set('campus',      bookingForm.school.value);
-    set('enrollYear',  bookingForm.enrollYear.value);
-    set('enrollMonth', bookingForm.enrollMonth.value);
+    set('enrollTerm',  bookingForm.enrollTerm.value);
     set('parentName',  bookingForm.parentName.value);
+    set('email',       bookingForm.email.value);
     set('phone',       bookingForm.phone.value);
+    set('contactTime', bookingForm.contactTime.value);
   } catch (_) {}
 }
 
@@ -740,14 +753,15 @@ function restoreBookingDraft() {
     const get = k => sessionStorage.getItem(BOOKING_DRAFT_PREFIX + k);
     if (get('childName'))  bookingForm.childName.value  = get('childName');
     if (get('parentName')) bookingForm.parentName.value = get('parentName');
+    if (get('email'))      bookingForm.email.value      = get('email');
     if (get('phone')) {
       bookingForm.phone.value = get('phone');
       bookingForm.phone.dispatchEvent(new Event('input', { bubbles: true }));
     }
     bookingDraftSetSelect(bookingForm.gender,      get('gender'));
     bookingDraftSetSelect(bookingForm.school,      get('campus'));
-    bookingDraftSetSelect(bookingForm.enrollYear,  get('enrollYear'));
-    bookingDraftSetSelect(bookingForm.enrollMonth, get('enrollMonth'));
+    bookingDraftSetSelect(bookingForm.enrollTerm,  get('enrollTerm'));
+    bookingDraftSetSelect(bookingForm.contactTime, get('contactTime'));
     const bday = get('birthday');
     if (bday) {
       const nativeEl = document.getElementById('field-birthday');
