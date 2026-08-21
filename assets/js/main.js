@@ -880,6 +880,8 @@ bookingForm.addEventListener('change', saveBookingDraft);
   let idx = 0;
   let title = '';
   let lbScrollY = 0;
+  let currentGroupId = null;
+  const groups = [];              // 每個圖組的登錄表，供分享深連結回開用（索引 = 文件順序）
 
   // Section title for a media group → the caption chip (image bottom-left).
   function groupTitle(media) {
@@ -901,10 +903,11 @@ bookingForm.addEventListener('change', saveBookingDraft);
     if (nextBtn) nextBtn.disabled = idx === gallery.length - 1;
   }
 
-  function openLightbox(items, start, groupName) {
+  function openLightbox(items, start, groupName, groupId = null) {
     gallery = items;
     idx = start;
     title = groupName || '';
+    currentGroupId = groupId;
     lb.classList.toggle('lightbox--single', items.length <= 1);
 
     lbScrollY = window.scrollY;
@@ -930,8 +933,9 @@ bookingForm.addEventListener('change', saveBookingDraft);
   function prev() { if (idx > 0) { idx--; render(); } }
   function next() { if (idx < gallery.length - 1) { idx++; render(); } }
 
-  // Each media group is its own gallery (feature / about / campus pics)
-  document.querySelectorAll('.feature__media, .page-header__media').forEach(media => {
+  // Each media group is its own gallery (feature / about / campus pics).
+  // 用文件順序索引當作圖組 id，分享連結 ?lb=<圖組>.<第幾張> 即可回開同一張。
+  document.querySelectorAll('.feature__media, .page-header__media').forEach((media, g) => {
     const pics  = [...media.querySelectorAll('.feature__pic, .about-pic')];
     if (!pics.length) return;
     const items = pics.map(p => ({
@@ -939,7 +943,8 @@ bookingForm.addEventListener('change', saveBookingDraft);
       alt: p.querySelector('img')?.alt || '',
     }));
     const groupName = groupTitle(media);
-    pics.forEach((p, i) => p.addEventListener('click', () => openLightbox(items, i, groupName)));
+    groups[g] = { items, groupName, media };
+    pics.forEach((p, i) => p.addEventListener('click', () => openLightbox(items, i, groupName, g)));
   });
 
   lb.querySelectorAll('[data-lb-close]').forEach(el => el.addEventListener('click', closeLightbox));
@@ -952,6 +957,15 @@ bookingForm.addEventListener('change', saveBookingDraft);
   const shareBtn  = lb.querySelector('[data-lb-share]');
   const shareMenu = lb.querySelector('.lightbox__share-menu');
   let menuOpen = false;
+
+  // 分享網址：帶上 ?lb=<圖組>.<第幾張>，讓對方一開連結就自動彈出同一張 lightbox。
+  function shareUrl() {
+    const u = new URL(location.href);
+    u.hash = '';
+    if (currentGroupId != null) u.searchParams.set('lb', currentGroupId + '.' + (idx + 1));
+    else u.searchParams.delete('lb');
+    return u.href;
+  }
 
   function closeShareMenu() {
     if (!menuOpen) return;
@@ -970,7 +984,7 @@ bookingForm.addEventListener('change', saveBookingDraft);
     // Phone / tablet (touch input) → native share sheet, so it can hand off to
     // installed apps (LINE, IG, Messenger…). Desktop → our own menu.
     if (navigator.share && window.matchMedia('(pointer: coarse)').matches) {
-      navigator.share({ title: document.title, url: location.href }).catch(() => {});
+      navigator.share({ title: document.title, url: shareUrl() }).catch(() => {});
       return;
     }
     menuOpen ? closeShareMenu() : openShareMenu();
@@ -992,7 +1006,7 @@ bookingForm.addEventListener('change', saveBookingDraft);
   shareMenu?.querySelectorAll('.lightbox__share-item').forEach(item => {
     item.addEventListener('click', (e) => {
       e.stopPropagation();
-      const url = location.href;
+      const url = shareUrl();
       switch (item.dataset.share) {
         case 'line':
           window.open('https://social-plugins.line.me/lineit/share?url=' + encodeURIComponent(url), '_blank', 'noopener');
@@ -1049,6 +1063,31 @@ bookingForm.addEventListener('change', saveBookingDraft);
     const dx = e.changedTouches[0].clientX - startX;
     if (Math.abs(dx) > 40 && gallery.length > 1) { dx > 0 ? prev() : next(); }
   }, { passive: true });
+
+  // 深連結：?lb=<圖組>.<第幾張> → 自動彈出對應 lightbox。
+  // 先切到圖組所屬的校區分頁（campus 頁有 tab），再捲到該區塊、開圖，最後把
+  // 參數從網址移除，關閉後重整不會又跳出來。
+  (function openFromUrl() {
+    const raw = new URLSearchParams(location.search).get('lb');
+    if (!raw) return;
+    const [gStr, nStr] = raw.split('.');
+    const g = Number(gStr), n = Number(nStr) - 1;
+    const grp = groups[g];
+    if (!grp || !grp.items[n]) return;
+
+    // 若圖組在未啟用的校區分頁內，先點對應 tab 讓區塊顯示（才捲得到）
+    const school = grp.media.closest('.campus-school')?.dataset.school;
+    if (school) {
+      document.querySelector(`.campus-tabs .tab[data-school="${school}"]`)?.click();
+    }
+
+    const u = new URL(location.href);
+    u.searchParams.delete('lb');
+    history.replaceState(null, '', u.href);
+
+    grp.media.scrollIntoView({ block: 'center' });
+    openLightbox(grp.items, n, grp.groupName, g);
+  })();
 })();
 
 /* ══════════════════════════════════════════════
