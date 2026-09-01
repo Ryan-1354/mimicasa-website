@@ -20,7 +20,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=DM+Sans:wght@300;400;500&family=Noto+Serif+TC:wght@600&family=Noto+Sans+TC:wght@400;500&display=swap" rel="stylesheet">
   <link rel="preload" href="assets/fonts/dfp-lishu-subset.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="assets/css/style.css?v=95">
+  <link rel="stylesheet" href="assets/css/style.css?v=101">
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-77L0DV3L8Y"></script>
   <script>
@@ -154,55 +154,130 @@
     <h2 class="features__h2">在純淨中成長，在美學中學習</h2>
   </div>
 
-  <div class="features__grid">
+  <div class="accordion">
 
-    <a href="/philosophy#feature-1" class="card" data-reveal data-delay="1">
-      <img class="card__icon" src="assets/images/icon-space.svg" alt="" aria-hidden="true">
-      <div class="card__header">
-        <h3 class="card__title">健康的學習空間</h3>
-        <img class="card__arrow-icon" src="assets/images/icon-arrow-right.svg" alt="" aria-hidden="true">
+    <div class="accordion__item" data-reveal data-delay="1">
+      <button class="accordion__header" type="button" aria-expanded="false" aria-controls="feature-panel-1">
+        <img class="accordion__icon" src="assets/images/icon-space.svg" alt="" aria-hidden="true">
+        <span class="accordion__heading">
+          <span class="accordion__title">健康的學習空間</span>
+          <img class="accordion__chevron" src="assets/images/icon-arrow-right.svg" alt="" aria-hidden="true">
+        </span>
+      </button>
+      <div class="accordion__panel" id="feature-panel-1" role="region">
+        <div class="accordion__panel-inner">
+          <ul class="accordion__list">
+            <li>榮獲北市環境保護局空氣品質最高榮譽金質認證</li>
+            <li>全面無毒建材．回歸純淨本質</li>
+            <li>順應四季使用有機香氛</li>
+            <li>純淨能量飲水設備</li>
+            <li>守護空氣品質裝置科技防霾紗網</li>
+          </ul>
+          <a href="/philosophy#feature-1" class="accordion__more">查看完整資訊</a>
+        </div>
       </div>
-    </a>
+    </div>
 
-    <a href="/philosophy#feature-2" class="card" data-reveal data-delay="1">
-      <img class="card__icon" src="assets/images/icon-team.svg" alt="" aria-hidden="true">
-      <div class="card__header">
-        <h3 class="card__title">穩健師資團隊</h3>
-        <img class="card__arrow-icon" src="assets/images/icon-arrow-right.svg" alt="" aria-hidden="true">
+    <div class="accordion__item" data-reveal data-delay="1">
+      <button class="accordion__header" type="button" aria-expanded="false" aria-controls="feature-panel-2">
+        <img class="accordion__icon" src="assets/images/icon-team.svg" alt="" aria-hidden="true">
+        <span class="accordion__heading">
+          <span class="accordion__title">穩健師資團隊</span>
+          <img class="accordion__chevron" src="assets/images/icon-arrow-right.svg" alt="" aria-hidden="true">
+        </span>
+      </button>
+      <div class="accordion__panel" id="feature-panel-2" role="region">
+        <div class="accordion__panel-inner">
+          <ul class="accordion__list">
+            <li>全園完整蒙特梭利合格師資</li>
+            <li>顧問定期進班深化教學實踐</li>
+            <li>以尊重、耐心引導幼兒適性發展</li>
+            <li>獎勵進修確保專業成長動能</li>
+          </ul>
+          <a href="/philosophy#feature-2" class="accordion__more">查看完整資訊</a>
+        </div>
       </div>
-    </a>
+    </div>
 
-    <a href="/philosophy#feature-3" class="card" data-reveal data-delay="2">
-      <img class="card__icon" src="assets/images/icon-enviroment.svg" alt="" aria-hidden="true">
-      <div class="card__header">
-        <h3 class="card__title">濃郁美學環境</h3>
-        <img class="card__arrow-icon" src="assets/images/icon-arrow-right.svg" alt="" aria-hidden="true">
+    <div class="accordion__item" data-reveal data-delay="2">
+      <button class="accordion__header" type="button" aria-expanded="false" aria-controls="feature-panel-3">
+        <img class="accordion__icon" src="assets/images/icon-enviroment.svg" alt="" aria-hidden="true">
+        <span class="accordion__heading">
+          <span class="accordion__title">濃郁美學環境</span>
+          <img class="accordion__chevron" src="assets/images/icon-arrow-right.svg" alt="" aria-hidden="true">
+        </span>
+      </button>
+      <div class="accordion__panel" id="feature-panel-3" role="region">
+        <div class="accordion__panel-inner">
+          <ul class="accordion__list">
+            <li>以人文素養為本、形塑感知之美</li>
+            <li>色調與設計溫潤、營造安定之學習氛圍</li>
+            <li>細節與角落皆體現美學與教育之價值</li>
+          </ul>
+          <a href="/philosophy#feature-3" class="accordion__more">查看完整資訊</a>
+        </div>
       </div>
-    </a>
+    </div>
 
-    <a href="/philosophy#feature-4" class="card" data-reveal data-delay="2">
-      <img class="card__icon" src="assets/images/icon-outdoor.svg" alt="" aria-hidden="true">
-      <div class="card__header">
-        <h3 class="card__title">蒙氏文化教學走向實境</h3>
-        <img class="card__arrow-icon" src="assets/images/icon-arrow-right.svg" alt="" aria-hidden="true">
+    <div class="accordion__item" data-reveal data-delay="2">
+      <button class="accordion__header" type="button" aria-expanded="false" aria-controls="feature-panel-4">
+        <img class="accordion__icon" src="assets/images/icon-outdoor.svg" alt="" aria-hidden="true">
+        <span class="accordion__heading">
+          <span class="accordion__title">蒙氏文化教學走向實境</span>
+          <img class="accordion__chevron" src="assets/images/icon-arrow-right.svg" alt="" aria-hidden="true">
+        </span>
+      </button>
+      <div class="accordion__panel" id="feature-panel-4" role="region">
+        <div class="accordion__panel-inner">
+          <ul class="accordion__list">
+            <li>由室內教具延伸學習場域至校園</li>
+            <li>動物、植物、地質融入院子裡</li>
+            <li>由觀察到操作，連結知識巧妙地與生活架接</li>
+          </ul>
+          <a href="/philosophy#feature-4" class="accordion__more">查看完整資訊</a>
+        </div>
       </div>
-    </a>
+    </div>
 
-    <a href="/philosophy#feature-5" class="card" data-reveal data-delay="3">
-      <img class="card__icon" src="assets/images/icon-natural-corner.svg" alt="" aria-hidden="true">
-      <div class="card__header">
-        <h3 class="card__title">活絡的蒙特梭利自然生態角</h3>
-        <img class="card__arrow-icon" src="assets/images/icon-arrow-right.svg" alt="" aria-hidden="true">
+    <div class="accordion__item" data-reveal data-delay="3">
+      <button class="accordion__header" type="button" aria-expanded="false" aria-controls="feature-panel-5">
+        <img class="accordion__icon" src="assets/images/icon-natural-corner.svg" alt="" aria-hidden="true">
+        <span class="accordion__heading">
+          <span class="accordion__title">活絡的蒙特梭利自然生態角</span>
+          <img class="accordion__chevron" src="assets/images/icon-arrow-right.svg" alt="" aria-hidden="true">
+        </span>
+      </button>
+      <div class="accordion__panel" id="feature-panel-5" role="region">
+        <div class="accordion__panel-inner">
+          <ul class="accordion__list">
+            <li>豐富多彩自然觀察桌</li>
+            <li>24 節氣變化之元素呈現</li>
+            <li>小生物之飼養，由照護中領會生命</li>
+            <li>培養尊重感知、關懷與責任感</li>
+          </ul>
+          <a href="/philosophy#feature-5" class="accordion__more">查看完整資訊</a>
+        </div>
       </div>
-    </a>
+    </div>
 
-    <a href="/philosophy#feature-6" class="card" data-reveal data-delay="3">
-      <img class="card__icon" src="assets/images/icon-corner.svg" alt="" aria-hidden="true">
-      <div class="card__header">
-        <h3 class="card__title">完善蒙特梭利特色角落</h3>
-        <img class="card__arrow-icon" src="assets/images/icon-arrow-right.svg" alt="" aria-hidden="true">
+    <div class="accordion__item" data-reveal data-delay="3">
+      <button class="accordion__header" type="button" aria-expanded="false" aria-controls="feature-panel-6">
+        <img class="accordion__icon" src="assets/images/icon-corner.svg" alt="" aria-hidden="true">
+        <span class="accordion__heading">
+          <span class="accordion__title">完善蒙特梭利特色角落</span>
+          <img class="accordion__chevron" src="assets/images/icon-arrow-right.svg" alt="" aria-hidden="true">
+        </span>
+      </button>
+      <div class="accordion__panel" id="feature-panel-6" role="region">
+        <div class="accordion__panel-inner">
+          <ul class="accordion__list">
+            <li>在安定、有序、自在的環境中，培養專注、獨立、自信與內在平衡</li>
+            <li>衣帽區、閱讀角、插花區、小廚房、和平桌以及地理文物溫馨呈現</li>
+          </ul>
+          <a href="/philosophy#feature-6" class="accordion__more">查看完整資訊</a>
+        </div>
       </div>
-    </a>
+    </div>
 
   </div>
 </section>
@@ -678,6 +753,6 @@
 
 <script src="assets/js/lqip.js?v=21"></script>
 
-<script src="assets/js/main.js?v=58"></script>
+<script src="assets/js/main.js?v=60"></script>
 </body>
 </html>

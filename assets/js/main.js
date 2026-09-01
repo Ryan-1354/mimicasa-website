@@ -242,6 +242,27 @@ document.querySelectorAll('[data-reveal]').forEach(el => {
 });
 
 /* ══════════════════════════════════════════════
+   FEATURES ACCORDION（特色與優勢）
+══════════════════════════════════════════════ */
+document.querySelectorAll('.accordion__header').forEach(header => {
+  header.addEventListener('click', () => {
+    const item = header.closest('.accordion__item');
+    const willOpen = !item.classList.contains('is-open');
+
+    // 一次只開啟一個：先收合其他已展開的項目
+    document.querySelectorAll('.accordion__item.is-open').forEach(other => {
+      if (other !== item) {
+        other.classList.remove('is-open');
+        other.querySelector('.accordion__header').setAttribute('aria-expanded', 'false');
+      }
+    });
+
+    item.classList.toggle('is-open', willOpen);
+    header.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
+  });
+});
+
+/* ══════════════════════════════════════════════
    TOAST
 ══════════════════════════════════════════════ */
 function showToast(message, type = 'success') {
