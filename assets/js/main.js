@@ -247,10 +247,11 @@ document.querySelectorAll('[data-reveal]').forEach(el => {
 document.querySelectorAll('.accordion__header').forEach(header => {
   header.addEventListener('click', () => {
     const item = header.closest('.accordion__item');
+    const group = header.closest('.accordion, .faq-list');
     const willOpen = !item.classList.contains('is-open');
 
-    // 一次只開啟一個：先收合其他已展開的項目
-    document.querySelectorAll('.accordion__item.is-open').forEach(other => {
+    // 一次只開啟一個：先收合同一組內其他已展開的項目
+    (group || document).querySelectorAll('.accordion__item.is-open').forEach(other => {
       if (other !== item) {
         other.classList.remove('is-open');
         other.querySelector('.accordion__header').setAttribute('aria-expanded', 'false');
@@ -261,6 +262,34 @@ document.querySelectorAll('.accordion__header').forEach(header => {
     header.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
   });
 });
+
+/* ══════════════════════════════════════════════
+   FAQ 深連結（/faq#q1）：自動展開並捲動到對應問題
+══════════════════════════════════════════════ */
+function openFaqFromHash() {
+  const id = decodeURIComponent(location.hash.slice(1));
+  if (!id) return;
+  const item = document.getElementById(id);
+  if (!item || !item.classList.contains('accordion__item--faq')) return;
+
+  const group = item.closest('.faq-list');
+  if (group) {
+    group.querySelectorAll('.accordion__item.is-open').forEach(other => {
+      if (other !== item) {
+        other.classList.remove('is-open');
+        other.querySelector('.accordion__header').setAttribute('aria-expanded', 'false');
+      }
+    });
+  }
+  item.classList.add('is-open');
+  const header = item.querySelector('.accordion__header');
+  if (header) header.setAttribute('aria-expanded', 'true');
+  item.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+if (document.querySelector('.accordion__item--faq')) {
+  openFaqFromHash();
+  window.addEventListener('hashchange', openFaqFromHash);
+}
 
 /* ══════════════════════════════════════════════
    TOAST

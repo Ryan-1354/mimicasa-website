@@ -1,7 +1,7 @@
 /* ══════════════════════════════════════════════
    FONTS
 ══════════════════════════════════════════════ */
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=Noto+Serif+TC:wght@600&family=Noto+Sans+TC:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=Noto+Serif+TC:wght@400;600&family=Noto+Sans+TC:wght@400;500&display=swap');
 
 @font-face {
   font-family: 'GenYoMin2 TW';
@@ -864,10 +864,83 @@ html[lang="en"] .hero__h1 { white-space: normal; text-wrap: balance; }
 }
 
 /* ══════════════════════════════════════════════
+   FAQ — 常見問與答
+   單欄堆疊的 accordion，沿用 .accordion__item 的卡片與 JS 開合
+══════════════════════════════════════════════ */
+.faq {
+  background: var(--color-bg-default);
+}
+.faq__title {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  font-size: clamp(22px, 2.1vw, 30px);
+  line-height: 1.2;
+  color: var(--color-action-primary-bg);
+  margin-bottom: var(--sp-stack-3xl);
+}
+.faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+/* FAQ 卡片：標題列改為左右排列（題目在左、箭頭在右），無頂部 icon */
+.accordion__item--faq { scroll-margin-top: 132px; }
+/* FAQ 標題獨立處理，不沿用 .accordion__title 的 600，改為 regular 字重 */
+.accordion__title--faq {
+  flex: 1;
+  text-align: left;
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: clamp(18px, 1.7vw, 24px);
+  line-height: 1.2;
+  color: var(--color-text-primary);
+}
+/* FAQ 完整解答排版（內文採 zh/body：font-sans 400 / fs-body / line-height 1.5） */
+.faq-answer {
+  padding: var(--sp-stack-sm) 24px 16px;   /* top 8px + header 16px = 標題與內文距離 24px */
+  font-family: var(--font-sans);
+  font-weight: 400;
+  font-size: var(--fs-body);
+  line-height: 1.5;
+  color: var(--color-text-tertiary);
+}
+/* 首頁 FAQ 精簡條列內文（不影響特色與優勢的 .accordion__list）
+   採 zh/body：font-sans 400 / fs-body / line-height 1.5 */
+.accordion__item--faq .accordion__list {
+  color: var(--color-text-tertiary);
+  font-size: var(--fs-body);
+  padding-top: var(--sp-stack-sm);   /* + header 16px = 標題與內文距離 24px */
+}
+.faq-answer > * + * { margin-top: 12px; }
+.faq-answer p { margin: 0; }
+.faq-answer ol,
+.faq-answer ul {
+  margin: 0;
+  padding-left: 1.4em;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.faq-answer li { padding-left: 4px; }
+.faq-answer__group-title {
+  font-weight: 500;
+  color: var(--color-text-primary);
+}
+/* 一、二、三 內文標題與前段間距統一 16px（勝過 .faq-answer > * + * 的 12px） */
+.faq-answer > .faq-answer__group-title {
+  margin-top: var(--sp-stack-lg);
+}
+/* 清單後的結語段落與上方 ul/ol 間距 16px */
+.faq-answer > ul + p,
+.faq-answer > ol + p {
+  margin-top: var(--sp-stack-lg);
+}
+
+/* ══════════════════════════════════════════════
    LOCATION / MAP
 ══════════════════════════════════════════════ */
 .location {
-  background: var(--color-bg-default);
+  background: var(--color-bg-section);
 }
 .location__eyebrow {
   font-family: var(--font-serif);
